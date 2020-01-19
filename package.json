@@ -1,0 +1,42 @@
+{
+  "name": "react-native-ad-manager",
+  "title": "React Native Ad Manager",
+  "version": "1.0.0",
+  "description": "TODO",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matejdr/react-native-ad-manager.git",
+    "baseUrl": "https://github.com/matejdr/react-native-ad-manager"
+  },
+  "keywords": [
+    "react-native"
+  ],
+  "author": {
+    "name": "Matej Drobnic",
+    "email": "matej.dr@gmail.com"
+  },
+  "license": "MIT",
+  "licenseFilename": "LICENSE",
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "prop-types": "^15.7.2"
+  },
+  "peerDependencies": {
+    "react-native": ">=0.59.10"
+  },
+  "devDependencies": {
+    "react": "^16.8.3",
+    "react-native": "^0.59.10",
+    "babel-eslint": "^7.2.3",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^6.3.0",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-native": "^3.7.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "prettier": "^1.18.2"
+  }
+}
