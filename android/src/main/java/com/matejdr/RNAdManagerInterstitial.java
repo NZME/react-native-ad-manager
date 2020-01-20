@@ -35,7 +35,7 @@ import com.sbugert.rnadmob.utils.Targeting;
 
 public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
 
-    public static final String REACT_CLASS = "RNAdMobInterstitial";
+    public static final String REACT_CLASS = "CTKInterstitial";
 
     public static final String EVENT_AD_LOADED = "interstitialAdLoaded";
     public static final String EVENT_AD_FAILED_TO_LOAD = "interstitialAdFailedToLoad";

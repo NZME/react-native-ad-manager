@@ -25,7 +25,7 @@ import com.sbugert.rnadmob.utils.Targeting;
 
 public class RNAdManagerBannerViewManager extends ViewGroupManager<BannerAdView> {
 
-    public static final String REACT_CLASS = "RNDFPBannerView";
+    public static final String REACT_CLASS = "CTKBannerView";
 
     public static final String PROP_AD_SIZE = "adSize";
     public static final String PROP_VALID_AD_SIZES = "validAdSizes";
@@ -56,7 +56,7 @@ public class RNAdManagerBannerViewManager extends ViewGroupManager<BannerAdView>
     }
 
     @Override
-    public void onDropViewInstance(ReactPublisherAdView view) {
+    public void onDropViewInstance(BannerAdView view) {
         if (view.adView != null) {
             view.adView.setAppEventListener(null);
             view.adView.setAdListener(null);
@@ -66,13 +66,13 @@ public class RNAdManagerBannerViewManager extends ViewGroupManager<BannerAdView>
     }
 
     @Override
-    protected ReactPublisherAdView createViewInstance(ThemedReactContext themedReactContext) {
-        ReactPublisherAdView adView = new ReactPublisherAdView(themedReactContext, applicationContext);
+    protected BannerAdView createViewInstance(ThemedReactContext themedReactContext) {
+        BannerAdView adView = new BannerAdView(themedReactContext, applicationContext);
         return adView;
     }
 
     @Override
-    public void addView(ReactPublisherAdView parent, View child, int index) {
+    public void addView(BannerAdView parent, View child, int index) {
         throw new RuntimeException("RNPublisherBannerView cannot have subviews");
     }
 
@@ -96,13 +96,13 @@ public class RNAdManagerBannerViewManager extends ViewGroupManager<BannerAdView>
     }
 
     @ReactProp(name = PROP_AD_SIZE)
-    public void setPropAdSize(final ReactPublisherAdView view, final String sizeString) {
+    public void setPropAdSize(final BannerAdView view, final String sizeString) {
         AdSize adSize = getAdSizeFromString(sizeString);
         view.setAdSize(adSize);
     }
 
     @ReactProp(name = PROP_VALID_AD_SIZES)
-    public void setPropValidAdSizes(final ReactPublisherAdView view, final ReadableArray adSizeStrings) {
+    public void setPropValidAdSizes(final BannerAdView view, final ReadableArray adSizeStrings) {
         ReadableNativeArray nativeArray = (ReadableNativeArray)adSizeStrings;
         ArrayList<Object> list = nativeArray.toArrayList();
         String[] adSizeStringsArray = list.toArray(new String[list.size()]);
@@ -116,19 +116,19 @@ public class RNAdManagerBannerViewManager extends ViewGroupManager<BannerAdView>
     }
 
     @ReactProp(name = PROP_AD_UNIT_ID)
-    public void setPropAdUnitID(final ReactPublisherAdView view, final String adUnitID) {
+    public void setPropAdUnitID(final BannerAdView view, final String adUnitID) {
         view.setAdUnitID(adUnitID);
     }
 
     @ReactProp(name = PROP_TEST_DEVICES)
-    public void setPropTestDevices(final ReactPublisherAdView view, final ReadableArray testDevices) {
+    public void setPropTestDevices(final BannerAdView view, final ReadableArray testDevices) {
         ReadableNativeArray nativeArray = (ReadableNativeArray)testDevices;
         ArrayList<Object> list = nativeArray.toArrayList();
         view.setTestDevices(list.toArray(new String[list.size()]));
     }
 
     @ReactProp(name = PROP_TARGETING)
-    public void setPropTargeting(final ReactPublisherAdView view, final ReadableMap targetingObjects) {
+    public void setPropTargeting(final BannerAdView view, final ReadableMap targetingObjects) {
 
         ReadableMapKeySetIterator targetings = targetingObjects.keySetIterator();
 
@@ -216,7 +216,7 @@ public class RNAdManagerBannerViewManager extends ViewGroupManager<BannerAdView>
     }
 
     @Override
-    public void receiveCommand(ReactPublisherAdView root, int commandId, @javax.annotation.Nullable ReadableArray args) {
+    public void receiveCommand(BannerAdView root, int commandId, @javax.annotation.Nullable ReadableArray args) {
         switch (commandId) {
             case COMMAND_LOAD_BANNER:
                 root.loadBanner();
