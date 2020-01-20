@@ -63,11 +63,11 @@
     if (!_adUnitID || !_adSize/* || !_validAdSizes || !_targeting*/) {
         return;
     }
-    
+
     if (_bannerView) {
         [_bannerView removeFromSuperview];
     }
-    
+
     GADAdSize adSize = [RCTConvert GADAdSize:_adSize];
     DFPBannerView *bannerView;
     if (!GADAdSizeEqualToSize(adSize, kGADAdSizeInvalid)) {
@@ -82,10 +82,10 @@
     bannerView.appEventDelegate = self;
     bannerView.rootViewController = RCTPresentedViewController();
     bannerView.translatesAutoresizingMaskIntoConstraints = YES;
-    
+
     GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = _testDevices;
     DFPRequest *request = [DFPRequest request];
-    
+
     if (_targeting != nil) {
         NSDictionary *customTargeting = [_targeting objectForKey:@"customTargeting"];
         if (customTargeting != nil) {
@@ -115,15 +115,15 @@
             [request setLocationWithLatitude:latitude longitude:longitude accuracy:accuracy];
         }
     }
-    
+
     bannerView.adUnitID = _adUnitID;
-    
+
     bannerView.validAdSizes = _validAdSizes;
 
     [bannerView loadRequest:request];
-    
+
     [self addSubview:bannerView];
-    
+
     _bannerView = bannerView;
 }
 
@@ -143,7 +143,10 @@
                             @"height": @(adView.frame.size.height) });
     }
     if (self.onAdLoaded) {
-        self.onAdLoaded(@{});
+        self.onAdLoaded(@{
+            @"type": @"banner",
+            @"gadSize": NSValueFromGADAdSize(adView.adSize),
+        });
     }
 }
 

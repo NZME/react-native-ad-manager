@@ -27,6 +27,11 @@ class Banner extends Component {
     this.state = {
       style: {},
     };
+
+    this.handleOnAdLoaded = ({ nativeEvent }) => {
+      this.props.onAdLoaded &&
+      this.props.onAdLoaded(nativeEvent);
+    };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -78,6 +83,7 @@ class Banner extends Component {
         {...this.props}
         style={[this.props.style, this.state.style]}
         onSizeChange={this.handleSizeChange}
+        onAdLoaded={this.handleOnAdLoaded}
         onAdFailedToLoad={this.handleAdFailedToLoad}
         onAppEvent={this.handleAppEvent}
         ref={(el) => (this._bannerView = el)}
