@@ -76,7 +76,7 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
     private RCTEventEmitter mEventEmitter;
 
     /**
-     * Creates new RNNativeAdsAdView instance and retrieves event emitter
+     * Creates new NativeAdView instance and retrieves event emitter
      *
      * @param context
      */
@@ -92,7 +92,7 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
         mEventEmitter = context.getJSModule(RCTEventEmitter.class);
     }
 
-    public void loadAd(RNNativeAdsManager.AdsManagerProperties adsManagerProperties) {
+    public void loadAd(RNAdManageNativeManager.AdsManagerProperties adsManagerProperties) {
         final ReactApplicationContext reactContext = this.applicationContext;
 
         this.testDevices = adsManagerProperties.getTestDevices();
@@ -140,15 +140,15 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
                 AdLoader.Builder builder = new AdLoader.Builder(reactContext, adUnitID);
                 if (validAdTypesList.contains(AD_TYPE_NATIVE)) {
                     Log.e("validAdTypes", AD_TYPE_NATIVE);
-                    builder.forUnifiedNativeAd(RNNativeAdsAdView.this);
+                    builder.forUnifiedNativeAd(NativeAdView.this);
                 }
                 if (adSizesArray.length > 0 && validAdTypesList.contains(AD_TYPE_BANNER)) {
                     Log.e("validAdTypes", AD_TYPE_BANNER);
-                    builder.forPublisherAdView(RNNativeAdsAdView.this, adSizesArray);
+                    builder.forPublisherAdView(NativeAdView.this, adSizesArray);
                 }
                 if (customTemplateId != null && !customTemplateId.isEmpty() && validAdTypesList.contains(AD_TYPE_TEMPLATE)) {
                     Log.e("validAdTypes", AD_TYPE_TEMPLATE);
-                    builder.forCustomTemplateAd(customTemplateId, RNNativeAdsAdView.this, null);
+                    builder.forCustomTemplateAd(customTemplateId, NativeAdView.this, null);
                 }
                 builder.withAdListener(new AdListener() {
                     @Override
@@ -172,33 +172,33 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
                         WritableMap error = Arguments.createMap();
                         error.putString("message", errorMessage);
                         event.putMap("error", error);
-                        sendEvent(RNNativeAdsAdViewManager.EVENT_AD_FAILED_TO_LOAD, event);
+                        sendEvent(RNAdManagerNativeViewManager.EVENT_AD_FAILED_TO_LOAD, event);
                     }
 
                     @Override
                     public void onAdLoaded() {
-                        // sendEvent(RNNativeAdsAdViewManager.EVENT_AD_LOADED, null);
+                        // sendEvent(RNAdManagerNativeViewManager.EVENT_AD_LOADED, null);
                     }
 
                     @Override
                     public void onAdClicked() {
                         super.onAdClicked();
-                        sendEvent(RNNativeAdsAdViewManager.EVENT_AD_CLICKED, null);
+                        sendEvent(RNAdManagerNativeViewManager.EVENT_AD_CLICKED, null);
                     }
 
                     @Override
                     public void onAdOpened() {
-                        sendEvent(RNNativeAdsAdViewManager.EVENT_AD_OPENED, null);
+                        sendEvent(RNAdManagerNativeViewManager.EVENT_AD_OPENED, null);
                     }
 
                     @Override
                     public void onAdClosed() {
-                        sendEvent(RNNativeAdsAdViewManager.EVENT_AD_CLOSED, null);
+                        sendEvent(RNAdManagerNativeViewManager.EVENT_AD_CLOSED, null);
                     }
 
                     @Override
                     public void onAdLeftApplication() {
-                        sendEvent(RNNativeAdsAdViewManager.EVENT_AD_LEFT_APPLICATION, null);
+                        sendEvent(RNAdManagerNativeViewManager.EVENT_AD_LEFT_APPLICATION, null);
                     }
                 }).withNativeAdOptions(adOptions);
 
@@ -390,7 +390,7 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
         removeAllViews();
         this.addView(adView);
         if (adView == null) {
-            sendEvent(RNNativeAdsAdViewManager.EVENT_AD_LOADED, null);
+            sendEvent(RNAdManagerNativeViewManager.EVENT_AD_LOADED, null);
             return;
         }
         int width = adView.getAdSize().getWidthInPixels(context);
@@ -403,7 +403,7 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
         WritableMap ad = Arguments.createMap();
         ad.putString("type", AD_TYPE_BANNER);
         ad.putString("gadSize", adView.getAdSize().toString());
-        sendEvent(RNPublisherBannerViewManager.EVENT_AD_LOADED, ad);
+        sendEvent(RNAdManagerNativeViewManager.EVENT_AD_LOADED, ad);
     }
 
     @Override
@@ -422,7 +422,7 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
      */
     private void setNativeAd(NativeCustomTemplateAd nativeCustomTemplateAd) {
         if (nativeCustomTemplateAd == null) {
-            sendEvent(RNNativeAdsAdViewManager.EVENT_AD_LOADED, null);
+            sendEvent(RNAdManagerNativeViewManager.EVENT_AD_LOADED, null);
             return;
         }
 
@@ -444,14 +444,14 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
             }
         }
 
-        sendEvent(RNNativeAdsAdViewManager.EVENT_AD_LOADED, ad);
+        sendEvent(RNAdManagerNativeViewManager.EVENT_AD_LOADED, ad);
 
         nativeCustomTemplateAd.recordImpression();
     }
 
     private void setNativeAd(UnifiedNativeAd unifiedNativeAd) {
         if (unifiedNativeAd == null) {
-            sendEvent(RNNativeAdsAdViewManager.EVENT_AD_LOADED, null);
+            sendEvent(RNAdManagerNativeViewManager.EVENT_AD_LOADED, null);
             return;
         }
 
@@ -525,7 +525,7 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
             ad.putArray("images", images);
         }
 
-        sendEvent(RNNativeAdsAdViewManager.EVENT_AD_LOADED, ad);
+        sendEvent(RNAdManagerNativeViewManager.EVENT_AD_LOADED, ad);
     }
 
 
@@ -544,7 +544,7 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
         }
         event.putDouble("width", width);
         event.putDouble("height", height);
-        sendEvent(RNPublisherBannerViewManager.EVENT_SIZE_CHANGE, event);
+        sendEvent(RNAdManagerNativeViewManager.EVENT_SIZE_CHANGE, event);
     }
 
     private void sendEvent(String name, @Nullable WritableMap event) {
@@ -598,7 +598,7 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
         WritableMap event = Arguments.createMap();
         event.putString("name", name);
         event.putString("info", info);
-        sendEvent(RNNativeAdsAdViewManager.EVENT_APP_EVENT, event);
+        sendEvent(RNAdManagerNativeViewManager.EVENT_APP_EVENT, event);
     }
 
     @Override

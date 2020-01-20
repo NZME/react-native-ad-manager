@@ -20,10 +20,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@ReactModule(name = "RNNativeAdsManager")
-public class RNAdManagerAdsManager extends ReactContextBaseJavaModule {
+@ReactModule(name = "CTKAdManageNativeManager")
+public class RNAdManageNativeManager extends ReactContextBaseJavaModule {
 
-    public static final String REACT_CLASS = "RNNativeAdsManager";
+    public static final String REACT_CLASS = "CTKAdManageNativeManager";
     /**
      * @{Map} with all registered managers
      **/
@@ -50,7 +50,7 @@ public class RNAdManagerAdsManager extends ReactContextBaseJavaModule {
         }
     }
 
-    public RNNativeAdsManager(ReactApplicationContext reactContext) {
+    public RNAdManageNativeManager(ReactApplicationContext reactContext) {
         super(reactContext);
     }
 
@@ -96,10 +96,10 @@ public class RNAdManagerAdsManager extends ReactContextBaseJavaModule {
             @Override
             public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
                 try {
-                    RNNativeAdsAdView nativeAdView = null;
+                    NativeAdView nativeAdView = null;
 
                     if (adTag != -1) {
-                        nativeAdView = (RNNativeAdsAdView) nativeViewHierarchyManager.resolveView(adTag);
+                        nativeAdView = (NativeAdView) nativeViewHierarchyManager.resolveView(adTag);
                     }
 
                     List<View> clickableViews = new ArrayList<>();

@@ -43,7 +43,8 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdView>
     public static final String EVENT_AD_LEFT_APPLICATION = "onAdLeftApplication";
     public static final String EVENT_APP_EVENT = "onAppEvent";
     public static final int COMMAND_RELOAD_AD = 1;
-    private static String REACT_CLASS = "RNNativeAdsAdView";
+
+    private static String REACT_CLASS = "CTKAdManageNative";
     private ReactApplicationContext applicationContext;
 
     public RNAdManagerNativeViewManager(ReactApplicationContext context) {
@@ -57,7 +58,7 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdView>
     }
 
     @Override
-    public void onDropViewInstance(RNNativeAdsAdView view) {
+    public void onDropViewInstance(NativeAdView view) {
         if (view.unifiedNativeAdView != null) {
             view.unifiedNativeAdView.destroy();
         }
@@ -71,17 +72,17 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdView>
     }
 
     @Override
-    protected RNNativeAdsAdView createViewInstance(ThemedReactContext reactContext) {
-        return new RNNativeAdsAdView(reactContext, applicationContext);
+    protected NativeAdView createViewInstance(ThemedReactContext reactContext) {
+        return new NativeAdView(reactContext, applicationContext);
     }
 
     @ReactProp(name = PROP_AD_MANAGER)
-    public void setAdsManager(final RNNativeAdsAdView view, final String adUnitID) {
+    public void setAdsManager(final NativeAdView view, final String adUnitID) {
         Context viewContext = view.getContext();
         if (viewContext instanceof ReactContext) {
             ReactContext reactContext = (ReactContext) viewContext;
-            RNNativeAdsManager adManager = reactContext.getNativeModule(RNNativeAdsManager.class);
-            RNNativeAdsManager.AdsManagerProperties adsManagerProperties = adManager.getAdsManagerProperties(adUnitID);
+            RNAdManageNativeManager adManager = reactContext.getNativeModule(RNAdManageNativeManager.class);
+            RNAdManageNativeManager.AdsManagerProperties adsManagerProperties = adManager.getAdsManagerProperties(adUnitID);
 
             view.loadAd(adsManagerProperties);
         } else {
@@ -110,18 +111,18 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdView>
     }
 
     @ReactProp(name = PROP_CUSTOM_TEMPLATE_ID)
-    public void setPropCustomTemplateId(final RNNativeAdsAdView view, final String customTemplateId) {
+    public void setPropCustomTemplateId(final NativeAdView view, final String customTemplateId) {
         view.setCustomTemplateId(customTemplateId);
     }
 
     @ReactProp(name = PROP_AD_SIZE)
-    public void setPropAdSize(final RNNativeAdsAdView view, final String sizeString) {
+    public void setPropAdSize(final NativeAdView view, final String sizeString) {
         AdSize adSize = getAdSizeFromString(sizeString);
         view.setAdSize(adSize);
     }
 
     @ReactProp(name = PROP_VALID_AD_SIZES)
-    public void setPropValidAdSizes(final RNNativeAdsAdView view, final ReadableArray adSizeStrings) {
+    public void setPropValidAdSizes(final NativeAdView view, final ReadableArray adSizeStrings) {
         ReadableNativeArray nativeArray = (ReadableNativeArray) adSizeStrings;
         ArrayList<Object> list = nativeArray.toArrayList();
         String[] adSizeStringsArray = list.toArray(new String[list.size()]);
@@ -135,7 +136,7 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdView>
     }
 
     @ReactProp(name = PROP_VALID_AD_TYPES)
-    public void setPropValidAdTypes(final RNNativeAdsAdView view, final ReadableArray adTypesStrings) {
+    public void setPropValidAdTypes(final NativeAdView view, final ReadableArray adTypesStrings) {
         ReadableNativeArray nativeArray = (ReadableNativeArray) adTypesStrings;
         ArrayList<Object> list = nativeArray.toArrayList();
         String[] adTypesStringsArray = list.toArray(new String[list.size()]);
@@ -144,7 +145,7 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdView>
     }
 
     @ReactProp(name = PROP_TARGETING)
-    public void setPropTargeting(final RNNativeAdsAdView view, final ReadableMap targetingObjects) {
+    public void setPropTargeting(final NativeAdView view, final ReadableMap targetingObjects) {
 
         ReadableMapKeySetIterator targetings = targetingObjects.keySetIterator();
 
@@ -201,22 +202,22 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdView>
     }
 
     @Override
-    public void addView(RNNativeAdsAdView parent, View child, int index) {
+    public void addView(NativeAdView parent, View child, int index) {
         parent.addView(child, index);
     }
 
     @Override
-    public int getChildCount(RNNativeAdsAdView parent) {
+    public int getChildCount(NativeAdView parent) {
         return parent.getChildCount();
     }
 
     @Override
-    public View getChildAt(RNNativeAdsAdView parent, int index) {
+    public View getChildAt(NativeAdView parent, int index) {
         return parent.getChildAt(index);
     }
 
     @Override
-    public void removeViewAt(RNNativeAdsAdView parent, int index) {
+    public void removeViewAt(NativeAdView parent, int index) {
         parent.removeViewAt(index);
     }
 
@@ -229,7 +230,7 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdView>
     }
 
     @Override
-    public void receiveCommand(RNNativeAdsAdView root, int commandId, @javax.annotation.Nullable ReadableArray args) {
+    public void receiveCommand(NativeAdView root, int commandId, @javax.annotation.Nullable ReadableArray args) {
         switch (commandId) {
             case COMMAND_RELOAD_AD:
                 root.reloadAd();

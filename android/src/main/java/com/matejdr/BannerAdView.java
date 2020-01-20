@@ -90,22 +90,22 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
                 WritableMap error = Arguments.createMap();
                 error.putString("message", errorMessage);
                 event.putMap("error", error);
-                sendEvent(RNPublisherBannerViewManager.EVENT_AD_FAILED_TO_LOAD, event);
+                sendEvent(RNAdManagerBannerViewManager.EVENT_AD_FAILED_TO_LOAD, event);
             }
 
             @Override
             public void onAdOpened() {
-                sendEvent(RNPublisherBannerViewManager.EVENT_AD_OPENED, null);
+                sendEvent(RNAdManagerBannerViewManager.EVENT_AD_OPENED, null);
             }
 
             @Override
             public void onAdClosed() {
-                sendEvent(RNPublisherBannerViewManager.EVENT_AD_CLOSED, null);
+                sendEvent(RNAdManagerBannerViewManager.EVENT_AD_CLOSED, null);
             }
 
             @Override
             public void onAdLeftApplication() {
-                sendEvent(RNPublisherBannerViewManager.EVENT_AD_LEFT_APPLICATION, null);
+                sendEvent(RNAdManagerBannerViewManager.EVENT_AD_LEFT_APPLICATION, null);
             }
         });
         this.addView(this.adView);
@@ -127,7 +127,7 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
         event.putString("type", "banner");
         event.putDouble("width", width);
         event.putDouble("height", height);
-        sendEvent(RNPublisherBannerViewManager.EVENT_SIZE_CHANGE, event);
+        sendEvent(RNAdManagerBannerViewManager.EVENT_SIZE_CHANGE, event);
     }
 
     private void sendEvent(String name, @Nullable WritableMap event) {
@@ -265,7 +265,7 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
         WritableMap event = Arguments.createMap();
         event.putString("name", name);
         event.putString("info", info);
-        sendEvent(RNPublisherBannerViewManager.EVENT_APP_EVENT, event);
+        sendEvent(RNAdManagerBannerViewManager.EVENT_APP_EVENT, event);
     }
 
     @Override
