@@ -24,7 +24,7 @@ const __rest = (this && this.__rest) || function (s, e) {
   return t;
 };
 
-const NativeAdView = requireNativeComponent('RNNativeAdsAdView');
+const NativeAdView = requireNativeComponent('CTKAdManageNative');
 
 export default (Component) => class NativeAdWrapper extends React.Component {
   constructor(props) {
@@ -125,7 +125,7 @@ export default (Component) => class NativeAdWrapper extends React.Component {
   reloadAd() {
     UIManager.dispatchViewManagerCommand(
       findNodeHandle(this.nativeAdViewRef),
-      UIManager.getViewManagerConfig('RNNativeAdsAdView').Commands
+      UIManager.getViewManagerConfig('CTKAdManageNative').Commands
         .reloadAd,
       null
     );

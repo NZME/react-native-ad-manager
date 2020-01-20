@@ -18,7 +18,7 @@ import {
 } from 'react-native';
 import { createErrorFromErrorData } from './utils';
 
-class PublisherBanner extends Component {
+class Banner extends Component {
   constructor() {
     super();
     this.handleSizeChange = this.handleSizeChange.bind(this);
@@ -44,7 +44,7 @@ class PublisherBanner extends Component {
   loadBanner() {
     UIManager.dispatchViewManagerCommand(
       findNodeHandle(this._bannerView),
-      UIManager.getViewManagerConfig('RNDFPBannerView').Commands.loadBanner,
+      UIManager.getViewManagerConfig('CTKBannerView').Commands.loadBanner,
       null
     );
   }
@@ -74,7 +74,7 @@ class PublisherBanner extends Component {
 
   render() {
     return (
-      <RNDFPBannerView
+      <CTKBannerView
         {...this.props}
         style={[this.props.style, this.state.style]}
         onSizeChange={this.handleSizeChange}
@@ -86,9 +86,9 @@ class PublisherBanner extends Component {
   }
 }
 
-PublisherBanner.simulatorId = 'SIMULATOR';
+Banner.simulatorId = 'SIMULATOR';
 
-PublisherBanner.propTypes = {
+Banner.propTypes = {
   ...ViewPropTypes,
 
   /**
@@ -117,7 +117,7 @@ PublisherBanner.propTypes = {
   adUnitID: string,
 
   /**
-   * Array of test devices. Use PublisherBanner.simulatorId for the simulator
+   * Array of test devices. Use Banner.simulatorId for the simulator
    */
   testDevices: arrayOf(string),
 
@@ -174,9 +174,10 @@ PublisherBanner.propTypes = {
 
 };
 
-const RNDFPBannerView = requireNativeComponent(
-  'RNDFPBannerView',
-  PublisherBanner
+console.log(UIManager);
+const CTKBannerView = requireNativeComponent(
+  'CTKBannerView',
+  Banner
 );
 
-export default PublisherBanner;
+export default Banner;

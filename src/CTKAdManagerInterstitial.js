@@ -1,9 +1,9 @@
 import { NativeEventEmitter, NativeModules } from 'react-native';
 import { createErrorFromErrorData } from './utils';
 
-const RNAdMobInterstitial = NativeModules.RNAdMobInterstitial;
+const { CTKInterstitial } = NativeModules;
 
-const eventEmitter = new NativeEventEmitter(RNAdMobInterstitial);
+const eventEmitter = new NativeEventEmitter(CTKInterstitial);
 
 const eventMap = {
   adLoaded: 'interstitialAdLoaded',
@@ -56,7 +56,7 @@ const removeAllListeners = () => {
 };
 
 export default {
-  ...RNAdMobInterstitial,
+  ...CTKInterstitial,
   addEventListener,
   removeEventListener,
   removeAllListeners,

@@ -1,17 +1,17 @@
 import { NativeModules, NativeEventEmitter } from 'react-native';
 
-const RNNativeAdsManager = NativeModules.RNNativeAdsManager;
+const CTKAdManageNativeManager = NativeModules.CTKAdManageNativeManager;
 
 export default class NativeAdsManager {
   constructor(adUnitID, testDevices) {
     // Indicates whether AdsManager is ready to serve ads
     this.isValid = true;
     this.adUnitID = adUnitID;
-    RNNativeAdsManager.init(adUnitID, testDevices);
+    CTKAdManageNativeManager.init(adUnitID, testDevices);
   }
 
   static async registerViewsForInteractionAsync(nativeAdViewTag, clickable) {
-    const result = await RNNativeAdsManager.registerViewsForInteraction(
+    const result = await CTKAdManageNativeManager.registerViewsForInteraction(
       nativeAdViewTag,
       clickable
     );
