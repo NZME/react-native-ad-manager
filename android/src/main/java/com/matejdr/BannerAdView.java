@@ -66,7 +66,7 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
                 WritableMap ad = Arguments.createMap();
                 ad.putString("type", "banner");
                 ad.putString("gadSize", adView.getAdSize().toString());
-                sendEvent(RNPublisherBannerViewManager.EVENT_AD_LOADED, ad);
+                sendEvent(RNAdManagerBannerViewManager.EVENT_AD_LOADED, ad);
             }
 
             @Override
