@@ -21,7 +21,7 @@ import com.google.android.gms.ads.doubleclick.PublisherAdView;
 
 import java.util.ArrayList;
 
-import com.sbugert.rnadmob.customClasses.CustomTargeting;
+import com.matejdr.customClasses.CustomTargeting;
 
 class BannerAdView extends ReactViewGroup implements AppEventListener, LifecycleEventListener {
 

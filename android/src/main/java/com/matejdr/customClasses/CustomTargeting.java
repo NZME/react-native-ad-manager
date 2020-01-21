@@ -1,4 +1,4 @@
-package com.sbugert.rnadmob.customClasses;
+package com.matejdr.customClasses;
 
 import java.util.List;
 

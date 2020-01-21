@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
 
-import com.sbugert.rnadmob.customClasses.CustomTargeting;
+import com.matejdr.customClasses.CustomTargeting;
 
 public class NativeAdView extends ReactViewGroup implements AppEventListener,
         LifecycleEventListener, UnifiedNativeAd.OnUnifiedNativeAdLoadedListener,

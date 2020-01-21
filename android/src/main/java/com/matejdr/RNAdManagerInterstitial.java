@@ -28,10 +28,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.sbugert.rnadmob.customClasses.CustomTargeting;
-import com.sbugert.rnadmob.enums.TargetingEnums;
-import com.sbugert.rnadmob.enums.TargetingEnums.TargetingTypes;
-import com.sbugert.rnadmob.utils.Targeting;
+import com.matejdr.customClasses.CustomTargeting;
+import com.matejdr.enums.TargetingEnums;
+import com.matejdr.enums.TargetingEnums.TargetingTypes;
+import com.matejdr.utils.Targeting;
 
 public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
 

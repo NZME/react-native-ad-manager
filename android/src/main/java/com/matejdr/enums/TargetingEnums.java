@@ -1,4 +1,4 @@
-package com.sbugert.rnadmob.enums;
+package com.matejdr.enums;
 
 public class TargetingEnums {
 

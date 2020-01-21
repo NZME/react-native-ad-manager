@@ -1,4 +1,4 @@
-package com.sbugert.rnadmob.utils;
+package com.matejdr.utils;
 
 import android.location.Location;
 
@@ -6,7 +6,7 @@ import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
-import com.sbugert.rnadmob.customClasses.CustomTargeting;
+import com.matejdr.customClasses.CustomTargeting;
 
 import java.util.ArrayList;
 import java.util.List;
