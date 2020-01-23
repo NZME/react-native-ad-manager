@@ -180,7 +180,6 @@ Banner.propTypes = {
 
 };
 
-console.log(UIManager);
 const CTKBannerView = requireNativeComponent(
   'CTKBannerView',
   Banner

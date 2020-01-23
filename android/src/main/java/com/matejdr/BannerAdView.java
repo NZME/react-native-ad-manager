@@ -2,6 +2,7 @@ package com.matejdr;
 
 import android.content.Context;
 import android.location.Location;
+import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
@@ -13,6 +14,7 @@ import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.view.ReactViewGroup;
+import com.google.ads.mediation.admob.AdMobAdapter;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.doubleclick.AppEventListener;
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
@@ -22,6 +24,7 @@ import com.google.android.gms.ads.doubleclick.PublisherAdView;
 import java.util.ArrayList;
 
 import com.matejdr.customClasses.CustomTargeting;
+import com.matejdr.utils.Targeting;
 
 class BannerAdView extends ReactViewGroup implements AppEventListener, LifecycleEventListener {
 
@@ -166,6 +169,12 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
                 adRequestBuilder.addTestDevice(testDevice);
             }
         }
+
+        String mCorelator = (String) Targeting.getCorelator(adUnitID);
+        Bundle bundle = new Bundle();
+        bundle.putString("correlator", mCorelator);
+
+        adRequestBuilder.addNetworkExtrasBundle(AdMobAdapter.class, bundle);
 
 
         // Targeting

@@ -3,6 +3,7 @@ package com.matejdr;
 import android.view.View;
 import android.location.Location;
 import android.util.Log;
+import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
@@ -17,6 +18,7 @@ import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.view.ReactViewGroup;
+import com.google.ads.mediation.admob.AdMobAdapter;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdSize;
@@ -37,6 +39,7 @@ import java.util.Arrays;
 import java.util.ArrayList;
 
 import com.matejdr.customClasses.CustomTargeting;
+import com.matejdr.utils.Targeting;
 
 public class NativeAdView extends ReactViewGroup implements AppEventListener,
         LifecycleEventListener, UnifiedNativeAd.OnUnifiedNativeAdLoadedListener,
@@ -215,6 +218,12 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
                     }
                 }
 
+                String mCorelator = (String) Targeting.getCorelator(adUnitID);
+                Bundle bundle = new Bundle();
+                bundle.putString("correlator", mCorelator);
+
+                adRequestBuilder.addNetworkExtrasBundle(AdMobAdapter.class, bundle);
+
                 // Targeting
                 if (hasTargeting) {
                     if (customTargeting != null && customTargeting.length > 0) {
@@ -277,6 +286,13 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
                             adRequestBuilder.addTestDevice(testDevice);
                         }
                     }
+
+                    String mCorelator = (String) Targeting.getCorelator(adUnitID);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("correlator", mCorelator);
+
+                    adRequestBuilder.addNetworkExtrasBundle(AdMobAdapter.class, bundle);
+
                     // Targeting
                     if (hasTargeting) {
                         if (customTargeting != null && customTargeting.length > 0) {

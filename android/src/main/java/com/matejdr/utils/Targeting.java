@@ -6,14 +6,21 @@ import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
+import com.matejdr.RNAdManageNativeManager;
 import com.matejdr.customClasses.CustomTargeting;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Random;
 
 public class Targeting {
+    /**
+     * @{Map} with all registered correlators
+     **/
+    private static Map<String, String> correlators = new HashMap<>();
+
     public static CustomTargeting[] getCustomTargeting(ReadableMap customTargeting) {
         ArrayList<CustomTargeting> list = new ArrayList<CustomTargeting>();
 
@@ -138,5 +145,37 @@ public class Targeting {
         }
 
         return deconstructedList;
+    }
+
+    /**
+     * Generate and associate a Correlator to this Ad View. The Correlator can be set to another ad
+     * view to instruct the Ad Server to avoid giving them the same ad.
+     *
+     * @return A type erased Correlator associated with this Ad View
+     */
+    public static Object getCorelator(String adUnitID) {
+        if (!correlators.containsKey(adUnitID)) {
+            correlators.put(adUnitID, genRandomCorrelator());
+        }
+
+        return correlators.get(adUnitID);
+    }
+
+    private static String genRandomCorrelator() {
+        StringBuilder stringBuilder = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < 16; i++) {
+            if (i == 0) {
+                // Append range [1, 9] to the leading digit, as we are looking
+                // for getting a random number that's 16-digit long, so the
+                // leading digit can't be 0;
+                stringBuilder.append(1 + random.nextInt(8));
+            } else {
+                // Append range [0, 9] for the reast of the digits
+                stringBuilder.append(random.nextInt(10));
+            }
+        }
+
+        return stringBuilder.toString();
     }
 }
