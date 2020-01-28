@@ -76,6 +76,13 @@ static NSString *const kAdTypeTemplate = @"template";
     GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = _testDevices;
     DFPRequest *request = [DFPRequest request];
 
+    GADExtras *extras = [[GADExtras alloc] init];
+    NSString *correlator = [adManager getCorrelator:_adUnitID];
+    extras.additionalParameters = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                   correlator, @"correlator",
+                                   nil];
+    [request registerAdNetworkExtras:extras];
+    
     if (_targeting != nil) {
         NSDictionary *customTargeting = [_targeting objectForKey:@"customTargeting"];
         if (customTargeting != nil) {

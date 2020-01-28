@@ -6,6 +6,7 @@
 #import <React/RCTLog.h>
 
 #include "RCTConvert+GADAdSize.h"
+#import "RNAdManagerUtils.h"
 
 @interface RNAdManagerBannerView () <GADBannerViewDelegate, GADAdSizeDelegate, GADAppEventDelegate>
 
@@ -14,6 +15,8 @@
 @end
 
 @implementation RNAdManagerBannerView
+
+static NSMutableDictionary<NSString*, NSString*> *correlators;
 
 - (void)dealloc
 {
@@ -86,6 +89,13 @@
     GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = _testDevices;
     DFPRequest *request = [DFPRequest request];
 
+    GADExtras *extras = [[GADExtras alloc] init];
+    NSString *correlator = [self getCorrelator:_adUnitID];
+    extras.additionalParameters = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                   correlator, @"correlator",
+                                   nil];
+    [request registerAdNetworkExtras:extras];
+    
     if (_targeting != nil) {
         NSDictionary *customTargeting = [_targeting objectForKey:@"customTargeting"];
         if (customTargeting != nil) {
@@ -129,6 +139,16 @@
 
 - (void)loadBanner {
     [self createViewIfCan];
+}
+
+- (NSString *) getCorrelator:(NSString *)adUnitID
+{
+    NSString *correlator = [correlators objectForKey:adUnitID];
+    if (correlator == nil) {
+        correlator = getRandomPINString(16);
+        [correlators setValue:correlator forKey:adUnitID];
+    }
+    return correlator;
 }
 
 # pragma mark GADBannerViewDelegate
