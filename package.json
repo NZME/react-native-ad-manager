@@ -5,7 +5,8 @@
   "description": "A react-native component for Google Ad Manager banners, interstitials and native ads.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "post-patch": "npm version patch && git push origin --all && git push origin --tags"
   },
   "repository": {
     "type": "git",
