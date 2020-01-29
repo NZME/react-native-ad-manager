@@ -2,7 +2,7 @@
   "name": "react-native-ad-manager",
   "title": "React Native Ad Manager",
   "version": "1.0.0",
-  "description": "TODO",
+  "description": "A react-native component for Google Ad Manager banners, interstitials and native ads.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
