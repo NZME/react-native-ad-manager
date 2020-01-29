@@ -8,6 +8,5 @@
 
 - (RNAdManageNativeManager *) getAdsManager:(NSString *)adUnitID;
 - (GADAdLoader *) getAdLoader:(NSString *)adUnitID validAdTypes:(NSArray *)validAdTypes;
-- (NSString *) getCorrelator:(NSString *)adUnitID;
 
 @end

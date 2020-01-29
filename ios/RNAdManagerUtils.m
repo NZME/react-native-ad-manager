@@ -1,5 +1,7 @@
 #import "RNAdManagerUtils.h"
 
+static NSMutableDictionary<NSString*, NSString*> *correlators;
+
 NSArray *__nullable RNAdManagerProcessTestDevices(NSArray *__nullable testDevices, id _Nonnull simulatorId)
 {
     if (testDevices == NULL) {
@@ -30,4 +32,20 @@ NSString *__nullable getRandomPINString(NSInteger length)
     }
 
     return returnString;
+}
+
+NSString *__nullable getCorrelator(NSString *adUnitID)
+{
+    if (correlators == nil) {
+        correlators = [NSMutableDictionary new];
+    }
+
+    NSString *correlator = [correlators objectForKey:adUnitID];
+
+    if (correlator == nil) {
+        correlator = getRandomPINString(16);
+        [correlators setValue:correlator forKey:adUnitID];
+    }
+
+    return correlator;
 }

@@ -40,7 +40,6 @@ RCT_EXPORT_MODULE(CTKAdManageNativeManager)
 
 static NSMutableDictionary<NSString*, RNAdManageNativeManager*> *adsManagers;
 static NSMutableDictionary<NSString*, GADAdLoader*> *adLoaders;
-static NSMutableDictionary<NSString*, NSString*> *correlators;
 
 + (BOOL)requiresMainQueueSetup
 {
@@ -138,16 +137,6 @@ RCT_EXPORT_METHOD(init:(NSString *)adUnitID testDevices:(NSArray *)testDevices)
     }
 
     return adLoader;
-}
-
-- (NSString *) getCorrelator:(NSString *)adUnitID
-{
-    NSString *correlator = [correlators objectForKey:adUnitID];
-    if (correlator == nil) {
-        correlator = getRandomPINString(16);
-        [correlators setValue:correlator forKey:adUnitID];
-    }
-    return correlator;
 }
 
 - (UIView *)view

@@ -9,6 +9,7 @@
 #import <React/RCTLog.h>
 
 #include "RCTConvert+GADAdSize.h"
+#import "RNAdManagerUtils.h"
 
 static NSString *const kAdTypeBanner = @"banner";
 static NSString *const kAdTypeNative = @"native";
@@ -77,7 +78,7 @@ static NSString *const kAdTypeTemplate = @"template";
     DFPRequest *request = [DFPRequest request];
 
     GADExtras *extras = [[GADExtras alloc] init];
-    NSString *correlator = [adManager getCorrelator:_adUnitID];
+    NSString *correlator = getCorrelator(_adUnitID);
     extras.additionalParameters = [[NSDictionary alloc] initWithObjectsAndKeys:
                                    correlator, @"correlator",
                                    nil];

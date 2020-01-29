@@ -16,8 +16,6 @@
 
 @implementation RNAdManagerBannerView
 
-static NSMutableDictionary<NSString*, NSString*> *correlators;
-
 - (void)dealloc
 {
     _bannerView.delegate = nil;
@@ -90,7 +88,7 @@ static NSMutableDictionary<NSString*, NSString*> *correlators;
     DFPRequest *request = [DFPRequest request];
 
     GADExtras *extras = [[GADExtras alloc] init];
-    NSString *correlator = [self getCorrelator:_adUnitID];
+    NSString *correlator = getCorrelator(_adUnitID);
     extras.additionalParameters = [[NSDictionary alloc] initWithObjectsAndKeys:
                                    correlator, @"correlator",
                                    nil];
@@ -139,16 +137,6 @@ static NSMutableDictionary<NSString*, NSString*> *correlators;
 
 - (void)loadBanner {
     [self createViewIfCan];
-}
-
-- (NSString *) getCorrelator:(NSString *)adUnitID
-{
-    NSString *correlator = [correlators objectForKey:adUnitID];
-    if (correlator == nil) {
-        correlator = getRandomPINString(16);
-        [correlators setValue:correlator forKey:adUnitID];
-    }
-    return correlator;
 }
 
 # pragma mark GADBannerViewDelegate
