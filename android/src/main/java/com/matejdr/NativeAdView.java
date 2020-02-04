@@ -558,6 +558,7 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
             width = adSize.getWidth();
             height = adSize.getHeight();
         }
+        event.putString("type", "banner");
         event.putDouble("width", width);
         event.putDouble("height", height);
         sendEvent(RNAdManagerNativeViewManager.EVENT_SIZE_CHANGE, event);

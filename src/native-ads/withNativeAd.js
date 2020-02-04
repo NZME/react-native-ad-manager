@@ -56,8 +56,8 @@ export default (Component) => class NativeAdWrapper extends React.Component {
     this.handleOnSizeChange = ({ nativeEvent }) => {
       const { height, width } = nativeEvent;
       this.setState({ style: { width, height } });
-      this.props.handleOnSizeChange &&
-      this.props.handleOnSizeChange(nativeEvent);
+      this.props.onSizeChange &&
+      this.props.onSizeChange(nativeEvent);
     };
     this.handleOnAdFailedToLoad = ({ nativeEvent }) => {
       this.props.handleOnAdFailedToLoad &&

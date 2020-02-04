@@ -54,11 +54,11 @@ class Banner extends Component {
     );
   }
 
-  handleSizeChange(event) {
-    const { height, width, type } = event.nativeEvent;
+  handleSizeChange({ nativeEvent }) {
+    const { height, width, type } = nativeEvent;
     this.setState({ style: { width, height } });
     if (this.props.onSizeChange) {
-      this.props.onSizeChange({ width, height, type });
+      this.props.onSizeChange(nativeEvent);
     }
   }
 
