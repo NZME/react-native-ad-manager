@@ -11,19 +11,19 @@
 @interface RNAdManageNativeView : RCTView <GADUnifiedNativeAdLoaderDelegate, GADUnifiedNativeAdDelegate, DFPBannerAdLoaderDelegate, GADNativeCustomTemplateAdLoaderDelegate, GADVideoControllerDelegate>
 
 /// You must keep a strong reference to the GADAdLoader during the ad loading process.
-@property(nonatomic, weak) IBOutlet GADAdLoader *adLoader;
+@property(nonatomic, strong) IBOutlet GADAdLoader *adLoader;
 
 /// The native ad that is being loaded.
-@property(nonatomic, weak) IBOutlet GADUnifiedNativeAd *nativeAd;
+@property(nonatomic, strong) IBOutlet GADUnifiedNativeAd *nativeAd;
 
 /// The native ad view
-@property(nonatomic, weak) IBOutlet GADUnifiedNativeAdView *nativeAdView;
+@property(nonatomic, strong) IBOutlet GADUnifiedNativeAdView *nativeAdView;
 
 /// The DFP banner view.
-@property(nonatomic, weak) IBOutlet DFPBannerView *bannerView;
+@property(nonatomic, strong) IBOutlet DFPBannerView *bannerView;
 
 /// The native custom template ad
-@property(nonatomic, weak) IBOutlet GADNativeCustomTemplateAd *nativeCustomTemplateAd;
+@property(nonatomic, strong) IBOutlet GADNativeCustomTemplateAd *nativeCustomTemplateAd;
 
 @property (nonatomic, copy) NSString *customTemplateId;
 @property (nonatomic, copy) NSArray *validAdTypes;
