@@ -3,6 +3,7 @@ import { findNodeHandle, requireNativeComponent, UIManager } from 'react-native'
 import { TriggerableContext } from './TriggerableViewManager';
 import AdsManager from './NativeAdsManager';
 import {string} from "prop-types";
+import {createErrorFromErrorData} from 'react-native-ad-manager/src/utils';
 
 const areSetsEqual = (a, b) => {
   if (a.size !== b.size)
@@ -60,24 +61,27 @@ export default (Component) => class NativeAdWrapper extends React.Component {
       this.props.onSizeChange(nativeEvent);
     };
     this.handleOnAdFailedToLoad = ({ nativeEvent }) => {
-      this.props.handleOnAdFailedToLoad &&
-      this.props.handleOnAdFailedToLoad(nativeEvent);
+      if (this.props.onAdFailedToLoad) {
+        this.props.onAdFailedToLoad(
+          createErrorFromErrorData(nativeEvent.error)
+        );
+      }
     };
     this.handleOnAdOpened = ({ nativeEvent }) => {
-      this.props.handleOnAdOpened &&
-      this.props.handleOnAdOpened(nativeEvent);
+      this.props.onAdOpened &&
+      this.props.onAdOpened(nativeEvent);
     };
     this.handleOnAdClosed = ({ nativeEvent }) => {
-      this.props.handleOnAdClosed &&
-      this.props.handleOnAdClosed(nativeEvent);
+      this.props.onAdClosed &&
+      this.props.onAdClosed(nativeEvent);
     };
     this.handleOnAdLeftApplication = ({ nativeEvent }) => {
-      this.props.handleOnAdLeftApplication &&
-      this.props.handleOnAdLeftApplication(nativeEvent);
+      this.props.onAdLeftApplication &&
+      this.props.onAdLeftApplication(nativeEvent);
     };
     this.handleOnAppEvent = ({ nativeEvent }) => {
-      this.props.handleOnAppEvent &&
-      this.props.handleOnAppEvent(nativeEvent);
+      this.props.onAppEvent &&
+      this.props.onAppEvent(nativeEvent);
     };
 
     this.handleNativeAdViewMount = (ref) => {
