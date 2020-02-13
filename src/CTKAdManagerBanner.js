@@ -176,6 +176,7 @@ Banner.propTypes = {
       longitude: number,
       accuracy: number,
     }),
+    correlator: string,
   }),
 
 };

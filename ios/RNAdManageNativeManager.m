@@ -51,7 +51,7 @@ RCT_EXPORT_METHOD(registerViewsForInteraction:(nonnull NSNumber *)nativeAdViewTa
                             resolve:(RCTPromiseResolveBlock)resolve
                             reject:(RCTPromiseRejectBlock)reject)
 {
-  [_bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *,UIView *> *viewRegistry) {
+  [_bridge.uiManager addUIBlock:^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *,UIView *> *viewRegistry) {
     RNAdManageNativeView *nativeAdView = nil;
 
     if ([viewRegistry objectForKey:nativeAdViewTag] == nil) {
@@ -83,6 +83,10 @@ RCT_EXPORT_METHOD(registerViewsForInteraction:(nonnull NSNumber *)nativeAdViewTa
 
 RCT_EXPORT_METHOD(init:(NSString *)adUnitID testDevices:(NSArray *)testDevices)
 {
+    if (adsManagers == nil) {
+        adsManagers = [NSMutableDictionary new];
+    }
+
     RNAdManageNativeManager *adsManager = [RNAdManageNativeManager alloc];
 
     adsManager.adUnitID = adUnitID;
@@ -100,6 +104,10 @@ RCT_EXPORT_METHOD(init:(NSString *)adUnitID testDevices:(NSArray *)testDevices)
 
 - (GADAdLoader *) getAdLoader:(NSString *)adUnitID validAdTypes:(NSArray *)validAdTypes
 {
+    if (adLoaders == nil) {
+        adLoaders = [NSMutableDictionary new];
+    }
+    
     NSString *adLoaderKey = adUnitID;
     if ([validAdTypes containsObject:@"native"]) {
         adLoaderKey = [NSString stringWithFormat:@"%@%@", adLoaderKey, @"native"];

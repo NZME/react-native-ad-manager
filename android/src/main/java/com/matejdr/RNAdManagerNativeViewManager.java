@@ -34,6 +34,8 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdView>
     public static final String PROP_VALID_AD_SIZES = "validAdSizes";
     public static final String PROP_VALID_AD_TYPES = "validAdTypes";
     public static final String PROP_TARGETING = "targeting";
+    public static final String PROP_CORRELATOR = "correlator";
+
     public static final String EVENT_AD_LOADED = "onAdLoaded";
     public static final String EVENT_SIZE_CHANGE = "onSizeChange";
     public static final String EVENT_AD_FAILED_TO_LOAD = "onAdFailedToLoad";
@@ -199,6 +201,11 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdView>
                 }
             }
         }
+    }
+
+    @ReactProp(name = PROP_CORRELATOR)
+    public void setCorrelator(final BannerAdView view, final String correlator) {
+        view.setCorrelator(correlator);
     }
 
     @Override

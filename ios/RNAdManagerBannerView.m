@@ -88,9 +88,11 @@
     DFPRequest *request = [DFPRequest request];
 
     GADExtras *extras = [[GADExtras alloc] init];
-    NSString *correlator = getCorrelator(_adUnitID);
+    if (_correlator == nil) {
+        _correlator = getCorrelator(_adUnitID);
+    }
     extras.additionalParameters = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                   correlator, @"correlator",
+                                   _correlator, @"correlator",
                                    nil];
     [request registerAdNetworkExtras:extras];
     

@@ -99,6 +99,10 @@ export default (Component) => class NativeAdWrapper extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.reloadAd();
+  }
+
   shouldComponentUpdate(nextProps, nextState) {
     if (Object.entries(this.state).toString() === Object.entries(nextState).toString()
       && Object.entries(this.props).toString() === Object.entries(nextProps).toString()) {
@@ -155,11 +159,11 @@ export default (Component) => class NativeAdWrapper extends React.Component {
       <NativeAdView
         style={[this.props.style, this.state.style]}
         adSize={this.props.adSize}
+        correlator={this.props.correlator}
         customTemplateId={this.props.customTemplateId}
         validAdSizes={this.props.validAdSizes}
         validAdTypes={this.props.validAdTypes}
         ref={this.handleNativeAdViewMount}
-        adsManager={adsManager.toJSON()}
         onAdLoaded={this.handleOnAdLoaded}
         onSizeChange={this.handleOnSizeChange}
         onAdFailedToLoad={this.handleOnAdFailedToLoad}
@@ -168,6 +172,7 @@ export default (Component) => class NativeAdWrapper extends React.Component {
         onAdLeftApplication={this.handleOnAdLeftApplication}
         onAppEvent={this.handleOnAppEvent}
         targeting={this.props.targeting}
+        adsManager={adsManager.toJSON()}
       >
         {this.renderAdComponent(rest)}
       </NativeAdView>

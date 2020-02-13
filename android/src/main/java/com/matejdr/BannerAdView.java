@@ -43,6 +43,7 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
     String contentURL;
     String publisherProvidedID;
     Location location;
+    String correlator;
 
     public BannerAdView(final Context context, ReactApplicationContext applicationContext) {
         super(context);
@@ -267,6 +268,10 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
 
     public void setValidAdSizes(AdSize[] adSizes) {
         this.validAdSizes = adSizes;
+    }
+
+    public void setCorrelator(String correlator) {
+        this.correlator = correlator;
     }
 
     @Override

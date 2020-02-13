@@ -32,6 +32,7 @@ public class RNAdManagerBannerViewManager extends ViewGroupManager<BannerAdView>
     public static final String PROP_AD_UNIT_ID = "adUnitID";
     public static final String PROP_TEST_DEVICES = "testDevices";
     public static final String PROP_TARGETING = "targeting";
+    public static final String PROP_CORRELATOR = "correlator";
 
     public static final String EVENT_SIZE_CHANGE = "onSizeChange";
     public static final String EVENT_AD_LOADED = "onAdLoaded";
@@ -183,6 +184,12 @@ public class RNAdManagerBannerViewManager extends ViewGroupManager<BannerAdView>
             }
         }
     }
+
+    @ReactProp(name = PROP_CORRELATOR)
+    public void setCorrelator(final BannerAdView view, final String correlator) {
+        view.setCorrelator(correlator);
+    }
+
 
     private AdSize getAdSizeFromString(String adSize) {
         switch (adSize) {
