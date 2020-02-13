@@ -1,6 +1,7 @@
 package com.matejdr;
 
 import androidx.annotation.Nullable;
+
 import android.location.Location;
 import android.view.View;
 
@@ -82,13 +83,13 @@ public class RNAdManagerBannerViewManager extends ViewGroupManager<BannerAdView>
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         MapBuilder.Builder<String, Object> builder = MapBuilder.builder();
         String[] events = {
-            EVENT_SIZE_CHANGE,
-            EVENT_AD_LOADED,
-            EVENT_AD_FAILED_TO_LOAD,
-            EVENT_AD_OPENED,
-            EVENT_AD_CLOSED,
-            EVENT_AD_LEFT_APPLICATION,
-            EVENT_APP_EVENT
+                EVENT_SIZE_CHANGE,
+                EVENT_AD_LOADED,
+                EVENT_AD_FAILED_TO_LOAD,
+                EVENT_AD_OPENED,
+                EVENT_AD_CLOSED,
+                EVENT_AD_LEFT_APPLICATION,
+                EVENT_APP_EVENT
         };
         for (int i = 0; i < events.length; i++) {
             builder.put(events[i], MapBuilder.of("registrationName", events[i]));
@@ -104,14 +105,14 @@ public class RNAdManagerBannerViewManager extends ViewGroupManager<BannerAdView>
 
     @ReactProp(name = PROP_VALID_AD_SIZES)
     public void setPropValidAdSizes(final BannerAdView view, final ReadableArray adSizeStrings) {
-        ReadableNativeArray nativeArray = (ReadableNativeArray)adSizeStrings;
+        ReadableNativeArray nativeArray = (ReadableNativeArray) adSizeStrings;
         ArrayList<Object> list = nativeArray.toArrayList();
         String[] adSizeStringsArray = list.toArray(new String[list.size()]);
         AdSize[] adSizes = new AdSize[list.size()];
 
         for (int i = 0; i < adSizeStringsArray.length; i++) {
-                String adSizeString = adSizeStringsArray[i];
-                adSizes[i] = getAdSizeFromString(adSizeString);
+            String adSizeString = adSizeStringsArray[i];
+            adSizes[i] = getAdSizeFromString(adSizeString);
         }
         view.setValidAdSizes(adSizes);
     }
@@ -123,7 +124,7 @@ public class RNAdManagerBannerViewManager extends ViewGroupManager<BannerAdView>
 
     @ReactProp(name = PROP_TEST_DEVICES)
     public void setPropTestDevices(final BannerAdView view, final ReadableArray testDevices) {
-        ReadableNativeArray nativeArray = (ReadableNativeArray)testDevices;
+        ReadableNativeArray nativeArray = (ReadableNativeArray) testDevices;
         ArrayList<Object> list = nativeArray.toArrayList();
         view.setTestDevices(list.toArray(new String[list.size()]));
     }
@@ -135,8 +136,8 @@ public class RNAdManagerBannerViewManager extends ViewGroupManager<BannerAdView>
 
         if (targetings.hasNextKey()) {
             for (
-                ReadableMapKeySetIterator it = targetingObjects.keySetIterator();
-                it.hasNextKey();
+                    ReadableMapKeySetIterator it = targetingObjects.keySetIterator();
+                    it.hasNextKey();
             ) {
                 String targetingType = it.nextKey();
 
@@ -150,7 +151,7 @@ public class RNAdManagerBannerViewManager extends ViewGroupManager<BannerAdView>
                 if (targetingType.equals(TargetingEnums.getEnumString(TargetingTypes.CATEGORYEXCLUSIONS))) {
                     view.hasTargeting = true;
                     ReadableArray categoryExclusionsArray = targetingObjects.getArray(targetingType);
-                    ReadableNativeArray nativeArray = (ReadableNativeArray)categoryExclusionsArray;
+                    ReadableNativeArray nativeArray = (ReadableNativeArray) categoryExclusionsArray;
                     ArrayList<Object> list = nativeArray.toArrayList();
                     view.setCategoryExclusions(list.toArray(new String[list.size()]));
                 }
@@ -158,7 +159,7 @@ public class RNAdManagerBannerViewManager extends ViewGroupManager<BannerAdView>
                 if (targetingType.equals(TargetingEnums.getEnumString(TargetingTypes.KEYWORDS))) {
                     view.hasTargeting = true;
                     ReadableArray keywords = targetingObjects.getArray(targetingType);
-                    ReadableNativeArray nativeArray = (ReadableNativeArray)keywords;
+                    ReadableNativeArray nativeArray = (ReadableNativeArray) keywords;
                     ArrayList<Object> list = nativeArray.toArrayList();
                     view.setKeywords(list.toArray(new String[list.size()]));
                 }

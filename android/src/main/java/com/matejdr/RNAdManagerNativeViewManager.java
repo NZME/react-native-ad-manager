@@ -204,7 +204,7 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdView>
     }
 
     @ReactProp(name = PROP_CORRELATOR)
-    public void setCorrelator(final BannerAdView view, final String correlator) {
+    public void setCorrelator(final NativeAdView view, final String correlator) {
         view.setCorrelator(correlator);
     }
 

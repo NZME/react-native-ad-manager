@@ -103,30 +103,30 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
         this.adUnitID = adsManagerProperties.getAdUnitID();
 
         VideoOptions videoOptions = new VideoOptions.Builder()
-                        .setStartMuted(true)
-                        .build();
+                .setStartMuted(true)
+                .build();
 
-                NativeAdOptions adOptions = new NativeAdOptions.Builder()
-                        .setVideoOptions(videoOptions)
-                        .build();
+        NativeAdOptions adOptions = new NativeAdOptions.Builder()
+                .setVideoOptions(videoOptions)
+                .build();
 
-                ArrayList<AdSize> adSizes = new ArrayList<AdSize>();
-                if (adSize != null) {
-                    adSizes.add(adSize);
-                }
-                if (validAdSizes != null) {
-                    for (int i = 0; i < validAdSizes.length; i++) {
-                        adSizes.add(validAdSizes[i]);
-                    }
-                }
+        ArrayList<AdSize> adSizes = new ArrayList<AdSize>();
+        if (adSize != null) {
+            adSizes.add(adSize);
+        }
+        if (validAdSizes != null) {
+            for (int i = 0; i < validAdSizes.length; i++) {
+                adSizes.add(validAdSizes[i]);
+            }
+        }
 
-                if (adSizes.size() == 0) {
-                    adSizes.add(AdSize.BANNER);
-                }
+        if (adSizes.size() == 0) {
+            adSizes.add(AdSize.BANNER);
+        }
 
-                AdSize[] adSizesArray = adSizes.toArray(new AdSize[adSizes.size()]);
+        AdSize[] adSizesArray = adSizes.toArray(new AdSize[adSizes.size()]);
 
-                List<String> validAdTypesList = Arrays.asList(validAdTypes);
+        List<String> validAdTypesList = Arrays.asList(validAdTypes);
 
 //                AdSize[] validAdSizes = new AdSize[]{AdSize.BANNER,
 //                        AdSize.FULL_BANNER,
@@ -137,141 +137,141 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
 //                        AdSize.SMART_BANNER,
 //                        AdSize.FLUID};
 
-                Log.e("validAdTypes", validAdTypesList.toString());
-                AdLoader.Builder builder = new AdLoader.Builder(reactContext, adUnitID);
-                if (validAdTypesList.contains(AD_TYPE_NATIVE)) {
-                    Log.e("validAdTypes", AD_TYPE_NATIVE);
-                    builder.forUnifiedNativeAd(NativeAdView.this);
+        Log.e("validAdTypes", validAdTypesList.toString());
+        AdLoader.Builder builder = new AdLoader.Builder(reactContext, adUnitID);
+        if (validAdTypesList.contains(AD_TYPE_NATIVE)) {
+            Log.e("validAdTypes", AD_TYPE_NATIVE);
+            builder.forUnifiedNativeAd(NativeAdView.this);
+        }
+        if (adSizesArray.length > 0 && validAdTypesList.contains(AD_TYPE_BANNER)) {
+            Log.e("validAdTypes", AD_TYPE_BANNER);
+            builder.forPublisherAdView(NativeAdView.this, adSizesArray);
+        }
+        if (customTemplateId != null && !customTemplateId.isEmpty() && validAdTypesList.contains(AD_TYPE_TEMPLATE)) {
+            Log.e("validAdTypes", AD_TYPE_TEMPLATE);
+            builder.forCustomTemplateAd(customTemplateId, NativeAdView.this, null);
+        }
+        builder.withAdListener(new AdListener() {
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                String errorMessage = "Unknown error";
+                switch (errorCode) {
+                    case PublisherAdRequest.ERROR_CODE_INTERNAL_ERROR:
+                        errorMessage = "Internal error, an invalid response was received from the ad server.";
+                        break;
+                    case PublisherAdRequest.ERROR_CODE_INVALID_REQUEST:
+                        errorMessage = "Invalid ad request, possibly an incorrect ad unit ID was given.";
+                        break;
+                    case PublisherAdRequest.ERROR_CODE_NETWORK_ERROR:
+                        errorMessage = "The ad request was unsuccessful due to network connectivity.";
+                        break;
+                    case PublisherAdRequest.ERROR_CODE_NO_FILL:
+                        errorMessage = "The ad request was successful, but no ad was returned due to lack of ad inventory.";
+                        break;
                 }
-                if (adSizesArray.length > 0 && validAdTypesList.contains(AD_TYPE_BANNER)) {
-                    Log.e("validAdTypes", AD_TYPE_BANNER);
-                    builder.forPublisherAdView(NativeAdView.this, adSizesArray);
-                }
-                if (customTemplateId != null && !customTemplateId.isEmpty() && validAdTypesList.contains(AD_TYPE_TEMPLATE)) {
-                    Log.e("validAdTypes", AD_TYPE_TEMPLATE);
-                    builder.forCustomTemplateAd(customTemplateId, NativeAdView.this, null);
-                }
-                builder.withAdListener(new AdListener() {
-                    @Override
-                    public void onAdFailedToLoad(int errorCode) {
-                        String errorMessage = "Unknown error";
-                        switch (errorCode) {
-                            case PublisherAdRequest.ERROR_CODE_INTERNAL_ERROR:
-                                errorMessage = "Internal error, an invalid response was received from the ad server.";
-                                break;
-                            case PublisherAdRequest.ERROR_CODE_INVALID_REQUEST:
-                                errorMessage = "Invalid ad request, possibly an incorrect ad unit ID was given.";
-                                break;
-                            case PublisherAdRequest.ERROR_CODE_NETWORK_ERROR:
-                                errorMessage = "The ad request was unsuccessful due to network connectivity.";
-                                break;
-                            case PublisherAdRequest.ERROR_CODE_NO_FILL:
-                                errorMessage = "The ad request was successful, but no ad was returned due to lack of ad inventory.";
-                                break;
+                WritableMap event = Arguments.createMap();
+                WritableMap error = Arguments.createMap();
+                error.putString("message", errorMessage);
+                event.putMap("error", error);
+                sendEvent(RNAdManagerNativeViewManager.EVENT_AD_FAILED_TO_LOAD, event);
+            }
+
+            @Override
+            public void onAdLoaded() {
+                // sendEvent(RNAdManagerNativeViewManager.EVENT_AD_LOADED, null);
+            }
+
+            @Override
+            public void onAdClicked() {
+                super.onAdClicked();
+                sendEvent(RNAdManagerNativeViewManager.EVENT_AD_CLICKED, null);
+            }
+
+            @Override
+            public void onAdOpened() {
+                sendEvent(RNAdManagerNativeViewManager.EVENT_AD_OPENED, null);
+            }
+
+            @Override
+            public void onAdClosed() {
+                sendEvent(RNAdManagerNativeViewManager.EVENT_AD_CLOSED, null);
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                sendEvent(RNAdManagerNativeViewManager.EVENT_AD_LEFT_APPLICATION, null);
+            }
+        }).withNativeAdOptions(adOptions);
+
+        adLoader = builder.build();
+
+        UiThreadUtil.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                PublisherAdRequest.Builder adRequestBuilder = new PublisherAdRequest.Builder();
+                if (testDevices != null) {
+                    for (int i = 0; i < testDevices.length; i++) {
+                        String testDevice = testDevices[i];
+                        if (testDevice == "SIMULATOR") {
+                            testDevice = PublisherAdRequest.DEVICE_ID_EMULATOR;
                         }
-                        WritableMap event = Arguments.createMap();
-                        WritableMap error = Arguments.createMap();
-                        error.putString("message", errorMessage);
-                        event.putMap("error", error);
-                        sendEvent(RNAdManagerNativeViewManager.EVENT_AD_FAILED_TO_LOAD, event);
+                        adRequestBuilder.addTestDevice(testDevice);
                     }
+                }
 
-                    @Override
-                    public void onAdLoaded() {
-                        // sendEvent(RNAdManagerNativeViewManager.EVENT_AD_LOADED, null);
+                if (correlator == null) {
+                    correlator = (String) Targeting.getCorelator(adUnitID);
+                }
+                Bundle bundle = new Bundle();
+                bundle.putString("correlator", correlator);
+
+                adRequestBuilder.addNetworkExtrasBundle(AdMobAdapter.class, bundle);
+
+                // Targeting
+                if (hasTargeting) {
+                    if (customTargeting != null && customTargeting.length > 0) {
+                        for (int i = 0; i < customTargeting.length; i++) {
+                            String key = customTargeting[i].key;
+                            if (!key.isEmpty()) {
+                                if (customTargeting[i].value != null && !customTargeting[i].value.isEmpty()) {
+                                    adRequestBuilder.addCustomTargeting(key, customTargeting[i].value);
+                                } else if (customTargeting[i].values != null && !customTargeting[i].values.isEmpty()) {
+                                    adRequestBuilder.addCustomTargeting(key, customTargeting[i].values);
+                                }
+                            }
+                        }
                     }
-
-                    @Override
-                    public void onAdClicked() {
-                        super.onAdClicked();
-                        sendEvent(RNAdManagerNativeViewManager.EVENT_AD_CLICKED, null);
+                    if (categoryExclusions != null && categoryExclusions.length > 0) {
+                        for (int i = 0; i < categoryExclusions.length; i++) {
+                            String categoryExclusion = categoryExclusions[i];
+                            if (!categoryExclusion.isEmpty()) {
+                                adRequestBuilder.addCategoryExclusion(categoryExclusion);
+                            }
+                        }
                     }
-
-                    @Override
-                    public void onAdOpened() {
-                        sendEvent(RNAdManagerNativeViewManager.EVENT_AD_OPENED, null);
+                    if (keywords != null && keywords.length > 0) {
+                        for (int i = 0; i < keywords.length; i++) {
+                            String keyword = keywords[i];
+                            if (!keyword.isEmpty()) {
+                                adRequestBuilder.addKeyword(keyword);
+                            }
+                        }
                     }
-
-                    @Override
-                    public void onAdClosed() {
-                        sendEvent(RNAdManagerNativeViewManager.EVENT_AD_CLOSED, null);
+                    if (contentURL != null) {
+                        adRequestBuilder.setContentUrl(contentURL);
                     }
-
-                    @Override
-                    public void onAdLeftApplication() {
-                        sendEvent(RNAdManagerNativeViewManager.EVENT_AD_LEFT_APPLICATION, null);
+                    if (publisherProvidedID != null) {
+                        adRequestBuilder.setPublisherProvidedId(publisherProvidedID);
                     }
-                }).withNativeAdOptions(adOptions);
+                    if (location != null) {
+                        adRequestBuilder.setLocation(location);
+                    }
+                }
 
-                adLoader = builder.build();
-
-//         UiThreadUtil.runOnUiThread(new Runnable() {
-//             @Override
-//             public void run() {
-//                 PublisherAdRequest.Builder adRequestBuilder = new PublisherAdRequest.Builder();
-//                 if (testDevices != null) {
-//                     for (int i = 0; i < testDevices.length; i++) {
-//                         String testDevice = testDevices[i];
-//                         if (testDevice == "SIMULATOR") {
-//                             testDevice = PublisherAdRequest.DEVICE_ID_EMULATOR;
-//                         }
-//                         adRequestBuilder.addTestDevice(testDevice);
-//                     }
-//                 }
-//
-//                 if (this.correlator == null) {
-//                     this.correlator = (String) Targeting.getCorelator(adUnitID);
-//                 }
-//                 Bundle bundle = new Bundle();
-//                 bundle.putString("correlator", this.correlator);
-//
-//                 adRequestBuilder.addNetworkExtrasBundle(AdMobAdapter.class, bundle);
-//
-//                 // Targeting
-//                 if (hasTargeting) {
-//                     if (customTargeting != null && customTargeting.length > 0) {
-//                         for (int i = 0; i < customTargeting.length; i++) {
-//                             String key = customTargeting[i].key;
-//                             if (!key.isEmpty()) {
-//                                 if (customTargeting[i].value != null && !customTargeting[i].value.isEmpty()) {
-//                                     adRequestBuilder.addCustomTargeting(key, customTargeting[i].value);
-//                                 } else if (customTargeting[i].values != null && !customTargeting[i].values.isEmpty()) {
-//                                     adRequestBuilder.addCustomTargeting(key, customTargeting[i].values);
-//                                 }
-//                             }
-//                         }
-//                     }
-//                     if (categoryExclusions != null && categoryExclusions.length > 0) {
-//                         for (int i = 0; i < categoryExclusions.length; i++) {
-//                             String categoryExclusion = categoryExclusions[i];
-//                             if (!categoryExclusion.isEmpty()) {
-//                                 adRequestBuilder.addCategoryExclusion(categoryExclusion);
-//                             }
-//                         }
-//                     }
-//                     if (keywords != null && keywords.length > 0) {
-//                         for (int i = 0; i < keywords.length; i++) {
-//                             String keyword = keywords[i];
-//                             if (!keyword.isEmpty()) {
-//                                 adRequestBuilder.addKeyword(keyword);
-//                             }
-//                         }
-//                     }
-//                     if (contentURL != null) {
-//                         adRequestBuilder.setContentUrl(contentURL);
-//                     }
-//                     if (publisherProvidedID != null) {
-//                         adRequestBuilder.setPublisherProvidedId(publisherProvidedID);
-//                     }
-//                     if (location != null) {
-//                         adRequestBuilder.setLocation(location);
-//                     }
-//                 }
-//
-//                 PublisherAdRequest adRequest = adRequestBuilder.build();
-//                 adLoader.loadAd(adRequest);
-//             }
-//         });
+                PublisherAdRequest adRequest = adRequestBuilder.build();
+                adLoader.loadAd(adRequest);
+            }
+        });
     }
 
     public void reloadAd() {
@@ -280,67 +280,67 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
                 @Override
                 public void run() {
                     PublisherAdRequest.Builder adRequestBuilder = new PublisherAdRequest.Builder();
-                                    if (testDevices != null) {
-                                        for (int i = 0; i < testDevices.length; i++) {
-                                            String testDevice = testDevices[i];
-                                            if (testDevice == "SIMULATOR") {
-                                                testDevice = PublisherAdRequest.DEVICE_ID_EMULATOR;
-                                            }
-                                            adRequestBuilder.addTestDevice(testDevice);
-                                        }
+                    if (testDevices != null) {
+                        for (int i = 0; i < testDevices.length; i++) {
+                            String testDevice = testDevices[i];
+                            if (testDevice == "SIMULATOR") {
+                                testDevice = PublisherAdRequest.DEVICE_ID_EMULATOR;
+                            }
+                            adRequestBuilder.addTestDevice(testDevice);
+                        }
+                    }
+
+                    if (correlator == null) {
+                        correlator = (String) Targeting.getCorelator(adUnitID);
+                    }
+                    Bundle bundle = new Bundle();
+                    bundle.putString("correlator", correlator);
+
+                    adRequestBuilder.addNetworkExtrasBundle(AdMobAdapter.class, bundle);
+
+                    // Targeting
+                    if (hasTargeting) {
+                        if (customTargeting != null && customTargeting.length > 0) {
+                            for (int i = 0; i < customTargeting.length; i++) {
+                                String key = customTargeting[i].key;
+                                if (!key.isEmpty()) {
+                                    if (customTargeting[i].value != null && !customTargeting[i].value.isEmpty()) {
+                                        adRequestBuilder.addCustomTargeting(key, customTargeting[i].value);
+                                    } else if (customTargeting[i].values != null && !customTargeting[i].values.isEmpty()) {
+                                        adRequestBuilder.addCustomTargeting(key, customTargeting[i].values);
                                     }
+                                }
+                            }
+                        }
+                        if (categoryExclusions != null && categoryExclusions.length > 0) {
+                            for (int i = 0; i < categoryExclusions.length; i++) {
+                                String categoryExclusion = categoryExclusions[i];
+                                if (!categoryExclusion.isEmpty()) {
+                                    adRequestBuilder.addCategoryExclusion(categoryExclusion);
+                                }
+                            }
+                        }
+                        if (keywords != null && keywords.length > 0) {
+                            for (int i = 0; i < keywords.length; i++) {
+                                String keyword = keywords[i];
+                                if (!keyword.isEmpty()) {
+                                    adRequestBuilder.addKeyword(keyword);
+                                }
+                            }
+                        }
+                        if (contentURL != null) {
+                            adRequestBuilder.setContentUrl(contentURL);
+                        }
+                        if (publisherProvidedID != null) {
+                            adRequestBuilder.setPublisherProvidedId(publisherProvidedID);
+                        }
+                        if (location != null) {
+                            adRequestBuilder.setLocation(location);
+                        }
+                    }
 
-                                    if (this.correlator == null) {
-                                        this.correlator = (String) Targeting.getCorelator(adUnitID);
-                                    }
-                                    Bundle bundle = new Bundle();
-                                    bundle.putString("correlator", this.correlator);
-
-                                    adRequestBuilder.addNetworkExtrasBundle(AdMobAdapter.class, bundle);
-
-                                    // Targeting
-                                    if (hasTargeting) {
-                                        if (customTargeting != null && customTargeting.length > 0) {
-                                            for (int i = 0; i < customTargeting.length; i++) {
-                                                String key = customTargeting[i].key;
-                                                if (!key.isEmpty()) {
-                                                    if (customTargeting[i].value != null && !customTargeting[i].value.isEmpty()) {
-                                                        adRequestBuilder.addCustomTargeting(key, customTargeting[i].value);
-                                                    } else if (customTargeting[i].values != null && !customTargeting[i].values.isEmpty()) {
-                                                        adRequestBuilder.addCustomTargeting(key, customTargeting[i].values);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        if (categoryExclusions != null && categoryExclusions.length > 0) {
-                                            for (int i = 0; i < categoryExclusions.length; i++) {
-                                                String categoryExclusion = categoryExclusions[i];
-                                                if (!categoryExclusion.isEmpty()) {
-                                                    adRequestBuilder.addCategoryExclusion(categoryExclusion);
-                                                }
-                                            }
-                                        }
-                                        if (keywords != null && keywords.length > 0) {
-                                            for (int i = 0; i < keywords.length; i++) {
-                                                String keyword = keywords[i];
-                                                if (!keyword.isEmpty()) {
-                                                    adRequestBuilder.addKeyword(keyword);
-                                                }
-                                            }
-                                        }
-                                        if (contentURL != null) {
-                                            adRequestBuilder.setContentUrl(contentURL);
-                                        }
-                                        if (publisherProvidedID != null) {
-                                            adRequestBuilder.setPublisherProvidedId(publisherProvidedID);
-                                        }
-                                        if (location != null) {
-                                            adRequestBuilder.setLocation(location);
-                                        }
-                                    }
-
-                                    PublisherAdRequest adRequest = adRequestBuilder.build();
-                                    adLoader.loadAd(adRequest);
+                    PublisherAdRequest adRequest = adRequestBuilder.build();
+                    adLoader.loadAd(adRequest);
                 }
             });
         }

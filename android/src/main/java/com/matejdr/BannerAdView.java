@@ -171,9 +171,11 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
             }
         }
 
-        String mCorelator = (String) Targeting.getCorelator(adUnitID);
+        if (correlator == null) {
+            correlator = (String) Targeting.getCorelator(adUnitID);
+        }
         Bundle bundle = new Bundle();
-        bundle.putString("correlator", mCorelator);
+        bundle.putString("correlator", correlator);
 
         adRequestBuilder.addNetworkExtrasBundle(AdMobAdapter.class, bundle);
 
