@@ -1,4 +1,4 @@
-package com.matejdr.utils;
+package com.matejdr.admanager.utils;
 
 import android.location.Location;
 
@@ -6,8 +6,8 @@ import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
-import com.matejdr.RNAdManageNativeManager;
-import com.matejdr.customClasses.CustomTargeting;
+import com.matejdr.admanager.RNAdManageNativeManager;
+import com.matejdr.admanager.customClasses.CustomTargeting;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.matejdr;
+package com.matejdr.admanager;
 
 import java.util.Arrays;
 import java.util.List;

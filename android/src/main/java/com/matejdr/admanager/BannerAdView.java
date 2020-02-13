@@ -1,4 +1,4 @@
-package com.matejdr;
+package com.matejdr.admanager;
 
 import android.content.Context;
 import android.location.Location;
@@ -23,8 +23,8 @@ import com.google.android.gms.ads.doubleclick.PublisherAdView;
 
 import java.util.ArrayList;
 
-import com.matejdr.customClasses.CustomTargeting;
-import com.matejdr.utils.Targeting;
+import com.matejdr.admanager.customClasses.CustomTargeting;
+import com.matejdr.admanager.utils.Targeting;
 
 class BannerAdView extends ReactViewGroup implements AppEventListener, LifecycleEventListener {
 

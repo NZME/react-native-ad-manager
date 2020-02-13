@@ -1,4 +1,4 @@
-package com.matejdr.customClasses;
+package com.matejdr.admanager.customClasses;
 
 import java.util.List;
 

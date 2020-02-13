@@ -1,4 +1,4 @@
-package com.matejdr;
+package com.matejdr.admanager;
 
 import android.view.View;
 import android.location.Location;
@@ -38,8 +38,8 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
 
-import com.matejdr.customClasses.CustomTargeting;
-import com.matejdr.utils.Targeting;
+import com.matejdr.admanager.customClasses.CustomTargeting;
+import com.matejdr.admanager.utils.Targeting;
 
 public class NativeAdView extends ReactViewGroup implements AppEventListener,
         LifecycleEventListener, UnifiedNativeAd.OnUnifiedNativeAdLoadedListener,

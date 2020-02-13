@@ -1,4 +1,4 @@
-package com.matejdr;
+package com.matejdr.admanager;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -28,10 +28,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.matejdr.customClasses.CustomTargeting;
-import com.matejdr.enums.TargetingEnums;
-import com.matejdr.enums.TargetingEnums.TargetingTypes;
-import com.matejdr.utils.Targeting;
+import com.matejdr.admanager.customClasses.CustomTargeting;
+import com.matejdr.admanager.enums.TargetingEnums;
+import com.matejdr.admanager.enums.TargetingEnums.TargetingTypes;
+import com.matejdr.admanager.utils.Targeting;
 
 public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
 

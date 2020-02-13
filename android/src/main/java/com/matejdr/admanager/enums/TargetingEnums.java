@@ -1,4 +1,4 @@
-package com.matejdr.enums;
+package com.matejdr.admanager.enums;
 
 public class TargetingEnums {
 
