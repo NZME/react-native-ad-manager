@@ -205,73 +205,73 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
 
         adLoader = builder.build();
 
-        UiThreadUtil.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                PublisherAdRequest.Builder adRequestBuilder = new PublisherAdRequest.Builder();
-                if (testDevices != null) {
-                    for (int i = 0; i < testDevices.length; i++) {
-                        String testDevice = testDevices[i];
-                        if (testDevice == "SIMULATOR") {
-                            testDevice = PublisherAdRequest.DEVICE_ID_EMULATOR;
-                        }
-                        adRequestBuilder.addTestDevice(testDevice);
-                    }
-                }
-
-                if (correlator == null) {
-                    correlator = (String) Targeting.getCorelator(adUnitID);
-                }
-                Bundle bundle = new Bundle();
-                bundle.putString("correlator", correlator);
-
-                adRequestBuilder.addNetworkExtrasBundle(AdMobAdapter.class, bundle);
-
-                // Targeting
-                if (hasTargeting) {
-                    if (customTargeting != null && customTargeting.length > 0) {
-                        for (int i = 0; i < customTargeting.length; i++) {
-                            String key = customTargeting[i].key;
-                            if (!key.isEmpty()) {
-                                if (customTargeting[i].value != null && !customTargeting[i].value.isEmpty()) {
-                                    adRequestBuilder.addCustomTargeting(key, customTargeting[i].value);
-                                } else if (customTargeting[i].values != null && !customTargeting[i].values.isEmpty()) {
-                                    adRequestBuilder.addCustomTargeting(key, customTargeting[i].values);
-                                }
-                            }
-                        }
-                    }
-                    if (categoryExclusions != null && categoryExclusions.length > 0) {
-                        for (int i = 0; i < categoryExclusions.length; i++) {
-                            String categoryExclusion = categoryExclusions[i];
-                            if (!categoryExclusion.isEmpty()) {
-                                adRequestBuilder.addCategoryExclusion(categoryExclusion);
-                            }
-                        }
-                    }
-                    if (keywords != null && keywords.length > 0) {
-                        for (int i = 0; i < keywords.length; i++) {
-                            String keyword = keywords[i];
-                            if (!keyword.isEmpty()) {
-                                adRequestBuilder.addKeyword(keyword);
-                            }
-                        }
-                    }
-                    if (contentURL != null) {
-                        adRequestBuilder.setContentUrl(contentURL);
-                    }
-                    if (publisherProvidedID != null) {
-                        adRequestBuilder.setPublisherProvidedId(publisherProvidedID);
-                    }
-                    if (location != null) {
-                        adRequestBuilder.setLocation(location);
-                    }
-                }
-
-                PublisherAdRequest adRequest = adRequestBuilder.build();
-                adLoader.loadAd(adRequest);
-            }
-        });
+//         UiThreadUtil.runOnUiThread(new Runnable() {
+//             @Override
+//             public void run() {
+//                 PublisherAdRequest.Builder adRequestBuilder = new PublisherAdRequest.Builder();
+//                 if (testDevices != null) {
+//                     for (int i = 0; i < testDevices.length; i++) {
+//                         String testDevice = testDevices[i];
+//                         if (testDevice == "SIMULATOR") {
+//                             testDevice = PublisherAdRequest.DEVICE_ID_EMULATOR;
+//                         }
+//                         adRequestBuilder.addTestDevice(testDevice);
+//                     }
+//                 }
+//
+//                 if (correlator == null) {
+//                     correlator = (String) Targeting.getCorelator(adUnitID);
+//                 }
+//                 Bundle bundle = new Bundle();
+//                 bundle.putString("correlator", correlator);
+//
+//                 adRequestBuilder.addNetworkExtrasBundle(AdMobAdapter.class, bundle);
+//
+//                 // Targeting
+//                 if (hasTargeting) {
+//                     if (customTargeting != null && customTargeting.length > 0) {
+//                         for (int i = 0; i < customTargeting.length; i++) {
+//                             String key = customTargeting[i].key;
+//                             if (!key.isEmpty()) {
+//                                 if (customTargeting[i].value != null && !customTargeting[i].value.isEmpty()) {
+//                                     adRequestBuilder.addCustomTargeting(key, customTargeting[i].value);
+//                                 } else if (customTargeting[i].values != null && !customTargeting[i].values.isEmpty()) {
+//                                     adRequestBuilder.addCustomTargeting(key, customTargeting[i].values);
+//                                 }
+//                             }
+//                         }
+//                     }
+//                     if (categoryExclusions != null && categoryExclusions.length > 0) {
+//                         for (int i = 0; i < categoryExclusions.length; i++) {
+//                             String categoryExclusion = categoryExclusions[i];
+//                             if (!categoryExclusion.isEmpty()) {
+//                                 adRequestBuilder.addCategoryExclusion(categoryExclusion);
+//                             }
+//                         }
+//                     }
+//                     if (keywords != null && keywords.length > 0) {
+//                         for (int i = 0; i < keywords.length; i++) {
+//                             String keyword = keywords[i];
+//                             if (!keyword.isEmpty()) {
+//                                 adRequestBuilder.addKeyword(keyword);
+//                             }
+//                         }
+//                     }
+//                     if (contentURL != null) {
+//                         adRequestBuilder.setContentUrl(contentURL);
+//                     }
+//                     if (publisherProvidedID != null) {
+//                         adRequestBuilder.setPublisherProvidedId(publisherProvidedID);
+//                     }
+//                     if (location != null) {
+//                         adRequestBuilder.setLocation(location);
+//                     }
+//                 }
+//
+//                 PublisherAdRequest adRequest = adRequestBuilder.build();
+//                 adLoader.loadAd(adRequest);
+//             }
+//         });
     }
 
     public void reloadAd() {
