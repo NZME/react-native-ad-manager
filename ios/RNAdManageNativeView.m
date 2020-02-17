@@ -522,7 +522,8 @@ didReceiveDFPBannerView:(nonnull DFPBannerView *)bannerView {
         for (UIView *subview in self.nativeAdView.subviews)
         {
             if ([NSStringFromClass([subview class]) isEqual:@"GADNativeAdAttributionView"]) {
-                [subview setFrame:CGRectMake(0, 0,  subview.frame.size.width,  subview.frame.size.height)];
+//                [subview setFrame:CGRectMake(0, 0,  subview.frame.size.width,  subview.frame.size.height)];
+                [subview setFrame:CGRectMake(0, 0, 20, 20)];
                 [subview removeFromSuperview];
                 [self.nativeAdView addSubview:subview];
             }
