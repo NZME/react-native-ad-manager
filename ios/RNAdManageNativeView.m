@@ -255,6 +255,19 @@ static NSString *const kAdTypeTemplate = @"template";
 
     GADUnifiedNativeAdView *nativeAdView = [[GADUnifiedNativeAdView alloc] init];
     self.nativeAdView = nativeAdView;
+    
+    if (self.frame.size.width <= 0 || self.frame.size.height <= 0) {
+        CGFloat width = self.frame.size.width;
+        if (width <= 0) {
+            width = 32;
+        }
+        CGFloat height = self.frame.size.height;
+        if (height <= 0) {
+            height = 32;
+        }
+        [self setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y, width, height)];
+    }
+    self.nativeAdView.frame = self.bounds;
     self.nativeAdView.translatesAutoresizingMaskIntoConstraints = NO;
     self.nativeAdView.contentMode = UIViewContentModeScaleAspectFit;
     self.nativeAdView.clipsToBounds = YES;
@@ -505,6 +518,15 @@ didReceiveDFPBannerView:(nonnull DFPBannerView *)bannerView {
             [self.nativeAdView addSubview:view];
             self.nativeAdView.callToActionView = view;
         }];
+        // a HACK to get the overlay to display on the top
+        for (UIView *subview in self.nativeAdView.subviews)
+        {
+            if (subview.frame.origin.x < 0) {
+                [subview setFrame:CGRectMake(0, subview.frame.origin.y,  subview.frame.size.width,  subview.frame.size.height)];
+                [subview removeFromSuperview];
+                [self.nativeAdView addSubview:subview];
+            }
+        }
     }
 }
 
