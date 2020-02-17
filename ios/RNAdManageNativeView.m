@@ -521,8 +521,8 @@ didReceiveDFPBannerView:(nonnull DFPBannerView *)bannerView {
         // a HACK to get the overlay to display on the top
         for (UIView *subview in self.nativeAdView.subviews)
         {
-            if (subview.frame.origin.x < 0) {
-                [subview setFrame:CGRectMake(0, subview.frame.origin.y,  subview.frame.size.width,  subview.frame.size.height)];
+            if ([NSStringFromClass([subview class]) isEqual:@"GADNativeAdAttributionView"]) {
+                [subview setFrame:CGRectMake(0, 0,  subview.frame.size.width,  subview.frame.size.height)];
                 [subview removeFromSuperview];
                 [self.nativeAdView addSubview:subview];
             }

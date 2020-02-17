@@ -6,7 +6,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "post-patch": "npm version patch && git push origin --all && git push origin --tags && npm publish"
+    "post-patch": "npm version patch && git push origin --all && git push origin --tags && npm publish",
+    "post-minor": "npm version minor && git push origin --all && git push origin --tags && npm publish"
   },
   "repository": {
     "type": "git",
