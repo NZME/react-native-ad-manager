@@ -265,6 +265,8 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdView>
                 return AdSize.SMART_BANNER;
             case "300x600":
                 return new AdSize(300, 600);
+            case "300x250":
+                return new AdSize(300, 250);
             default:
                 return AdSize.BANNER;
         }
