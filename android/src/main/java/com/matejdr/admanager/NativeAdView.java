@@ -300,7 +300,6 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
             } catch (Exception e) {
             }
         } else if (unifiedNativeAdView != null) {
-
             int viewWidth = this.getMeasuredWidth();
             int viewHeight = this.getMeasuredHeight();
 
@@ -308,7 +307,7 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
             int top = 0;
 
             if (viewHeight <= 0) {
-                viewHeight = 1000;
+                viewHeight = 1500;
             }
 
             unifiedNativeAdView.getLayoutParams().width = viewWidth;
