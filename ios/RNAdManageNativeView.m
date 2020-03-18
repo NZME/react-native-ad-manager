@@ -215,6 +215,11 @@ static NSString *const kAdTypeTemplate = @"template";
     _validAdSizes = validAdSizes;
 }
 
+- (void)setCorrelator:(NSString *)correlator
+{
+    _correlator = correlator;
+}
+
 #pragma mark GADAdLoaderDelegate implementation
 
 /// Tells the delegate an ad request failed.UnifiedNativeAdView

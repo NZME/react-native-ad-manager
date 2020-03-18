@@ -58,6 +58,11 @@
 //  [self createViewIfCan];
 }
 
+- (void)setCorrelator:(NSString *)correlator
+{
+  _correlator = correlator;
+}
+
 // Initialise BannerAdView as soon as all the props are set
 - (void)createViewIfCan
 {
