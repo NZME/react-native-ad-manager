@@ -171,7 +171,7 @@ RCT_CUSTOM_VIEW_PROPERTY(adsManager, NSString, RNAdManageNativeView)
     [view loadAd:_adsManager];
 }
 
-RCT_EXPORT_VIEW_PROPERTY(customTemplateId, NSString)
+RCT_EXPORT_VIEW_PROPERTY(customTemplateIds, NSArray)
 RCT_EXPORT_VIEW_PROPERTY(validAdTypes, NSArray)
 RCT_EXPORT_VIEW_PROPERTY(adSize, NSString)
 RCT_EXPORT_VIEW_PROPERTY(validAdSizes, NSArray)

@@ -25,7 +25,7 @@
 /// The native custom template ad
 @property(nonatomic, strong) IBOutlet GADNativeCustomTemplateAd *nativeCustomTemplateAd;
 
-@property (nonatomic, copy) NSString *customTemplateId;
+@property (nonatomic, copy) NSArray *customTemplateIds;
 @property (nonatomic, copy) NSArray *validAdTypes;
 @property (nonatomic, copy) NSString *adSize;
 @property (nonatomic, copy) NSArray *validAdSizes;

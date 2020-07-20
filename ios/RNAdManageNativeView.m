@@ -182,9 +182,9 @@ static NSString *const kAdTypeTemplate = @"template";
     }
 }
 
-- (void)setCustomTemplateId:(NSString *)customTemplateId
+- (void)setCustomTemplateIds:(NSArray *)customTemplateIds
 {
-    _customTemplateId = customTemplateId;
+    _customTemplateIds = customTemplateIds;
 }
 
 - (void)setValidAdTypes:(NSArray *)adTypes
@@ -436,10 +436,11 @@ didReceiveDFPBannerView:(nonnull DFPBannerView *)bannerView {
 }
 
 - (NSArray *)nativeCustomTemplateIDsForAdLoader:(GADAdLoader *)adLoader {
-    if (_customTemplateId == nil) {
-        _customTemplateId = @"11891103";
+    if (_customTemplateIds == nil) {
+        _customTemplateIds = @[ @"11891103" ];
     }
-    return @[ _customTemplateId ];
+    
+    return _customTemplateIds;
 }
 
 - (void)triggerCustomAdLoadedEvent:(GADNativeCustomTemplateAd *)nativeCustomTemplateAd {

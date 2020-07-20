@@ -77,7 +77,7 @@ const adsManager = new NativeAdsManager('your-ad-unit-id', [
     style={{width: '100%'}}
     adsManager={adsManager}
     validAdTypes={['native', 'template']}
-    customTemplateId="your-template-id"
+    customTemplateIds={['your-template-id-1', 'your-template-id-2']}
     onAdLoaded={ad => {
         console.log(ad);
     }}
