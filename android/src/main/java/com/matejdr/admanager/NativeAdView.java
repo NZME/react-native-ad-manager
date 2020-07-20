@@ -395,6 +395,7 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
 
         WritableMap ad = Arguments.createMap();
         ad.putString("type", AD_TYPE_TEMPLATE);
+        ad.putString("templateID", nativeCustomTemplateAd.getCustomTemplateId());
         for (String assetName : nativeCustomTemplateAd.getAvailableAssetNames()) {
             if (nativeCustomTemplateAd.getText(assetName) != null) {
                 if (nativeCustomTemplateAdClickableAsset == null && nativeCustomTemplateAd.getText(assetName).length() > 0) {

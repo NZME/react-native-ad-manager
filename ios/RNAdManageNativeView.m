@@ -447,6 +447,7 @@ didReceiveDFPBannerView:(nonnull DFPBannerView *)bannerView {
     if (self.onAdLoaded) {
         NSMutableDictionary *ad = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                    kAdTypeTemplate, @"type",
+                                   nativeCustomTemplateAd.templateID, @"templateID",
                                    nil];
 
         [nativeCustomTemplateAd.availableAssetKeys enumerateObjectsUsingBlock:^(NSString *value, NSUInteger idx, __unused BOOL *stop) {
