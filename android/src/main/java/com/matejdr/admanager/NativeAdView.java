@@ -60,7 +60,7 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
     String adUnitID;
     AdSize[] validAdSizes;
     AdSize adSize;
-    String customTemplateId;
+    String[] customTemplateIds;
     String[] validAdTypes = new String[]{AD_TYPE_BANNER, AD_TYPE_NATIVE, AD_TYPE_TEMPLATE};
     ;
 
@@ -153,9 +153,15 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
             Log.e("validAdTypes", AD_TYPE_BANNER);
             builder.forPublisherAdView(NativeAdView.this, adSizesArray);
         }
-        if (customTemplateId != null && !customTemplateId.isEmpty() && validAdTypesList.contains(AD_TYPE_TEMPLATE)) {
+        if (customTemplateIds != null && customTemplateIds.length > 0 && validAdTypesList.contains(AD_TYPE_TEMPLATE)) {
             Log.e("validAdTypes", AD_TYPE_TEMPLATE);
-            builder.forCustomTemplateAd(customTemplateId, NativeAdView.this, null);
+            for (int i = 0; i < customTemplateIds.length; i++) {
+                String curCustomTemplateID = customTemplateIds[i];
+                if (!curCustomTemplateID.isEmpty()) {
+                    builder.forCustomTemplateAd(curCustomTemplateID, NativeAdView.this, null);
+                }
+            }
+            // builder.forCustomTemplateAd(customTemplateIds, NativeAdView.this, null);
         }
         builder.withAdListener(new AdListener() {
             @Override
@@ -513,8 +519,8 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
         mEventEmitter.receiveEvent(getId(), name, event);
     }
 
-    public void setCustomTemplateId(String customTemplateId) {
-        this.customTemplateId = customTemplateId;
+    public void setCustomTemplateIds(String[] customTemplateIds) {
+        this.customTemplateIds = customTemplateIds;
     }
 
     public void setAdSize(AdSize adSize) {

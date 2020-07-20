@@ -29,7 +29,7 @@ import com.matejdr.admanager.utils.Targeting;
 
 public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdView> {
     public static final String PROP_AD_MANAGER = "adsManager";
-    public static final String PROP_CUSTOM_TEMPLATE_ID = "customTemplateId";
+    public static final String PROP_CUSTOM_TEMPLATE_IDS = "customTemplateIds";
     public static final String PROP_AD_SIZE = "adSize";
     public static final String PROP_VALID_AD_SIZES = "validAdSizes";
     public static final String PROP_VALID_AD_TYPES = "validAdTypes";
@@ -112,9 +112,12 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdView>
         return builder.build();
     }
 
-    @ReactProp(name = PROP_CUSTOM_TEMPLATE_ID)
-    public void setPropCustomTemplateId(final NativeAdView view, final String customTemplateId) {
-        view.setCustomTemplateId(customTemplateId);
+    @ReactProp(name = PROP_CUSTOM_TEMPLATE_IDS)
+    public void setPropCustomTemplateIds(final NativeAdView view, final ReadableArray customTemplateIdsString) {
+        ReadableNativeArray nativeArray = (ReadableNativeArray) customTemplateIdsString;
+        ArrayList<Object> list = nativeArray.toArrayList();
+        String[] customTemplateIdsStringArray = list.toArray(new String[list.size()]);
+        view.setCustomTemplateIds(customTemplateIdsStringArray);
     }
 
     @ReactProp(name = PROP_AD_SIZE)
