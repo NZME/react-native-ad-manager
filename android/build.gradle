@@ -74,6 +74,7 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'  // From node_modules
     implementation 'com.google.android.gms:play-services-ads:18.3.0'
+    implementation 'com.google.ads.mediation:facebook:5.10.0.0'
 }
 
 def configureReactNativePom(def pom) {

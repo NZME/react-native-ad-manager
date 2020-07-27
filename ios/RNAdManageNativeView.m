@@ -7,6 +7,7 @@
 #import <React/RCTBridgeModule.h>
 #import <React/UIView+React.h>
 #import <React/RCTLog.h>
+#import <FacebookAdapter/FacebookAdapter.h>
 
 #include "RCTConvert+GADAdSize.h"
 #import "RNAdManagerUtils.h"
@@ -132,7 +133,12 @@ static NSString *const kAdTypeTemplate = @"template";
     }
 
     DFPRequest *request = [DFPRequest request];
-
+    
+    // Facebook Audience network
+    GADFBNetworkExtras * fbExtras = [[GADFBNetworkExtras alloc] init];
+    fbExtras.nativeAdFormat = GADFBAdFormatNativeBanner;
+    [request registerAdNetworkExtras:fbExtras];
+    
     GADExtras *extras = [[GADExtras alloc] init];
     if (_correlator == nil) {
         _correlator = getCorrelator(_adUnitID);
@@ -140,8 +146,9 @@ static NSString *const kAdTypeTemplate = @"template";
     extras.additionalParameters = [[NSDictionary alloc] initWithObjectsAndKeys:
                                    _correlator, @"correlator",
                                    nil];
-    [request registerAdNetworkExtras:extras];
 
+    [request registerAdNetworkExtras:extras];
+    
     if (_targeting != nil) {
         NSDictionary *customTargeting = [_targeting objectForKey:@"customTargeting"];
         if (customTargeting != nil) {
@@ -317,6 +324,11 @@ static NSString *const kAdTypeTemplate = @"template";
                                    nil, @"icon",
                                    nil, @"images",
                                    nil];
+
+        NSString *socialContext = nativeAd.extraAssets[GADFBSocialContext];
+        if (socialContext != nil) {
+            ad[@"socialContext"] = socialContext;
+        }
 
         if (nativeAd.icon != nil) {
             ad[@"icon"] = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
