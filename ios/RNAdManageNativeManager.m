@@ -102,7 +102,7 @@ RCT_EXPORT_METHOD(init:(NSString *)adUnitID testDevices:(NSArray *)testDevices)
     return adsManagers[adUnitID];
 }
 
-- (GADAdLoader *) getAdLoader:(NSString *)adUnitID validAdTypes:(NSArray *)validAdTypes
+- (GADAdLoader *) getAdLoader:(NSString *)adUnitID validAdTypes:(NSArray *)validAdTypes loaderIndex:(NSString *)loaderIndex
 {
     if (adLoaders == nil) {
         adLoaders = [NSMutableDictionary new];
@@ -116,7 +116,8 @@ RCT_EXPORT_METHOD(init:(NSString *)adUnitID testDevices:(NSArray *)testDevices)
         adLoaderKey = [NSString stringWithFormat:@"%@%@", adLoaderKey, @"banner"];
     }
     if ([validAdTypes containsObject:@"template"]) {
-        adLoaderKey = [NSString stringWithFormat:@"%@%@", adLoaderKey, @"template"];
+        NSString *index = loaderIndex ? loaderIndex : @"";
+        adLoaderKey = [NSString stringWithFormat:@"%@%@%@", adLoaderKey, @"template", index];
     }
 
     GADAdLoader *adLoader = [adLoaders objectForKey:adLoaderKey];
@@ -171,6 +172,7 @@ RCT_CUSTOM_VIEW_PROPERTY(adsManager, NSString, RNAdManageNativeView)
     [view loadAd:_adsManager];
 }
 
+RCT_EXPORT_VIEW_PROPERTY(loaderIndex, NSString)
 RCT_EXPORT_VIEW_PROPERTY(customTemplateIds, NSArray)
 RCT_EXPORT_VIEW_PROPERTY(validAdTypes, NSArray)
 RCT_EXPORT_VIEW_PROPERTY(adSize, NSString)

@@ -159,6 +159,7 @@ export default (Component) => class NativeAdWrapper extends React.Component {
       <NativeAdView
         style={[this.props.style, this.state.style]}
         adSize={this.props.adSize}
+        loaderIndex={this.props.adLoaderIndex}
         correlator={this.props.correlator}
         customTemplateIds={this.props.customTemplateIds}
         validAdSizes={this.props.validAdSizes}

@@ -71,8 +71,8 @@ static NSString *const kAdTypeTemplate = @"template";
             kAdTypeTemplate
         ];
     }
-
-    self.adLoader = [adManager getAdLoader:_adUnitID validAdTypes:_validAdTypes];
+    
+    self.adLoader = [adManager getAdLoader:_adUnitID validAdTypes:_validAdTypes loaderIndex:_loaderIndex];
     self.adLoader.delegate = self;
 
     GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = _testDevices;
@@ -206,6 +206,11 @@ static NSString *const kAdTypeTemplate = @"template";
 - (void)setAdSize:(NSString *)adSize
 {
     _adSize = adSize;
+}
+
+- (void)setLoaderIndex:(NSString *)loaderIndex
+{
+    _loaderIndex = loaderIndex;
 }
 
 - (void)setValidAdSizes:(NSArray *)adSizes
