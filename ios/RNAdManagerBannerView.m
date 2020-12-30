@@ -160,7 +160,8 @@
     if (self.onAdLoaded) {
         self.onAdLoaded(@{
             @"type": @"banner",
-            @"gadSize": NSValueFromGADAdSize(adView.adSize),
+            @"gadSize": @{@"width": @(adView.frame.size.width),
+                          @"height": @(adView.frame.size.height)},
         });
     }
 }
