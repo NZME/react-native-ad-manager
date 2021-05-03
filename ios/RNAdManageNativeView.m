@@ -399,7 +399,8 @@ didReceiveDFPBannerView:(nonnull DFPBannerView *)bannerView {
     if (self.onAdLoaded) {
         self.onAdLoaded(@{
             @"type": kAdTypeBanner,
-            @"gadSize": NSValueFromGADAdSize(self.bannerView.adSize),
+            @"gadSize": @{@"width": @(self.bannerView.frame.size.width),
+                          @"height": @(self.bannerView.frame.size.height)},
         });
     }
 
