@@ -116,6 +116,7 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
 
         NativeAdOptions adOptions = new NativeAdOptions.Builder()
                 .setVideoOptions(videoOptions)
+                .setAdChoicesPlacement(NativeAdOptions.ADCHOICES_TOP_LEFT)
                 .build();
 
         ArrayList<AdSize> adSizes = new ArrayList<AdSize>();
