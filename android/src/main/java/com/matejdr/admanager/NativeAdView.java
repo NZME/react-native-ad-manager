@@ -378,7 +378,14 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
         sendOnSizeChangeEvent(adView);
         WritableMap ad = Arguments.createMap();
         ad.putString("type", AD_TYPE_BANNER);
-        ad.putString("gadSize", adView.getAdSize().toString());
+
+        WritableMap gadSize = Arguments.createMap();
+        gadSize.putDouble("width", adView.getAdSize().getWidth());
+        gadSize.putDouble("height", adView.getAdSize().getHeight());
+
+        ad.putMap("gadSize", gadSize);
+
+        //ad.putString("gadSize", adView.getAdSize().toString());
         sendEvent(RNAdManagerNativeViewManager.EVENT_AD_LOADED, ad);
     }
 
