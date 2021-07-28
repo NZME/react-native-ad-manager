@@ -125,13 +125,13 @@ RCT_EXPORT_METHOD(init:(NSString *)adUnitID testDevices:(NSArray *)testDevices)
         // Loads an ad for any of app install, content, or custom native ads.
         NSMutableArray *adTypes = [[NSMutableArray alloc] init];
         if ([validAdTypes containsObject:@"native"]) {
-            [adTypes addObject:kGADAdLoaderAdTypeUnifiedNative];
+            [adTypes addObject:kGADAdLoaderAdTypeNative];
         }
         if ([validAdTypes containsObject:@"banner"]) {
-            [adTypes addObject:kGADAdLoaderAdTypeDFPBanner];
+            [adTypes addObject:kGADAdLoaderAdTypeGAMBanner];
         }
         if ([validAdTypes containsObject:@"template"]) {
-            [adTypes addObject:kGADAdLoaderAdTypeNativeCustomTemplate];
+            [adTypes addObject:kGADAdLoaderAdTypeCustomNative];
         }
 
         GADVideoOptions *videoOptions = [[GADVideoOptions alloc] init];

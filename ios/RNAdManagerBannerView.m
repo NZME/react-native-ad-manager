@@ -10,7 +10,7 @@
 
 @interface RNAdManagerBannerView () <GADBannerViewDelegate, GADAdSizeDelegate, GADAppEventDelegate>
 
-@property (nonatomic, strong) DFPBannerView *bannerView;
+@property (nonatomic, strong) GAMBannerView *bannerView;
 
 @end
 
@@ -18,6 +18,7 @@
 
 - (void)dealloc
 {
+    
     _bannerView.delegate = nil;
     _bannerView.adSizeDelegate = nil;
     _bannerView.appEventDelegate = nil;
@@ -75,12 +76,12 @@
     }
 
     GADAdSize adSize = [RCTConvert GADAdSize:_adSize];
-    DFPBannerView *bannerView;
+    GAMBannerView *bannerView;
     if (!GADAdSizeEqualToSize(adSize, kGADAdSizeInvalid)) {
 //        self.bannerView.adSize = adSize;
-        bannerView = [[DFPBannerView alloc] initWithAdSize:adSize];
+        bannerView = [[GAMBannerView alloc] initWithAdSize:adSize];
     } else {
-        bannerView = [[DFPBannerView alloc] initWithAdSize:kGADAdSizeBanner];
+        bannerView = [[GAMBannerView alloc] initWithAdSize:kGADAdSizeBanner];
     }
 
     bannerView.delegate = self;
@@ -90,7 +91,7 @@
     bannerView.translatesAutoresizingMaskIntoConstraints = YES;
 
     GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = _testDevices;
-    DFPRequest *request = [DFPRequest request];
+    GAMRequest *request = [GAMRequest request];
 
     GADExtras *extras = [[GADExtras alloc] init];
     if (_correlator == nil) {
@@ -149,26 +150,26 @@
 # pragma mark GADBannerViewDelegate
 
 /// Tells the delegate an ad request loaded an ad.
-- (void)adViewDidReceiveAd:(DFPBannerView *)adView
+- (void)bannerViewDidReceiveAd:(nonnull GADBannerView *)bannerView
 {
     if (self.onSizeChange) {
         self.onSizeChange(@{
                             @"type": @"banner",
-                            @"width": @(adView.frame.size.width),
-                            @"height": @(adView.frame.size.height) });
+                            @"width": @(bannerView.frame.size.width),
+                            @"height": @(bannerView.frame.size.height) });
     }
     if (self.onAdLoaded) {
         self.onAdLoaded(@{
             @"type": @"banner",
-            @"gadSize": @{@"width": @(adView.frame.size.width),
-                          @"height": @(adView.frame.size.height)},
+            @"gadSize": @{@"width": @(bannerView.frame.size.width),
+                          @"height": @(bannerView.frame.size.height)},
         });
     }
 }
 
 /// Tells the delegate an ad request failed.
-- (void)adView:(DFPBannerView *)adView
-didFailToReceiveAdWithError:(GADRequestError *)error
+- (void)bannerView:(nonnull GADBannerView *)bannerView
+    didFailToReceiveAdWithError:(nonnull NSError *)error
 {
     if (self.onAdFailedToLoad) {
         self.onAdFailedToLoad(@{ @"error": @{ @"message": [error localizedDescription] } });
@@ -182,7 +183,7 @@ didFailToReceiveAdWithError:(GADRequestError *)error
 
 /// Tells the delegate that a full screen view will be presented in response
 /// to the user clicking on an ad.
-- (void)adViewWillPresentScreen:(DFPBannerView *)adView
+- (void)bannerViewWillPresentScreen:(nonnull GADBannerView *)bannerView
 {
     if (self.onAdOpened) {
         self.onAdOpened(@{});
@@ -190,19 +191,10 @@ didFailToReceiveAdWithError:(GADRequestError *)error
 }
 
 /// Tells the delegate that the full screen view will be dismissed.
-- (void)adViewWillDismissScreen:(__unused DFPBannerView *)adView
+- (void)bannerViewWillDismissScreen:(nonnull GADBannerView *)bannerView
 {
     if (self.onAdClosed) {
         self.onAdClosed(@{});
-    }
-}
-
-/// Tells the delegate that a user click will open another app (such as
-/// the App Store), backgrounding the current app.
-- (void)adViewWillLeaveApplication:(DFPBannerView *)adView
-{
-    if (self.onAdLeftApplication) {
-        self.onAdLeftApplication(@{});
     }
 }
 
