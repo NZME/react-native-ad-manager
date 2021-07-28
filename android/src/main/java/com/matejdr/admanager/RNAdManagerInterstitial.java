@@ -16,16 +16,17 @@ import com.facebook.react.bridge.ReadableNativeArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.doubleclick.PublisherInterstitialAd;
-import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
-import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.admanager.AdManagerAdRequest;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.matejdr.admanager.customClasses.CustomTargeting;
@@ -74,23 +75,23 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
                         sendEvent(EVENT_AD_CLOSED, null);
                     }
                     @Override
-                    public void onAdFailedToLoad(int errorCode) {
+                    public void onAdFailedToLoad(LoadAdError adError) {
                         String errorString = "ERROR_UNKNOWN";
                         String errorMessage = "Unknown error";
-                        switch (errorCode) {
-                            case PublisherAdRequest.ERROR_CODE_INTERNAL_ERROR:
+                        switch (adError.getCode()) {
+                            case AdManagerAdRequest.ERROR_CODE_INTERNAL_ERROR:
                                 errorString = "ERROR_CODE_INTERNAL_ERROR";
                                 errorMessage = "Internal error, an invalid response was received from the ad server.";
                                 break;
-                            case PublisherAdRequest.ERROR_CODE_INVALID_REQUEST:
+                            case AdManagerAdRequest.ERROR_CODE_INVALID_REQUEST:
                                 errorString = "ERROR_CODE_INVALID_REQUEST";
                                 errorMessage = "Invalid ad request, possibly an incorrect ad unit ID was given.";
                                 break;
-                            case PublisherAdRequest.ERROR_CODE_NETWORK_ERROR:
+                            case AdManagerAdRequest.ERROR_CODE_NETWORK_ERROR:
                                 errorString = "ERROR_CODE_NETWORK_ERROR";
                                 errorMessage = "The ad request was unsuccessful due to network connectivity.";
                                 break;
-                            case PublisherAdRequest.ERROR_CODE_NO_FILL:
+                            case AdManagerAdRequest.ERROR_CODE_NO_FILL:
                                 errorString = "ERROR_CODE_NO_FILL";
                                 errorMessage = "The ad request was successful, but no ad was returned due to lack of ad inventory.";
                                 break;
@@ -103,10 +104,6 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
                             mRequestAdPromise.reject(errorString, errorMessage);
                             mRequestAdPromise = null;
                         }
-                    }
-                    @Override
-                    public void onAdLeftApplication() {
-                        sendEvent(EVENT_AD_LEFT_APPLICATION, null);
                     }
                     @Override
                     public void onAdLoaded() {
@@ -205,15 +202,22 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
                     promise.reject("E_AD_ALREADY_LOADED", "Ad is already loaded.");
                 } else {
                     mRequestAdPromise = promise;
-                    PublisherAdRequest.Builder adRequestBuilder = new PublisherAdRequest.Builder();
+                    AdManagerAdRequest.Builder adRequestBuilder = new AdManagerAdRequest.Builder();
                     if (testDevices != null) {
+                        List<String> testDevicesList = new ArrayList<>();
+
                         for (int i = 0; i < testDevices.length; i++) {
                             String testDevice = testDevices[i];
                             if (testDevice == "SIMULATOR") {
-                                testDevice = PublisherAdRequest.DEVICE_ID_EMULATOR;
+                                testDevice = AdManagerAdRequest.DEVICE_ID_EMULATOR;
                             }
-                            adRequestBuilder.addTestDevice(testDevice);
+                            testDevicesList.add(testDevice);
                         }
+                        RequestConfiguration requestConfiguration
+                                = new RequestConfiguration.Builder()
+                                .setTestDeviceIds(testDevicesList)
+                                .build();
+                        MobileAds.setRequestConfiguration(requestConfiguration);
                     }
 
                     if (customTargeting != null && customTargeting.length > 0) {
@@ -254,7 +258,7 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
                         adRequestBuilder.setLocation(location);
                     }
 
-                    PublisherAdRequest adRequest = adRequestBuilder.build();
+                    AdManagerAdRequest adRequest = adRequestBuilder.build();
                     mInterstitialAd.loadAd(adRequest);
                 }
             }
