@@ -181,6 +181,20 @@
     _bannerView = nil;
 }
 
+- (void)bannerViewDidRecordImpression:(nonnull GADBannerView *)bannerView
+{
+    if (self.onAdRecordImpression) {
+        self.onAdRecordImpression(@{});
+    }
+}
+
+- (void)bannerViewDidRecordClick:(nonnull GADBannerView *)bannerView
+{
+    if (self.onAdRecordClick) {
+        self.onAdRecordClick(@{});
+    }
+}
+
 /// Tells the delegate that a full screen view will be presented in response
 /// to the user clicking on an ad.
 - (void)bannerViewWillPresentScreen:(nonnull GADBannerView *)bannerView
