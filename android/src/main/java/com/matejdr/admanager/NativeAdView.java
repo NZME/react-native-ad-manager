@@ -24,6 +24,9 @@ import com.google.ads.mediation.facebook.FacebookAdapter;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.VideoOptions;
 import com.google.android.gms.ads.admanager.AppEventListener;
 import com.google.android.gms.ads.admanager.AdManagerAdRequest;
@@ -43,7 +46,7 @@ import java.util.ArrayList;
 import com.matejdr.admanager.customClasses.CustomTargeting;
 import com.matejdr.admanager.utils.Targeting;
 
-public class NativeAdView extends ReactViewGroup implements AppEventListener,
+public class NativeAdViewContainer extends ReactViewGroup implements AppEventListener,
         LifecycleEventListener, OnNativeAdLoadedListener,
         OnAdManagerAdViewLoadedListener, OnCustomFormatAdLoadedListener {
     public static final String AD_TYPE_BANNER = "banner";
@@ -86,7 +89,7 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
      *
      * @param context
      */
-    public NativeAdView(ThemedReactContext context, ReactApplicationContext applicationContext) {
+    public NativeAdViewContainer(ThemedReactContext context, ReactApplicationContext applicationContext) {
         super(context);
         this.context = context;
         this.applicationContext = applicationContext;
@@ -150,27 +153,27 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
         AdLoader.Builder builder = new AdLoader.Builder(reactContext, adUnitID);
         if (validAdTypesList.contains(AD_TYPE_NATIVE)) {
             Log.e("validAdTypes", AD_TYPE_NATIVE);
-            builder.forUnifiedNativeAd(NativeAdView.this);
+            builder.forNativeAd(NativeAdViewContainer.this);
         }
         if (adSizesArray.length > 0 && validAdTypesList.contains(AD_TYPE_BANNER)) {
             Log.e("validAdTypes", AD_TYPE_BANNER);
-            builder.forPublisherAdView(NativeAdView.this, adSizesArray);
+            builder.forAdManagerAdView(NativeAdViewContainer.this, adSizesArray);
         }
         if (customTemplateIds != null && customTemplateIds.length > 0 && validAdTypesList.contains(AD_TYPE_TEMPLATE)) {
             Log.e("validAdTypes", AD_TYPE_TEMPLATE);
             for (int i = 0; i < customTemplateIds.length; i++) {
                 String curCustomTemplateID = customTemplateIds[i];
                 if (!curCustomTemplateID.isEmpty()) {
-                    builder.forCustomTemplateAd(curCustomTemplateID, NativeAdView.this, null);
+                    builder.forCustomFormatAd(curCustomTemplateID, NativeAdViewContainer.this, null);
                 }
             }
             // builder.forCustomTemplateAd(customTemplateIds, NativeAdView.this, null);
         }
         builder.withAdListener(new AdListener() {
             @Override
-            public void onAdFailedToLoad(int errorCode) {
+            public void onAdFailedToLoad(LoadAdError adError) {
                 String errorMessage = "Unknown error";
-                switch (errorCode) {
+                switch (adError.getCode()) {
                     case AdManagerAdRequest.ERROR_CODE_INTERNAL_ERROR:
                         errorMessage = "Internal error, an invalid response was received from the ad server.";
                         break;
@@ -211,11 +214,6 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
             public void onAdClosed() {
                 sendEvent(RNAdManagerNativeViewManager.EVENT_AD_CLOSED, null);
             }
-
-            @Override
-            public void onAdLeftApplication() {
-                sendEvent(RNAdManagerNativeViewManager.EVENT_AD_LEFT_APPLICATION, null);
-            }
         }).withNativeAdOptions(adOptions);
 
         adLoader = builder.build();
@@ -229,15 +227,23 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
                 @Override
                 public void run() {
                     AdManagerAdRequest.Builder adRequestBuilder = new AdManagerAdRequest.Builder();
+
+                    List<String> testDevicesList = new ArrayList<>();
                     if (testDevices != null) {
                         for (int i = 0; i < testDevices.length; i++) {
                             String testDevice = testDevices[i];
                             if (testDevice == "SIMULATOR") {
                                 testDevice = AdManagerAdRequest.DEVICE_ID_EMULATOR;
                             }
-                            adRequestBuilder.addTestDevice(testDevice);
+                            testDevicesList.add(testDevice);
                         }
+                        RequestConfiguration requestConfiguration
+                                = new RequestConfiguration.Builder()
+                                .setTestDeviceIds(testDevicesList)
+                                .build();
+                        MobileAds.setRequestConfiguration(requestConfiguration);
                     }
+
 
                     if (correlator == null) {
                         correlator = (String) Targeting.getCorelator(adUnitID);
@@ -352,12 +358,12 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
     }
 
     @Override
-    public void onNativeAdAdLoaded(NativeAd unifiedNativeAd) {
-        nativeAdView.setNativeAd(unifiedNativeAd);
+    public void onNativeAdLoaded(NativeAd nativeAd) {
+        nativeAdView.setNativeAd(nativeAd);
         removeAllViews();
         addView(nativeAdView);
 
-        setNativeAd(unifiedNativeAd);
+        setNativeAd(nativeAd);
     }
 
     @Override
@@ -411,7 +417,7 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
 
         WritableMap ad = Arguments.createMap();
         ad.putString("type", AD_TYPE_TEMPLATE);
-        ad.putString("templateID", nativeCustomTemplateAd.getCustomTemplateId());
+        ad.putString("templateID", nativeCustomTemplateAd.getCustomFormatId());
         for (String assetName : nativeCustomTemplateAd.getAvailableAssetNames()) {
             if (nativeCustomTemplateAd.getText(assetName) != null) {
                 if (nativeCustomTemplateAdClickableAsset == null && nativeCustomTemplateAd.getText(assetName).length() > 0) {
@@ -421,8 +427,8 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
             } else if (nativeCustomTemplateAd.getImage(assetName) != null) {
                 WritableMap imageMap = Arguments.createMap();
                 imageMap.putString("uri", nativeCustomTemplateAd.getImage(assetName).getUri().toString());
-                imageMap.putInt("width", nativeCustomTemplateAd.getImage(assetName).getWidth());
-                imageMap.putInt("height", nativeCustomTemplateAd.getImage(assetName).getHeight());
+//                imageMap.putInt("width", nativeCustomTemplateAd.getImage(assetName).getWidth());
+//                imageMap.putInt("height", nativeCustomTemplateAd.getImage(assetName).getHeight());
                 imageMap.putDouble("scale", nativeCustomTemplateAd.getImage(assetName).getScale());
                 ad.putMap(assetName, imageMap);
             }
@@ -433,83 +439,83 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
         nativeCustomTemplateAd.recordImpression();
     }
 
-    private void setNativeAd(NativeAd unifiedNativeAd) {
-        if (unifiedNativeAd == null) {
+    private void setNativeAd(NativeAd nativeAd) {
+        if (nativeAd == null) {
             sendEvent(RNAdManagerNativeViewManager.EVENT_AD_LOADED, null);
             return;
         }
 
         WritableMap ad = Arguments.createMap();
         ad.putString("type", AD_TYPE_NATIVE);
-        if (unifiedNativeAd.getHeadline() == null) {
+        if (nativeAd.getHeadline() == null) {
             ad.putString("headline", null);
         } else {
-            ad.putString("headline", unifiedNativeAd.getHeadline());
+            ad.putString("headline", nativeAd.getHeadline());
         }
 
-        if (unifiedNativeAd.getBody() == null) {
+        if (nativeAd.getBody() == null) {
             ad.putString("bodyText", null);
         } else {
-            ad.putString("bodyText", unifiedNativeAd.getBody());
+            ad.putString("bodyText", nativeAd.getBody());
         }
 
-        if (unifiedNativeAd.getCallToAction() == null) {
+        if (nativeAd.getCallToAction() == null) {
             ad.putString("callToActionText", null);
         } else {
-            ad.putString("callToActionText", unifiedNativeAd.getCallToAction());
+            ad.putString("callToActionText", nativeAd.getCallToAction());
         }
 
-        if (unifiedNativeAd.getAdvertiser() == null) {
+        if (nativeAd.getAdvertiser() == null) {
             ad.putString("advertiserName", null);
         } else {
-            ad.putString("advertiserName", unifiedNativeAd.getAdvertiser());
+            ad.putString("advertiserName", nativeAd.getAdvertiser());
         }
 
-        if (unifiedNativeAd.getStarRating() == null) {
+        if (nativeAd.getStarRating() == null) {
             ad.putString("starRating", null);
         } else {
-            ad.putDouble("starRating", unifiedNativeAd.getStarRating());
+            ad.putDouble("starRating", nativeAd.getStarRating());
         }
 
-        if (unifiedNativeAd.getStore() == null) {
+        if (nativeAd.getStore() == null) {
             ad.putString("storeName", null);
         } else {
-            ad.putString("storeName", unifiedNativeAd.getStore());
+            ad.putString("storeName", nativeAd.getStore());
         }
 
-        if (unifiedNativeAd.getPrice() == null) {
+        if (nativeAd.getPrice() == null) {
             ad.putString("price", null);
         } else {
-            ad.putString("price", unifiedNativeAd.getPrice());
+            ad.putString("price", nativeAd.getPrice());
         }
 
-        if (unifiedNativeAd.getIcon() == null) {
+        if (nativeAd.getIcon() == null) {
             ad.putString("icon", null);
         } else {
             WritableMap icon = Arguments.createMap();
-            icon.putString("uri", unifiedNativeAd.getIcon().getUri().toString());
-            icon.putInt("width", unifiedNativeAd.getIcon().getWidth());
-            icon.putInt("height", unifiedNativeAd.getIcon().getHeight());
-            icon.putDouble("scale", unifiedNativeAd.getIcon().getScale());
+            icon.putString("uri", nativeAd.getIcon().getUri().toString());
+//            icon.putInt("width", nativeAd.getIcon().getWidth());
+//            icon.putInt("height", nativeAd.getIcon().getHeight());
+            icon.putDouble("scale", nativeAd.getIcon().getScale());
             ad.putMap("icon", icon);
         }
 
-        if (unifiedNativeAd.getImages().size() == 0) {
+        if (nativeAd.getImages().size() == 0) {
             ad.putArray("images", null);
         } else {
             WritableArray images = Arguments.createArray();
-            for (NativeAd.Image image : unifiedNativeAd.getImages()) {
+            for (NativeAd.Image image : nativeAd.getImages()) {
                 WritableMap imageMap = Arguments.createMap();
                 imageMap.putString("uri", image.getUri().toString());
-                imageMap.putInt("width", image.getWidth());
-                imageMap.putInt("height", image.getHeight());
+//                imageMap.putInt("width", image.getWidth());
+//                imageMap.putInt("height", image.getHeight());
                 imageMap.putDouble("scale", image.getScale());
                 images.pushMap(imageMap);
             }
             ad.putArray("images", images);
         }
 
-        Bundle extras = unifiedNativeAd.getExtras();
+        Bundle extras = nativeAd.getExtras();
         if (extras.containsKey(FacebookAdapter.KEY_SOCIAL_CONTEXT_ASSET)) {
             String socialContext = (String) extras.get(FacebookAdapter.KEY_SOCIAL_CONTEXT_ASSET);
             ad.putString("socialContext", socialContext);
