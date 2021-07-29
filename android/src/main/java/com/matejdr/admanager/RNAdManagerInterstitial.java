@@ -18,17 +18,19 @@ import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.RequestConfiguration;
-import com.google.android.gms.ads.doubleclick.PublisherInterstitialAd;
+import com.google.android.gms.ads.admanager.AdManagerInterstitialAd;
 import com.google.android.gms.ads.admanager.AdManagerAdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import android.app.Activity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import com.google.android.gms.ads.admanager.AdManagerInterstitialAdLoadCallback;
 import com.matejdr.admanager.customClasses.CustomTargeting;
 import com.matejdr.admanager.enums.TargetingEnums;
 import com.matejdr.admanager.enums.TargetingEnums.TargetingTypes;
@@ -44,7 +46,7 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
     public static final String EVENT_AD_CLOSED = "interstitialAdClosed";
     public static final String EVENT_AD_LEFT_APPLICATION = "interstitialAdLeftApplication";
 
-    PublisherInterstitialAd mInterstitialAd;
+    AdManagerInterstitialAd mInterstitialAd;
     String[] testDevices;
     ReadableMap targeting;
 
@@ -55,6 +57,12 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
     String publisherProvidedID;
     Location location;
 
+    String adUnitId;
+    AdManagerAdRequest adRequest;
+    ReactApplicationContext reactContext;
+
+    AdManagerInterstitialAd mAdManagerInterstitialAd;
+
     private Promise mRequestAdPromise;
 
     @Override
@@ -64,6 +72,8 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
 
     public RNAdManagerInterstitial(ReactApplicationContext reactContext) {
         super(reactContext);
+
+        /*
         mInterstitialAd = new PublisherInterstitialAd(reactContext);
 
         new Handler(Looper.getMainLooper()).post(new Runnable() {
@@ -120,6 +130,8 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
                 });
             }
         });
+
+         */
     }
 
     private void sendEvent(String eventName, @Nullable WritableMap params) {
@@ -128,8 +140,8 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setAdUnitID(String adUnitID) {
-        if (mInterstitialAd.getAdUnitId() == null) {
-            mInterstitialAd.setAdUnitId(adUnitID);
+        if (adUnitId == null) {
+            this.adUnitId = adUnitID;
         }
     }
 
@@ -190,7 +202,71 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
                 }
             }
         }
+    }
 
+    private AdManagerAdRequest buildAdRequest() {
+        AdManagerAdRequest.Builder adRequestBuilder = new AdManagerAdRequest.Builder();
+
+        if (testDevices != null) {
+            List<String> testDevicesList = new ArrayList<>();
+
+            for (int i = 0; i < testDevices.length; i++) {
+                String testDevice = testDevices[i];
+                if (testDevice == "SIMULATOR") {
+                    testDevice = AdManagerAdRequest.DEVICE_ID_EMULATOR;
+                }
+                testDevicesList.add(testDevice);
+            }
+            RequestConfiguration requestConfiguration
+                    = new RequestConfiguration.Builder()
+                    .setTestDeviceIds(testDevicesList)
+                    .build();
+            MobileAds.setRequestConfiguration(requestConfiguration);
+        }
+
+        if (customTargeting != null && customTargeting.length > 0) {
+            for (int i = 0; i < customTargeting.length; i++) {
+                String key = customTargeting[i].key;
+                if (!key.isEmpty()) {
+                    if (customTargeting[i].value != null && !customTargeting[i].value.isEmpty()) {
+                        adRequestBuilder.addCustomTargeting(key, customTargeting[i].value);
+                    } else if (customTargeting[i].values != null && !customTargeting[i].values.isEmpty()) {
+                        adRequestBuilder.addCustomTargeting(key, customTargeting[i].values);
+                    }
+                }
+            }
+        }
+        if (categoryExclusions != null && categoryExclusions.length > 0) {
+            for (int i =0; i < categoryExclusions.length; i++) {
+                String categoryExclusion = categoryExclusions[i];
+                if (!categoryExclusion.isEmpty()) {
+                    adRequestBuilder.addCategoryExclusion(categoryExclusion);
+                }
+            }
+        }
+        if (keywords != null && keywords.length > 0) {
+            for (int i = 0; i < keywords.length; i++) {
+                String keyword = keywords[i];
+                if (!keyword.isEmpty()) {
+                    adRequestBuilder.addKeyword(keyword);
+                }
+            }
+        }
+        if (contentURL != null) {
+            adRequestBuilder.setContentUrl(contentURL);
+        }
+        if (publisherProvidedID != null) {
+            adRequestBuilder.setPublisherProvidedId(publisherProvidedID);
+        }
+        if (location != null) {
+            adRequestBuilder.setLocation(location);
+        }
+
+        adRequest = adRequestBuilder.build();
+
+        this.adRequest = adRequest;
+
+        return adRequest;
     }
 
     @ReactMethod
@@ -198,6 +274,61 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run () {
+                if (mAdManagerInterstitialAd != null) {
+                    promise.reject("E_AD_ALREADY_LOADED", "Ad is already loaded.");
+                } else {
+                    mRequestAdPromise = promise;
+                    buildAdRequest();
+
+                    //this.adRequest
+                    AdManagerInterstitialAd.load(reactContext, adUnitId, adRequest, new AdManagerInterstitialAdLoadCallback() {
+                        @Override
+                        public void onAdLoaded(AdManagerInterstitialAd interstitialAd) {
+                            sendEvent(EVENT_AD_LOADED, null);
+                            if (mRequestAdPromise != null) {
+                                mRequestAdPromise.resolve(null);
+                                mRequestAdPromise = null;
+                            }
+
+                            mAdManagerInterstitialAd = interstitialAd;
+                        }
+
+                        @Override
+                        public void onAdFailedToLoad(LoadAdError loadAdError) {
+                            String errorString = "ERROR_UNKNOWN";
+                            String errorMessage = "Unknown error";
+                            switch (loadAdError.getCode()) {
+                                case AdManagerAdRequest.ERROR_CODE_INTERNAL_ERROR:
+                                    errorString = "ERROR_CODE_INTERNAL_ERROR";
+                                    errorMessage = "Internal error, an invalid response was received from the ad server.";
+                                    break;
+                                case AdManagerAdRequest.ERROR_CODE_INVALID_REQUEST:
+                                    errorString = "ERROR_CODE_INVALID_REQUEST";
+                                    errorMessage = "Invalid ad request, possibly an incorrect ad unit ID was given.";
+                                    break;
+                                case AdManagerAdRequest.ERROR_CODE_NETWORK_ERROR:
+                                    errorString = "ERROR_CODE_NETWORK_ERROR";
+                                    errorMessage = "The ad request was unsuccessful due to network connectivity.";
+                                    break;
+                                case AdManagerAdRequest.ERROR_CODE_NO_FILL:
+                                    errorString = "ERROR_CODE_NO_FILL";
+                                    errorMessage = "The ad request was successful, but no ad was returned due to lack of ad inventory.";
+                                    break;
+                            }
+                            WritableMap event = Arguments.createMap();
+                            WritableMap error = Arguments.createMap();
+                            event.putString("message", errorMessage);
+                            sendEvent(EVENT_AD_FAILED_TO_LOAD, event);
+                            if (mRequestAdPromise != null) {
+                                mRequestAdPromise.reject(errorString, errorMessage);
+                                mRequestAdPromise = null;
+                            }
+                            mAdManagerInterstitialAd = null;
+                        }
+
+                    });
+                }
+/*
                 if (mInterstitialAd.isLoaded() || mInterstitialAd.isLoading()) {
                     promise.reject("E_AD_ALREADY_LOADED", "Ad is already loaded.");
                 } else {
@@ -259,19 +390,40 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
                     }
 
                     AdManagerAdRequest adRequest = adRequestBuilder.build();
-                    mInterstitialAd.loadAd(adRequest);
+
                 }
+                */
             }
         });
     }
 
     @ReactMethod
     public void showAd(final Promise promise) {
+
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run () {
-                if (mInterstitialAd.isLoaded()) {
-                    mInterstitialAd.show();
+                if (mInterstitialAd != null) {
+                    mInterstitialAd.setFullScreenContentCallback(
+                        new FullScreenContentCallback(){
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+
+                            }
+
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(AdError adError) {
+
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                mAdManagerInterstitialAd = null;
+                            }
+                        });
+
+                    final Activity activity = getCurrentActivity();
+                    mInterstitialAd.show(activity);
                     promise.resolve(null);
                 } else {
                     promise.reject("E_AD_NOT_READY", "Ad is not ready.");
@@ -285,7 +437,7 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run () {
-                callback.invoke(mInterstitialAd.isLoaded());
+                callback.invoke(mInterstitialAd);
             }
         });
     }
