@@ -26,6 +26,7 @@ import com.google.android.gms.ads.admanager.AdManagerInterstitialAd;
 import com.google.android.gms.ads.admanager.AdManagerAdRequest;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import android.app.Activity;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +73,8 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
 
     public RNAdManagerInterstitial(ReactApplicationContext reactContext) {
         super(reactContext);
+
+        this.reactContext = reactContext;
 
         /*
         mInterstitialAd = new PublisherInterstitialAd(reactContext);
@@ -280,7 +283,6 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
                     mRequestAdPromise = promise;
                     buildAdRequest();
 
-                    //this.adRequest
                     AdManagerInterstitialAd.load(reactContext, adUnitId, adRequest, new AdManagerInterstitialAdLoadCallback() {
                         @Override
                         public void onAdLoaded(AdManagerInterstitialAd interstitialAd) {
