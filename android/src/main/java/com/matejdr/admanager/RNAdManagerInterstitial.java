@@ -62,8 +62,6 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
     AdManagerAdRequest adRequest;
     ReactApplicationContext reactContext;
 
-    AdManagerInterstitialAd mAdManagerInterstitialAd;
-
     private Promise mRequestAdPromise;
 
     @Override
@@ -277,7 +275,7 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run () {
-                if (mAdManagerInterstitialAd != null) {
+                if (mInterstitialAd != null) {
                     promise.reject("E_AD_ALREADY_LOADED", "Ad is already loaded.");
                 } else {
                     mRequestAdPromise = promise;
@@ -292,7 +290,7 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
                                 mRequestAdPromise = null;
                             }
 
-                            mAdManagerInterstitialAd = interstitialAd;
+                            mInterstitialAd = interstitialAd;
                         }
 
                         @Override
@@ -325,7 +323,7 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
                                 mRequestAdPromise.reject(errorString, errorMessage);
                                 mRequestAdPromise = null;
                             }
-                            mAdManagerInterstitialAd = null;
+                            mInterstitialAd = null;
                         }
 
                     });
@@ -420,7 +418,7 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
 
                             @Override
                             public void onAdShowedFullScreenContent() {
-                                mAdManagerInterstitialAd = null;
+                                mInterstitialAd = null;
                             }
                         });
 
