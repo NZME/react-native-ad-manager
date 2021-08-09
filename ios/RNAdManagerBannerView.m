@@ -100,7 +100,7 @@
                                    _correlator, @"correlator",
                                    nil];
     [request registerAdNetworkExtras:extras];
-    
+
     if (_targeting != nil) {
         NSDictionary *customTargeting = [_targeting objectForKey:@"customTargeting"];
         if (customTargeting != nil) {
@@ -151,6 +151,11 @@
 /// Tells the delegate an ad request loaded an ad.
 - (void)adViewDidReceiveAd:(DFPBannerView *)adView
 {
+    [self.bannerView removeFromSuperview];
+    self.bannerView = adView;
+    self.bannerView.translatesAutoresizingMaskIntoConstraints = YES;
+    [self addSubview:self.bannerView];
+
     if (self.onSizeChange) {
         self.onSizeChange(@{
                             @"type": @"banner",
