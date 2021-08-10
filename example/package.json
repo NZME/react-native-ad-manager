@@ -11,8 +11,8 @@
     "postinstall": "node ../scripts/examples_postinstall.js"
   },
   "dependencies": {
-    "react": "16.9.0",
-    "react-native": "0.61.4",
+    "react": "16.13.1",
+    "react-native": "0.63.3",
     "react-native-ad-manager": "file:../"
   },
   "devDependencies": {
