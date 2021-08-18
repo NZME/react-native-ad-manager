@@ -47,9 +47,6 @@ export default class Example extends Component {
       console.log('Interstitial => adClosed');
       Interstitial.requestAd().catch(error => console.warn(error));
     });
-    Interstitial.addEventListener('adLeftApplication', () =>
-      console.log('Interstitial => adLeftApplication'),
-    );
 
     Interstitial.requestAd().catch(error => console.warn(error));
 
@@ -172,7 +169,7 @@ export default class Example extends Component {
 
   render() {
     // const adsManager = new NativeAdsManager("/6499/example/native", [AdMobInterstitial.simulatorId]);
-    const adsManager = new NativeAdsManager('/83069739/jeff', [
+    const adsManager = new NativeAdsManager('/6499/example/native', [
       Interstitial.simulatorId,
     ]);
     const {adsList, refreshingScrollView} = this.state;

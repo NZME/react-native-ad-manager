@@ -44,7 +44,6 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
     public static final String EVENT_AD_CLOSED = "onAdClosed";
     public static final String EVENT_AD_CLICKED = "onAdClicked";
     public static final String EVENT_AD_CUSTOM_CLICK = "onAdCustomClick";
-    public static final String EVENT_AD_LEFT_APPLICATION = "onAdLeftApplication";
     public static final String EVENT_APP_EVENT = "onAppEvent";
     public static final int COMMAND_RELOAD_AD = 1;
 
@@ -106,7 +105,6 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
                 EVENT_AD_CLOSED,
                 EVENT_AD_CLICKED,
                 EVENT_AD_CUSTOM_CLICK,
-                EVENT_AD_LEFT_APPLICATION,
                 EVENT_APP_EVENT
         };
         for (int i = 0; i < events.length; i++) {

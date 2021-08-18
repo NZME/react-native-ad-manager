@@ -79,10 +79,6 @@ export default (Component) => class NativeAdWrapper extends React.Component {
       this.props.onAdCustomClick &&
       this.props.onAdCustomClick(nativeEvent);
     };
-    this.handleOnAdLeftApplication = ({ nativeEvent }) => {
-      this.props.onAdLeftApplication &&
-      this.props.onAdLeftApplication(nativeEvent);
-    };
     this.handleOnAppEvent = ({ nativeEvent }) => {
       this.props.onAppEvent &&
       this.props.onAppEvent(nativeEvent);
@@ -174,7 +170,6 @@ export default (Component) => class NativeAdWrapper extends React.Component {
         onAdFailedToLoad={this.handleOnAdFailedToLoad}
         onAdOpened={this.handleOnAdOpened}
         onAdClosed={this.handleOnAdClosed}
-        onAdLeftApplication={this.handleOnAdLeftApplication}
         onAppEvent={this.handleOnAppEvent}
         targeting={this.props.targeting}
         customClickTemplateIds={this.props.customClickTemplateIds}

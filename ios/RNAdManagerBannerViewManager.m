@@ -55,6 +55,5 @@ RCT_EXPORT_VIEW_PROPERTY(onAdRecordImpression, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onAdRecordClick, RCTBubblingEventBlock)
 
 RCT_EXPORT_VIEW_PROPERTY(onAdClosed, RCTBubblingEventBlock)
-RCT_EXPORT_VIEW_PROPERTY(onAdLeftApplication, RCTBubblingEventBlock)
 
 @end

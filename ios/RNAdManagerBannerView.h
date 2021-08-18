@@ -19,7 +19,6 @@
 @property (nonatomic, copy) RCTBubblingEventBlock onAdRecordClick;
 
 @property (nonatomic, copy) RCTBubblingEventBlock onAdClosed;
-@property (nonatomic, copy) RCTBubblingEventBlock onAdLeftApplication;
 
 - (void)loadBanner;
 

@@ -27,6 +27,7 @@
 
 @property (nonatomic, copy) NSString *loaderIndex;
 @property (nonatomic, copy) NSArray *customTemplateIds;
+@property (nonatomic, copy) NSArray *customClickTemplateIds;
 @property (nonatomic, copy) NSArray *validAdTypes;
 @property (nonatomic, copy) NSString *adSize;
 @property (nonatomic, copy) NSArray *validAdSizes;
@@ -39,7 +40,7 @@
 @property (nonatomic, copy) RCTBubblingEventBlock onAdFailedToLoad;
 @property (nonatomic, copy) RCTBubblingEventBlock onAdOpened;
 @property (nonatomic, copy) RCTBubblingEventBlock onAdClosed;
-@property (nonatomic, copy) RCTBubblingEventBlock onAdLeftApplication;
+@property (nonatomic, copy) RCTBubblingEventBlock onAdCustomClick;
 
 - (instancetype)initWithBridge:(RCTBridge *)bridge;
 - (void)registerViewsForInteraction:(NSArray<UIView *> *)clickableViews;

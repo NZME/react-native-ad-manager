@@ -194,6 +194,11 @@ static NSString *const kAdTypeTemplate = @"template";
     _customTemplateIds = customTemplateIds;
 }
 
+- (void)setCustomClickTemplateIds:(NSArray *)customClickTemplateIds
+{
+    _customClickTemplateIds = customClickTemplateIds;
+}
+
 - (void)setValidAdTypes:(NSArray *)adTypes
 {
     __block NSMutableArray *validAdTypes = [[NSMutableArray alloc] initWithCapacity:adTypes.count];
@@ -361,6 +366,23 @@ static NSString *const kAdTypeTemplate = @"template";
     }
 }
 
+- (void)triggetAdCustomClickEvent:(nonnull NSString *)assetID {
+    if (self.onAdCustomClick) {
+        NSMutableDictionary *ad = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                   assetID, @"assetName",
+                                   nil];
+
+        [self.nativeCustomTemplateAd.availableAssetKeys enumerateObjectsUsingBlock:^(NSString *value, NSUInteger idx, __unused BOOL *stop) {
+            if ([self.nativeCustomTemplateAd stringForKey:value] != nil) {
+                NSString *assetVal = [self.nativeCustomTemplateAd stringForKey:value];
+                ad[value] = assetVal;
+            }
+        }];
+
+        self.onAdCustomClick(ad);
+    }
+}
+
 #pragma mark GAMBannerAdLoaderDelegate implementation
 
 - (nonnull NSArray<NSValue *> *)validBannerSizesForAdLoader:(nonnull GADAdLoader *)adLoader {
@@ -425,6 +447,12 @@ static NSString *const kAdTypeTemplate = @"template";
 
     self.nativeCustomTemplateAd = customNativeAd;
 
+    if (self.customClickTemplateIds != nil && [self.customClickTemplateIds containsObject:customNativeAd.formatID]) {
+        [self.nativeCustomTemplateAd setCustomClickHandler:^(NSString *assetID){
+            [self triggetAdCustomClickEvent:assetID];
+        }];
+    }
+
     [self triggerCustomAdLoadedEvent:self.nativeCustomTemplateAd];
 
     [self.nativeCustomTemplateAd recordImpression];
@@ -450,7 +478,7 @@ static NSString *const kAdTypeTemplate = @"template";
     }
 }
 
-- (NSArray *)nativeCustomTemplateIDsForAdLoader:(GADAdLoader *)adLoader {
+- (nonnull NSArray<NSString *> *)customNativeAdFormatIDsForAdLoader:(nonnull GADAdLoader *)adLoader {
     if (_customTemplateIds == nil) {
         _customTemplateIds = @[ @"11891103" ];
     }

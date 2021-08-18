@@ -45,7 +45,6 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
     public static final String EVENT_AD_FAILED_TO_LOAD = "interstitialAdFailedToLoad";
     public static final String EVENT_AD_OPENED = "interstitialAdOpened";
     public static final String EVENT_AD_CLOSED = "interstitialAdClosed";
-    public static final String EVENT_AD_LEFT_APPLICATION = "interstitialAdLeftApplication";
 
     AdManagerInterstitialAd mInterstitialAd;
     String[] testDevices;

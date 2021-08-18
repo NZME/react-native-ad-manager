@@ -10,7 +10,6 @@ const eventMap = {
   adFailedToLoad: 'interstitialAdFailedToLoad',
   adOpened: 'interstitialAdOpened',
   adClosed: 'interstitialAdClosed',
-  adLeftApplication: 'interstitialAdLeftApplication',
 };
 
 const _subscriptions = new Map();

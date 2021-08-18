@@ -18,7 +18,7 @@
 
 - (void)dealloc
 {
-    
+
     _bannerView.delegate = nil;
     _bannerView.adSizeDelegate = nil;
     _bannerView.appEventDelegate = nil;
@@ -152,11 +152,6 @@
 /// Tells the delegate an ad request loaded an ad.
 - (void)bannerViewDidReceiveAd:(nonnull GADBannerView *)bannerView
 {
-    [self.bannerView removeFromSuperview];
-    self.bannerView = adView;
-    self.bannerView.translatesAutoresizingMaskIntoConstraints = YES;
-    [self addSubview:self.bannerView];
-
     if (self.onSizeChange) {
         self.onSizeChange(@{
                             @"type": @"banner",
