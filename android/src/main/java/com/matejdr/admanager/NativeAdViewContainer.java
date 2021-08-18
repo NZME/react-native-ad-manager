@@ -67,7 +67,6 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
     AdSize adSize;
     String[] customTemplateIds;
     String[] validAdTypes = new String[]{AD_TYPE_BANNER, AD_TYPE_NATIVE, AD_TYPE_TEMPLATE};
-    ;
 
     // Targeting
     Boolean hasTargeting = false;
@@ -78,6 +77,7 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
     String publisherProvidedID;
     Location location;
     String correlator;
+    List<String> customClickTemplateIds;
 
     /**
      * @{RCTEventEmitter} instance used for sending events back to JS
@@ -164,7 +164,25 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
             for (int i = 0; i < customTemplateIds.length; i++) {
                 String curCustomTemplateID = customTemplateIds[i];
                 if (!curCustomTemplateID.isEmpty()) {
-                    builder.forCustomFormatAd(curCustomTemplateID, NativeAdViewContainer.this, null);
+                    if (customClickTemplateIds != null && customClickTemplateIds.contains(curCustomTemplateID)) {
+                        builder.forCustomFormatAd(curCustomTemplateID,
+                                NativeAdViewContainer.this,
+                                new NativeCustomFormatAd.OnCustomClickListener() {
+                                    @Override
+                                    public void onCustomClick(NativeCustomFormatAd ad, String assetName) {
+                                        WritableMap customClick = Arguments.createMap();
+                                        customClick.putString("assetName", assetName);
+                                        for (String adAssetName : ad.getAvailableAssetNames()) {
+                                            if (ad.getText(adAssetName) != null) {
+                                                customClick.putString(adAssetName, ad.getText(adAssetName).toString());
+                                            }
+                                        }
+                                        sendEvent(RNAdManagerNativeViewManager.EVENT_AD_CUSTOM_CLICK, customClick);
+                                    }
+                                });
+                    } else {
+                        builder.forCustomFormatAd(curCustomTemplateID, NativeAdViewContainer.this, null);
+                    }
                 }
             }
             // builder.forCustomTemplateAd(customTemplateIds, NativeAdView.this, null);
@@ -427,8 +445,8 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
             } else if (nativeCustomTemplateAd.getImage(assetName) != null) {
                 WritableMap imageMap = Arguments.createMap();
                 imageMap.putString("uri", nativeCustomTemplateAd.getImage(assetName).getUri().toString());
-//                imageMap.putInt("width", nativeCustomTemplateAd.getImage(assetName).getWidth());
-//                imageMap.putInt("height", nativeCustomTemplateAd.getImage(assetName).getHeight());
+                imageMap.putInt("width", nativeCustomTemplateAd.getImage(assetName).getDrawable().getIntrinsicWidth());
+                imageMap.putInt("height", nativeCustomTemplateAd.getImage(assetName).getDrawable().getIntrinsicHeight());
                 imageMap.putDouble("scale", nativeCustomTemplateAd.getImage(assetName).getScale());
                 ad.putMap(assetName, imageMap);
             }
@@ -494,8 +512,8 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         } else {
             WritableMap icon = Arguments.createMap();
             icon.putString("uri", nativeAd.getIcon().getUri().toString());
-//            icon.putInt("width", nativeAd.getIcon().getWidth());
-//            icon.putInt("height", nativeAd.getIcon().getHeight());
+            icon.putInt("width", nativeAd.getIcon().getDrawable().getIntrinsicWidth());
+            icon.putInt("height", nativeAd.getIcon().getDrawable().getIntrinsicHeight());
             icon.putDouble("scale", nativeAd.getIcon().getScale());
             ad.putMap("icon", icon);
         }
@@ -592,6 +610,10 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
 
     public void setCorrelator(String correlator) {
         this.correlator = correlator;
+    }
+
+    public void setCustomClickTemplateIds(String[] customClickTemplateIds) {
+        this.customClickTemplateIds = Arrays.asList(customClickTemplateIds);
     }
 
     @Override

@@ -75,6 +75,10 @@ export default (Component) => class NativeAdWrapper extends React.Component {
       this.props.onAdClosed &&
       this.props.onAdClosed(nativeEvent);
     };
+    this.handleOnAdCustomClick = ({ nativeEvent }) => {
+      this.props.onAdCustomClick &&
+      this.props.onAdCustomClick(nativeEvent);
+    };
     this.handleOnAdLeftApplication = ({ nativeEvent }) => {
       this.props.onAdLeftApplication &&
       this.props.onAdLeftApplication(nativeEvent);
@@ -146,7 +150,7 @@ export default (Component) => class NativeAdWrapper extends React.Component {
 
     return (
       <TriggerableContext.Provider value={this.registerFunctionsForTriggerables}>
-        <Component {...componentProps} nativeAd={this.state.nativeAd}/>
+        <Component {...componentProps} nativeAd={this.state.nativeAd} />
       </TriggerableContext.Provider>
     );
   }
@@ -173,6 +177,8 @@ export default (Component) => class NativeAdWrapper extends React.Component {
         onAdLeftApplication={this.handleOnAdLeftApplication}
         onAppEvent={this.handleOnAppEvent}
         targeting={this.props.targeting}
+        customClickTemplateIds={this.props.customClickTemplateIds}
+        onAdCustomClick={this.handleOnAdCustomClick}
         adsManager={adsManager.toJSON()}
       >
         {this.renderAdComponent(rest)}

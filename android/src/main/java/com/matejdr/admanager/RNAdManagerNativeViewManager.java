@@ -30,6 +30,7 @@ import com.matejdr.admanager.utils.Targeting;
 public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewContainer> {
     public static final String PROP_AD_MANAGER = "adsManager";
     public static final String PROP_CUSTOM_TEMPLATE_IDS = "customTemplateIds";
+    public static final String PROP_CUSTOM_CLICK_TEMPLATE_IDS = "customClickTemplateIds";
     public static final String PROP_AD_SIZE = "adSize";
     public static final String PROP_VALID_AD_SIZES = "validAdSizes";
     public static final String PROP_VALID_AD_TYPES = "validAdTypes";
@@ -42,6 +43,7 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
     public static final String EVENT_AD_OPENED = "onAdOpened";
     public static final String EVENT_AD_CLOSED = "onAdClosed";
     public static final String EVENT_AD_CLICKED = "onAdClicked";
+    public static final String EVENT_AD_CUSTOM_CLICK = "onAdCustomClick";
     public static final String EVENT_AD_LEFT_APPLICATION = "onAdLeftApplication";
     public static final String EVENT_APP_EVENT = "onAppEvent";
     public static final int COMMAND_RELOAD_AD = 1;
@@ -103,6 +105,7 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
                 EVENT_AD_OPENED,
                 EVENT_AD_CLOSED,
                 EVENT_AD_CLICKED,
+                EVENT_AD_CUSTOM_CLICK,
                 EVENT_AD_LEFT_APPLICATION,
                 EVENT_APP_EVENT
         };
@@ -209,6 +212,14 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
     @ReactProp(name = PROP_CORRELATOR)
     public void setCorrelator(final NativeAdViewContainer view, final String correlator) {
         view.setCorrelator(correlator);
+    }
+
+    @ReactProp(name = PROP_CUSTOM_CLICK_TEMPLATE_IDS)
+    public void setPropCustomClickTemplateIds(final NativeAdViewContainer view, final ReadableArray customClickTemplateIdsString) {
+        ReadableNativeArray nativeArray = (ReadableNativeArray) customClickTemplateIdsString;
+        ArrayList<Object> list = nativeArray.toArrayList();
+        String[] customTemplateClickIdsStringArray = list.toArray(new String[list.size()]);
+        view.setCustomClickTemplateIds(customTemplateClickIdsStringArray);
     }
 
     @Override
