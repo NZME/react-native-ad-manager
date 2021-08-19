@@ -136,7 +136,6 @@ Banner.propTypes = {
   onAdFailedToLoad: func,
   onAdOpened: func,
   onAdClosed: func,
-  onAdLeftApplication: func,
   onAppEvent: func,
 
   targeting: shape({

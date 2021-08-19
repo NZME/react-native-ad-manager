@@ -3,6 +3,6 @@
 
 #import <GoogleMobileAds/GoogleMobileAds.h>
 
-@interface RNAdManagerInterstitial : RCTEventEmitter <RCTBridgeModule, GADInterstitialDelegate>
+@interface RNAdManagerInterstitial : RCTEventEmitter <RCTBridgeModule, GADFullScreenContentDelegate>
 
 @end

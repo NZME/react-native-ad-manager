@@ -96,10 +96,10 @@ public class RNAdManageNativeManager extends ReactContextBaseJavaModule {
             @Override
             public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
                 try {
-                    NativeAdView nativeAdView = null;
+                    NativeAdViewContainer nativeAdViewContainer = null;
 
                     if (adTag != -1) {
-                        nativeAdView = (NativeAdView) nativeViewHierarchyManager.resolveView(adTag);
+                        nativeAdViewContainer = (NativeAdViewContainer) nativeViewHierarchyManager.resolveView(adTag);
                     }
 
                     List<View> clickableViews = new ArrayList<>();
@@ -109,7 +109,7 @@ public class RNAdManageNativeManager extends ReactContextBaseJavaModule {
                         clickableViews.add(view);
                     }
 
-                    nativeAdView.registerViewsForInteraction(clickableViews);
+                    nativeAdViewContainer.registerViewsForInteraction(clickableViews);
                     promise.resolve(null);
 
                 } catch (ClassCastException e) {

@@ -132,7 +132,7 @@ static NSString *const kAdTypeTemplate = @"template";
         return;
     }
 
-    DFPRequest *request = [DFPRequest request];
+    GAMRequest *request = [GAMRequest request];
     
     // Facebook Audience network
     GADFBNetworkExtras * fbExtras = [[GADFBNetworkExtras alloc] init];
@@ -194,6 +194,11 @@ static NSString *const kAdTypeTemplate = @"template";
     _customTemplateIds = customTemplateIds;
 }
 
+- (void)setCustomClickTemplateIds:(NSArray *)customClickTemplateIds
+{
+    _customClickTemplateIds = customClickTemplateIds;
+}
+
 - (void)setValidAdTypes:(NSArray *)adTypes
 {
     __block NSMutableArray *validAdTypes = [[NSMutableArray alloc] initWithCapacity:adTypes.count];
@@ -235,7 +240,7 @@ static NSString *const kAdTypeTemplate = @"template";
 #pragma mark GADAdLoaderDelegate implementation
 
 /// Tells the delegate an ad request failed.UnifiedNativeAdView
-- (void)adLoader:(GADAdLoader *)adLoader didFailToReceiveAdWithError:(GADRequestError *)error {
+- (void)adLoader:(nonnull GADAdLoader *)adLoader didFailToReceiveAdWithError:(nonnull NSError *)error {
     if (self.onAdFailedToLoad) {
         self.onAdFailedToLoad(@{ @"error": @{ @"message": [error localizedDescription] } });
     }
@@ -264,13 +269,13 @@ static NSString *const kAdTypeTemplate = @"template";
     }
 }
 
-#pragma mark GADUnifiedNativeAdLoaderDelegate implementation
+#pragma mark GADNativeAdLoaderDelegate implementation
 
-- (void)adLoader:(GADAdLoader *)adLoader didReceiveUnifiedNativeAd:(GADUnifiedNativeAd *)nativeAd {
+- (void)adLoader:(GADAdLoader *)adLoader didReceiveNativeAd:(GADNativeAd *)nativeAd {
     [self.bannerView removeFromSuperview];
     [self.nativeAdView removeFromSuperview];
 
-    GADUnifiedNativeAdView *nativeAdView = [[GADUnifiedNativeAdView alloc] init];
+    GADNativeAdView *nativeAdView = [[GADNativeAdView alloc] init];
     self.nativeAdView = nativeAdView;
     
     if (self.frame.size.width <= 0 || self.frame.size.height <= 0) {
@@ -315,7 +320,7 @@ static NSString *const kAdTypeTemplate = @"template";
     }
 }
 
-- (void)triggerAdLoadedEvent:(GADUnifiedNativeAd *)nativeAd {
+- (void)triggerAdLoadedEvent:(GADNativeAd *)nativeAd {
     if (self.onAdLoaded) {
         NSMutableDictionary *ad = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                    kAdTypeNative, @"type",
@@ -361,10 +366,26 @@ static NSString *const kAdTypeTemplate = @"template";
     }
 }
 
-#pragma mark DFPBannerAdLoaderDelegate implementation
+- (void)triggetAdCustomClickEvent:(nonnull NSString *)assetID {
+    if (self.onAdCustomClick) {
+        NSMutableDictionary *ad = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                   assetID, @"assetName",
+                                   nil];
 
-- (nonnull NSArray<NSValue *> *)validBannerSizesForAdLoader:
-(nonnull GADAdLoader *)adLoader {
+        [self.nativeCustomTemplateAd.availableAssetKeys enumerateObjectsUsingBlock:^(NSString *value, NSUInteger idx, __unused BOOL *stop) {
+            if ([self.nativeCustomTemplateAd stringForKey:value] != nil) {
+                NSString *assetVal = [self.nativeCustomTemplateAd stringForKey:value];
+                ad[value] = assetVal;
+            }
+        }];
+
+        self.onAdCustomClick(ad);
+    }
+}
+
+#pragma mark GAMBannerAdLoaderDelegate implementation
+
+- (nonnull NSArray<NSValue *> *)validBannerSizesForAdLoader:(nonnull GADAdLoader *)adLoader {
     NSMutableArray *validAdSizes = [NSMutableArray arrayWithArray:_validAdSizes];
     if (_adSize != nil) {
         GADAdSize adSize = [RCTConvert GADAdSize:_adSize];
@@ -377,8 +398,7 @@ static NSString *const kAdTypeTemplate = @"template";
     return validAdSizes;
 }
 
-- (void)adLoader:(nonnull GADAdLoader *)adLoader
-didReceiveDFPBannerView:(nonnull DFPBannerView *)bannerView {
+- (void)adLoader:(nonnull GADAdLoader *)adLoader didReceiveGAMBannerView:(nonnull GAMBannerView *)bannerView {
     [self.bannerView removeFromSuperview];
     [self.nativeAdView removeFromSuperview];
     self.bannerView = bannerView;
@@ -419,14 +439,19 @@ didReceiveDFPBannerView:(nonnull DFPBannerView *)bannerView {
     }
 }
 
-#pragma mark GADNativeCustomTemplateAdLoaderDelegate implementation
+#pragma mark GADCustomNativeAdLoaderDelegate implementation
 
-- (void)adLoader:(GADAdLoader *)adLoader
-    didReceiveNativeCustomTemplateAd:(GADNativeCustomTemplateAd *)nativeCustomTemplateAd {
+- (void)adLoader:(nonnull GADAdLoader *)adLoader didReceiveCustomNativeAd:(nonnull GADCustomNativeAd *)customNativeAd {
     [self.bannerView removeFromSuperview];
     [self.nativeAdView removeFromSuperview];
 
-    self.nativeCustomTemplateAd = nativeCustomTemplateAd;
+    self.nativeCustomTemplateAd = customNativeAd;
+
+    if (self.customClickTemplateIds != nil && [self.customClickTemplateIds containsObject:customNativeAd.formatID]) {
+        [self.nativeCustomTemplateAd setCustomClickHandler:^(NSString *assetID){
+            [self triggetAdCustomClickEvent:assetID];
+        }];
+    }
 
     [self triggerCustomAdLoadedEvent:self.nativeCustomTemplateAd];
 
@@ -453,7 +478,7 @@ didReceiveDFPBannerView:(nonnull DFPBannerView *)bannerView {
     }
 }
 
-- (NSArray *)nativeCustomTemplateIDsForAdLoader:(GADAdLoader *)adLoader {
+- (nonnull NSArray<NSString *> *)customNativeAdFormatIDsForAdLoader:(nonnull GADAdLoader *)adLoader {
     if (_customTemplateIds == nil) {
         _customTemplateIds = @[ @"11891103" ];
     }
@@ -461,11 +486,11 @@ didReceiveDFPBannerView:(nonnull DFPBannerView *)bannerView {
     return _customTemplateIds;
 }
 
-- (void)triggerCustomAdLoadedEvent:(GADNativeCustomTemplateAd *)nativeCustomTemplateAd {
+- (void)triggerCustomAdLoadedEvent:(GADCustomNativeAd *)nativeCustomTemplateAd {
     if (self.onAdLoaded) {
         NSMutableDictionary *ad = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                    kAdTypeTemplate, @"type",
-                                   nativeCustomTemplateAd.templateID, @"templateID",
+                                   nativeCustomTemplateAd.formatID, @"templateID",
                                    nil];
 
         [nativeCustomTemplateAd.availableAssetKeys enumerateObjectsUsingBlock:^(NSString *value, NSUInteger idx, __unused BOOL *stop) {
@@ -496,35 +521,28 @@ didReceiveDFPBannerView:(nonnull DFPBannerView *)bannerView {
 //    NSLog(@"%s", __PRETTY_FUNCTION__);
 //}
 
-#pragma mark GADUnifiedNativeAdDelegate
+#pragma mark GADNativeAdDelegate
 
-//- (void)nativeAdDidRecordClick:(GADUnifiedNativeAd *)nativeAd {
-//    NSLog(@"%s", __PRETTY_FUNCTION__);
-//}
-//
-//- (void)nativeAdDidRecordImpression:(GADUnifiedNativeAd *)nativeAd {
+//- (void)nativeAdDidRecordClick:(nonnull GADNativeAd *)nativeAd {
 //    NSLog(@"%s", __PRETTY_FUNCTION__);
 //}
 
-- (void)nativeAdWillPresentScreen:(GADUnifiedNativeAd *)nativeAd {
+//- (void)nativeAdDidRecordImpression:(nonnull GADNativeAd *)nativeAd {
+//    NSLog(@"%s", __PRETTY_FUNCTION__);
+//}
+- (void)nativeAdWillPresentScreen:(nonnull GADNativeAd *)nativeAd {
     if (self.onAdOpened) {
         self.onAdOpened(@{});
     }
 }
 
-//- (void)nativeAdWillDismissScreen:(GADUnifiedNativeAd *)nativeAd {
+//- (void)nativeAdWillDismissScreen:(nonnull GADNativeAd *)nativeAd {
 //    NSLog(@"%s", __PRETTY_FUNCTION__);
 //}
 
-- (void)nativeAdDidDismissScreen:(GADUnifiedNativeAd *)nativeAd {
+- (void)nativeAdDidDismissScreen:(nonnull GADNativeAd *)nativeAd {
     if (self.onAdClosed) {
         self.onAdClosed(@{});
-    }
-}
-
-- (void)nativeAdWillLeaveApplication:(GADUnifiedNativeAd *)nativeAd {
-    if (self.onAdLeftApplication) {
-        self.onAdLeftApplication(@{});
     }
 }
 

@@ -40,7 +40,6 @@ public class RNAdManagerBannerViewManager extends ViewGroupManager<BannerAdView>
     public static final String EVENT_AD_FAILED_TO_LOAD = "onAdFailedToLoad";
     public static final String EVENT_AD_OPENED = "onAdOpened";
     public static final String EVENT_AD_CLOSED = "onAdClosed";
-    public static final String EVENT_AD_LEFT_APPLICATION = "onAdLeftApplication";
     public static final String EVENT_APP_EVENT = "onAppEvent";
 
     public static final int COMMAND_LOAD_BANNER = 1;
@@ -88,7 +87,6 @@ public class RNAdManagerBannerViewManager extends ViewGroupManager<BannerAdView>
                 EVENT_AD_FAILED_TO_LOAD,
                 EVENT_AD_OPENED,
                 EVENT_AD_CLOSED,
-                EVENT_AD_LEFT_APPLICATION,
                 EVENT_APP_EVENT
         };
         for (int i = 0; i < events.length; i++) {

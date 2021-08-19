@@ -47,9 +47,6 @@ export default class Example extends Component {
       console.log('Interstitial => adClosed');
       Interstitial.requestAd().catch(error => console.warn(error));
     });
-    Interstitial.addEventListener('adLeftApplication', () =>
-      console.log('Interstitial => adLeftApplication'),
-    );
 
     Interstitial.requestAd().catch(error => console.warn(error));
 
@@ -114,25 +111,40 @@ export default class Example extends Component {
   };
 
   showNative = (adsManager, index) => {
+    const adTargeting = {
+      customTargeting: {adtype: "rectangle",
+        arc_uuid: "5ce210e7f45fef6c88f16bf0",
+        av: "2.0",
+        pos: "1",
+        pt: "home",
+        subscriber: "true"},
+      publisherProvidedID: "6c43f0be912249289a0286edab3fbb72"
+    };
+    const correlator = "0333965063464928";
+    const adLayout =  "horizontal";
+    const adUnitID = "/6499/example/native";
+    const customTemplateIds = ["10063170"];
+    const customClickTemplateIds = [];
+    const validAdTypes = ['template'];
     return (
       <BannerExample style={{padding: 20}} title={`${index}. DFP - Native ad`}>
         <View style={{alignItems: 'center', width: '100%'}}>
           <NativeAdView
-            targeting={{
-              customTargeting: {group: 'nzme_user_test'},
-              categoryExclusions: ['media'],
-              contentURL: 'nzmetest://',
-              publisherProvidedID: 'provider_id_nzme',
-            }}
+            correlator={correlator}
+            targeting={adTargeting}
             style={{width: '100%'}}
             adsManager={adsManager}
-            // adLayout={'horizontal'}
-            validAdTypes={['native', 'template']}
-            customTemplateId="11891103"
+            adLayout={adLayout}
+            validAdTypes={validAdTypes}
+            customTemplateIds={customTemplateIds}
             onAdLoaded={this.onAdLoaded}
-            adUnitID={'/83069739/jeff'}
+            adUnitID={adUnitID}
             onAdFailedToLoad={error => {
               console.log(error);
+            }}
+            customClickTemplateIds={customClickTemplateIds}
+            onAdCustomClick={adData => {
+              console.log('adData', adData);
             }}
           />
         </View>
@@ -157,7 +169,7 @@ export default class Example extends Component {
 
   render() {
     // const adsManager = new NativeAdsManager("/6499/example/native", [AdMobInterstitial.simulatorId]);
-    const adsManager = new NativeAdsManager('/83069739/jeff', [
+    const adsManager = new NativeAdsManager('/6499/example/native', [
       Interstitial.simulatorId,
     ]);
     const {adsList, refreshingScrollView} = this.state;
