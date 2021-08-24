@@ -31,24 +31,24 @@ export default class Example extends Component {
   }
 
   componentDidMount() {
-    Interstitial.setTestDevices([Interstitial.simulatorId]);
-    Interstitial.setAdUnitID('/83069739/jeff');
-
-    Interstitial.addEventListener('adLoaded', () =>
-      console.log('Interstitial adLoaded'),
-    );
-    Interstitial.addEventListener('adFailedToLoad', error =>
-      console.warn(error),
-    );
-    Interstitial.addEventListener('adOpened', () =>
-      console.log('Interstitial => adOpened'),
-    );
-    Interstitial.addEventListener('adClosed', () => {
-      console.log('Interstitial => adClosed');
-      Interstitial.requestAd().catch(error => console.warn(error));
-    });
-
-    Interstitial.requestAd().catch(error => console.warn(error));
+    // Interstitial.setTestDevices([Interstitial.simulatorId]);
+    // Interstitial.setAdUnitID('/83069739/jeff');
+    //
+    // Interstitial.addEventListener('adLoaded', () =>
+    //   console.log('Interstitial adLoaded'),
+    // );
+    // Interstitial.addEventListener('adFailedToLoad', error =>
+    //   console.warn(error),
+    // );
+    // Interstitial.addEventListener('adOpened', () =>
+    //   console.log('Interstitial => adOpened'),
+    // );
+    // Interstitial.addEventListener('adClosed', () => {
+    //   console.log('Interstitial => adClosed');
+    //   Interstitial.requestAd().catch(error => console.warn(error));
+    // });
+    //
+    // Interstitial.requestAd().catch(error => console.warn(error));
 
     // const adsList = [{type: 'banner'}];
     // this.setState({adsList: adsList});
@@ -122,10 +122,14 @@ export default class Example extends Component {
     };
     const correlator = "0333965063464928";
     const adLayout =  "horizontal";
-    const adUnitID = "/6499/example/native";
-    const customTemplateIds = ["10063170"];
-    const customClickTemplateIds = [];
+    // const adUnitID = "/6499/example/native";
+    // const customTemplateIds = ["10063170"];
+    // const customClickTemplateIds = [];
     const validAdTypes = ['template'];
+
+    const adUnitID = "/83069739/nzhapp/home";
+    const customTemplateIds = ["12050056"];
+    const customClickTemplateIds = ["12050056"];
     return (
       <BannerExample style={{padding: 20}} title={`${index}. DFP - Native ad`}>
         <View style={{alignItems: 'center', width: '100%'}}>
@@ -169,7 +173,7 @@ export default class Example extends Component {
 
   render() {
     // const adsManager = new NativeAdsManager("/6499/example/native", [AdMobInterstitial.simulatorId]);
-    const adsManager = new NativeAdsManager('/6499/example/native', [
+    const adsManager = new NativeAdsManager('/83069739/nzhapp/home', [
       Interstitial.simulatorId,
     ]);
     const {adsList, refreshingScrollView} = this.state;

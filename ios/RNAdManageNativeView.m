@@ -43,9 +43,9 @@ static NSString *const kAdTypeTemplate = @"template";
     self.adLoader = nil;
     self.nativeAd.delegate = nil;
     self.nativeAd = nil;
-    
+
     self.nativeAdView = nil;
-    
+
     self.bannerView.delegate = nil;
     self.bannerView.adSizeDelegate = nil;
     self.bannerView.appEventDelegate = nil;
@@ -71,7 +71,7 @@ static NSString *const kAdTypeTemplate = @"template";
             kAdTypeTemplate
         ];
     }
-    
+
     self.adLoader = [adManager getAdLoader:_adUnitID validAdTypes:_validAdTypes loaderIndex:_loaderIndex];
     self.adLoader.delegate = self;
 
@@ -133,12 +133,12 @@ static NSString *const kAdTypeTemplate = @"template";
     }
 
     GAMRequest *request = [GAMRequest request];
-    
+
     // Facebook Audience network
     GADFBNetworkExtras * fbExtras = [[GADFBNetworkExtras alloc] init];
     fbExtras.nativeAdFormat = GADFBAdFormatNativeBanner;
     [request registerAdNetworkExtras:fbExtras];
-    
+
     GADExtras *extras = [[GADExtras alloc] init];
     if (_correlator == nil) {
         _correlator = getCorrelator(_adUnitID);
@@ -148,7 +148,7 @@ static NSString *const kAdTypeTemplate = @"template";
                                    nil];
 
     [request registerAdNetworkExtras:extras];
-    
+
     if (_targeting != nil) {
         NSDictionary *customTargeting = [_targeting objectForKey:@"customTargeting"];
         if (customTargeting != nil) {
@@ -244,10 +244,10 @@ static NSString *const kAdTypeTemplate = @"template";
     if (self.onAdFailedToLoad) {
         self.onAdFailedToLoad(@{ @"error": @{ @"message": [error localizedDescription] } });
     }
-    
+
     self.nativeAdView = nil;
-    
-    
+
+
     if (self.bannerView != nil) {
         self.bannerView.delegate = nil;
         self.bannerView.adSizeDelegate = nil;
@@ -255,14 +255,14 @@ static NSString *const kAdTypeTemplate = @"template";
         self.bannerView.rootViewController = nil;
         self.bannerView = nil;
     }
-    
+
     self.nativeCustomTemplateAd = nil;
 
     if (self.adLoader != nil) {
         self.adLoader.delegate = nil;
         self.adLoader = nil;
     }
-    
+
     if (self.nativeAd != nil) {
         self.nativeAd.delegate = nil;
         self.nativeAd = nil;
@@ -277,7 +277,7 @@ static NSString *const kAdTypeTemplate = @"template";
 
     GADNativeAdView *nativeAdView = [[GADNativeAdView alloc] init];
     self.nativeAdView = nativeAdView;
-    
+
     if (self.frame.size.width <= 0 || self.frame.size.height <= 0) {
         CGFloat width = self.frame.size.width;
         if (width <= 0) {
@@ -311,9 +311,9 @@ static NSString *const kAdTypeTemplate = @"template";
         self.bannerView.rootViewController = nil;
         self.bannerView = nil;
     }
-    
+
     self.nativeCustomTemplateAd = nil;
-    
+
     if (self.adLoader != nil) {
         self.adLoader.delegate = nil;
         self.adLoader = nil;
@@ -366,7 +366,7 @@ static NSString *const kAdTypeTemplate = @"template";
     }
 }
 
-- (void)triggetAdCustomClickEvent:(nonnull NSString *)assetID {
+- (void)triggerAdCustomClickEvent:(nonnull NSString *)assetID {
     if (self.onAdCustomClick) {
         NSMutableDictionary *ad = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                    assetID, @"assetName",
@@ -425,14 +425,14 @@ static NSString *const kAdTypeTemplate = @"template";
     }
 
     self.nativeAdView = nil;
-    
+
     self.nativeCustomTemplateAd = nil;
-    
+
     if (self.adLoader != nil) {
         self.adLoader.delegate = nil;
         self.adLoader = nil;
     }
-    
+
     if (self.nativeAd != nil) {
         self.nativeAd.delegate = nil;
         self.nativeAd = nil;
@@ -449,7 +449,7 @@ static NSString *const kAdTypeTemplate = @"template";
 
     if (self.customClickTemplateIds != nil && [self.customClickTemplateIds containsObject:customNativeAd.formatID]) {
         [self.nativeCustomTemplateAd setCustomClickHandler:^(NSString *assetID){
-            [self triggetAdCustomClickEvent:assetID];
+            [self triggerAdCustomClickEvent:assetID];
         }];
     }
 
@@ -458,7 +458,7 @@ static NSString *const kAdTypeTemplate = @"template";
     [self.nativeCustomTemplateAd recordImpression];
 
     self.nativeAdView = nil;
-    
+
     if (self.bannerView != nil) {
         self.bannerView.delegate = nil;
         self.bannerView.adSizeDelegate = nil;
@@ -466,12 +466,12 @@ static NSString *const kAdTypeTemplate = @"template";
         self.bannerView.rootViewController = nil;
         self.bannerView = nil;
     }
-    
+
     if (self.adLoader != nil) {
         self.adLoader.delegate = nil;
         self.adLoader = nil;
     }
-    
+
     if (self.nativeAd != nil) {
         self.nativeAd.delegate = nil;
         self.nativeAd = nil;
@@ -482,7 +482,7 @@ static NSString *const kAdTypeTemplate = @"template";
     if (_customTemplateIds == nil) {
         _customTemplateIds = @[ @"11891103" ];
     }
-    
+
     return _customTemplateIds;
 }
 
