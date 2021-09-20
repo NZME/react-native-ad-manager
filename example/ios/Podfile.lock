@@ -231,7 +231,7 @@ PODS:
     - React-cxxreact (= 0.63.3)
     - React-jsi (= 0.63.3)
   - React-jsinspector (0.63.3)
-  - react-native-ad-manager (1.2.5):
+  - react-native-ad-manager (1.2.8):
     - Google-Mobile-Ads-SDK (= 7.69.0)
     - GoogleMobileAdsMediationFacebook
     - React
@@ -424,7 +424,7 @@ SPEC CHECKSUMS:
   React-jsi: df07aa95b39c5be3e41199921509bfa929ed2b9d
   React-jsiexecutor: b56c03e61c0dd5f5801255f2160a815f4a53d451
   React-jsinspector: 8e68ffbfe23880d3ee9bafa8be2777f60b25cbe2
-  react-native-ad-manager: 0a23ac7bbcefe5724888b0503773bd08fa8ec323
+  react-native-ad-manager: c52cec5fefcd6cf31488d4efbd1e8d5f702acab3
   React-RCTActionSheet: 53ea72699698b0b47a6421cb1c8b4ab215a774aa
   React-RCTAnimation: 1befece0b5183c22ae01b966f5583f42e69a83c2
   React-RCTBlob: 0b284339cbe4b15705a05e2313a51c6d8b51fa40
@@ -437,6 +437,6 @@ SPEC CHECKSUMS:
   ReactCommon: 4167844018c9ed375cc01a843e9ee564399e53c3
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
 
-PODFILE CHECKSUM: 1a60d9fcc6371ea43f36db11f91a56c9359782ae
+PODFILE CHECKSUM: 81dc26debe1346b0dc24d43833c44b5f0eaebf6e
 
 COCOAPODS: 1.10.2

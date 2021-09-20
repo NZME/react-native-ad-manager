@@ -5239,7 +5239,7 @@ react-is@^16.12.0, react-is@^16.8.1, react-is@^16.8.4, react-is@^16.8.6:
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
 "react-native-ad-manager@file:..":
-  version "1.2.5"
+  version "1.2.8"
   dependencies:
     prop-types "^15.7.2"
 
