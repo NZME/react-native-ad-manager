@@ -295,7 +295,9 @@ public class NativeAdView extends ReactViewGroup implements AppEventListener,
                     }
 
                     PublisherAdRequest adRequest = adRequestBuilder.build();
-                    adLoader.loadAd(adRequest);
+                    if (adLoader != null) {
+                        adLoader.loadAd(adRequest);
+                    }
                 }
             });
         }
