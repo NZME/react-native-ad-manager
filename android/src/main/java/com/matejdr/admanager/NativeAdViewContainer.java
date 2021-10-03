@@ -319,7 +319,9 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
                     }
 
                     AdManagerAdRequest adRequest = adRequestBuilder.build();
-                    adLoader.loadAd(adRequest);
+                    if (adLoader != null) {
+                        adLoader.loadAd(adRequest);
+                    }
                 }
             });
         }
