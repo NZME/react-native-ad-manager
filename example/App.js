@@ -7,6 +7,7 @@ import {
   Text,
   View,
   RefreshControl,
+  Dimensions,
 } from 'react-native';
 import {Interstitial, Banner, NativeAdsManager} from 'react-native-ad-manager';
 import NativeAdView from './NativeAdView';
@@ -66,9 +67,16 @@ export default class Example extends Component {
     // console.log(nativeAd);
   };
 
-  showBanner = (adsManager, index) => {
+  showBanner = (
+    adsManager,
+    index,
+    adSize = 'mediumRectangle',
+    adUnitId = '/83069739/jeff',
+  ) => {
+    const fluidStyles = {width: Dimensions.get('screen').width, height: 350};
+
     return (
-      <BannerExample title={`${index}. DFP - Fluid Ad Size`}>
+      <BannerExample title={`${index}. DFP - ${adSize} ad size`}>
         <View
           style={[
             {backgroundColor: '#f3f', paddingVertical: 10},
@@ -95,9 +103,10 @@ export default class Example extends Component {
         />*/}
           <Banner
             onAdLoaded={this.onAdLoaded}
-            adSize="mediumRectangle"
-            validAdSizes={['mediumRectangle']}
-            adUnitID={'/83069739/jeff'}
+            style={adSize === 'fluid' ? fluidStyles : undefined}
+            adSize={adSize}
+            validAdSizes={[adSize]}
+            adUnitID={adUnitId}
             targeting={{
               customTargeting: {group: 'nzme_user_test'},
               categoryExclusions: ['media'],
@@ -112,18 +121,20 @@ export default class Example extends Component {
 
   showNative = (adsManager, index) => {
     const adTargeting = {
-      customTargeting: {adtype: "rectangle",
-        arc_uuid: "5ce210e7f45fef6c88f16bf0",
-        av: "2.0",
-        pos: "1",
-        pt: "home",
-        subscriber: "true"},
-      publisherProvidedID: "6c43f0be912249289a0286edab3fbb72"
+      customTargeting: {
+        adtype: 'rectangle',
+        arc_uuid: '5ce210e7f45fef6c88f16bf0',
+        av: '2.0',
+        pos: '1',
+        pt: 'home',
+        subscriber: 'true',
+      },
+      publisherProvidedID: '6c43f0be912249289a0286edab3fbb72',
     };
-    const correlator = "0333965063464928";
-    const adLayout =  "horizontal";
-    const adUnitID = "/6499/example/native";
-    const customTemplateIds = ["10063170"];
+    const correlator = '0333965063464928';
+    const adLayout = 'horizontal';
+    const adUnitID = '/6499/example/native';
+    const customTemplateIds = ['10063170'];
     const customClickTemplateIds = [];
     const validAdTypes = ['template'];
     return (
@@ -155,7 +166,17 @@ export default class Example extends Component {
   addAd = type => {
     const {adsList} = this.state;
     if (type === 'banner') {
-      adsList.push({type: 'banner'});
+      adsList.push({
+        type: 'banner',
+        size: 'mediumRectangle',
+        adUnitId: '/83069739/jeff',
+      });
+    } else if (type === 'fluid-banner') {
+      adsList.push({
+        type: 'banner',
+        size: 'fluid',
+        adUnitId: '/6499/example/APIDemo/Fluid',
+      });
     } else {
       adsList.push({type: 'native'});
     }
@@ -193,7 +214,12 @@ export default class Example extends Component {
             if (curItem.type === 'banner') {
               return (
                 <View key={index}>
-                  {this.showBanner(adsManager, index + 1)}
+                  {this.showBanner(
+                    adsManager,
+                    index + 1,
+                    curItem.size,
+                    curItem.adUnitId,
+                  )}
                 </View>
               );
             } else {
@@ -208,6 +234,11 @@ export default class Example extends Component {
             <Button
               title="Add Banner"
               onPress={() => this.addAd('banner')}
+              style={styles.button}
+            />
+            <Button
+              title="Add Fluid Banner"
+              onPress={() => this.addAd('fluid-banner')}
               style={styles.button}
             />
             <Button
