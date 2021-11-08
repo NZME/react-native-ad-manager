@@ -49,6 +49,33 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
     String publisherProvidedID;
     Location location;
     String correlator;
+    
+    int top;
+    int left;
+    int width;
+    int height;
+
+    private class MeasureAndLayoutRunnable implements Runnable {
+        @Override
+        public void run() {
+            if (isFluid()) {
+                adView.measure(
+                        MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+                        MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY)
+                );
+            } else {
+                adView.measure(width, height);
+            }
+            adView.layout(left, top, left + width, top + height);
+        }
+    }
+
+    private boolean isFluid() {
+        if (this.adSize == null) {
+            return false;
+        }
+        return this.adSize.equals(AdSize.FLUID);
+    }
 
     public BannerAdView(final Context context, ReactApplicationContext applicationContext) {
         super(context);
@@ -57,31 +84,58 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
         this.createAdView();
     }
 
+    @Override
+    public void requestLayout() {
+        super.requestLayout();
+        post(new MeasureAndLayoutRunnable());
+    }
+
     private void createAdView() {
         if (this.adView != null) this.adView.destroy();
 
         this.adView = new AdManagerAdView(currentActivityContext);
+
+        AdManagerAdView.LayoutParams layoutParams = new AdManagerAdView.LayoutParams(ReactViewGroup.LayoutParams.MATCH_PARENT, ReactViewGroup.LayoutParams.WRAP_CONTENT);
+
+        this.adView.setLayoutParams(layoutParams);
+
         this.adView.setAppEventListener(this);
         this.adView.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
-                int width = adView.getAdSize().getWidthInPixels(getContext());
-                int height = adView.getAdSize().getHeightInPixels(getContext());
-                int left = adView.getLeft();
-                int top = adView.getTop();
-                adView.measure(width, height);
-                adView.layout(left, top, left + width, top + height);
-                sendOnSizeChangeEvent();
+                AdSize adSize = adView.getAdSize();
+
+                if (isFluid()) {
+                    top = 0;
+                    left = 0;
+                    width = getWidth();
+                    height = getHeight();
+                } else {
+                    top = adView.getTop();
+                    left = adView.getLeft();
+                    width = adView.getAdSize().getWidthInPixels(getContext());
+                    height = adView.getAdSize().getHeightInPixels(getContext());
+                }
+
+                if (!isFluid()) {
+                    sendOnSizeChangeEvent();
+                }
+
                 WritableMap ad = Arguments.createMap();
                 ad.putString("type", "banner");
+                ad.putString("gadSize", adSize.toString());
+                ad.putString("isFluid", String.valueOf(isFluid()));
+                ad.putInt("width", width);
+                ad.putInt("height", height);
 
-                WritableMap gadSize = Arguments.createMap();
-                gadSize.putDouble("width", adView.getAdSize().getWidth());
-                gadSize.putDouble("height", adView.getAdSize().getHeight());
+                ad.putInt("adWidth", adView.getAdSize().getWidthInPixels(getContext()));
+                ad.putInt("adHeight", adView.getAdSize().getHeightInPixels(getContext()));
 
-                ad.putMap("gadSize", gadSize);
+                ad.putInt("measuredWidth", getMeasuredWidth());
+                ad.putInt("measuredHeight", getMeasuredHeight());
 
-                //ad.putString("gadSize", adView.getAdSize().toString());
+                ad.putInt("left", left);
+                ad.putInt("top", top);
                 sendEvent(RNAdManagerBannerViewManager.EVENT_AD_LOADED, ad);
             }
 
