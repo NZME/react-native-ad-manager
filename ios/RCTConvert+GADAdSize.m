@@ -28,9 +28,12 @@
     } else if ([adSize isEqualToString:@"300x250"]) {
              return GADAdSizeFromCGSize(CGSizeMake(300, 250));
          }
-    else {
-        return kGADAdSizeInvalid;
+    else if([adSize isEqualToString:@""]) {
+      return kGADAdSizeInvalid;
     }
-}
+    else {
+        NSArray *arrayOfSizes = [adSize componentsSeparatedByString:@"x"];
+        return GADAdSizeFromCGSize(CGSizeMake([arrayOfSizes[0] intValue], [arrayOfSizes[1] intValue]));
+    }
 
 @end
