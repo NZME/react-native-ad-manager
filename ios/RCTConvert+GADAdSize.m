@@ -35,5 +35,5 @@
         NSArray *arrayOfSizes = [adSize componentsSeparatedByString:@"x"];
         return GADAdSizeFromCGSize(CGSizeMake([arrayOfSizes[0] intValue], [arrayOfSizes[1] intValue]));
     }
-
+}
 @end
