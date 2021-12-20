@@ -1,31 +1,31 @@
 package com.matejdr.admanager;
 
-import androidx.annotation.Nullable;
-
 import android.content.Context;
 import android.location.Location;
 import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.Nullable;
+
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableArray;
-import com.facebook.react.bridge.ReadableNativeArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
+import com.facebook.react.bridge.ReadableNativeArray;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.google.android.gms.ads.AdSize;
-
-import java.util.ArrayList;
-import java.util.Map;
-
 import com.matejdr.admanager.customClasses.CustomTargeting;
 import com.matejdr.admanager.enums.TargetingEnums;
 import com.matejdr.admanager.enums.TargetingEnums.TargetingTypes;
+import com.matejdr.admanager.utils.AdSizeUtil;
 import com.matejdr.admanager.utils.Targeting;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewContainer> {
     public static final String PROP_AD_MANAGER = "adsManager";
@@ -47,8 +47,8 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
     public static final String EVENT_APP_EVENT = "onAppEvent";
     public static final int COMMAND_RELOAD_AD = 1;
 
-    private static String REACT_CLASS = "CTKAdManageNative";
-    private ReactApplicationContext applicationContext;
+    private static final String REACT_CLASS = "CTKAdManageNative";
+    private final ReactApplicationContext applicationContext;
 
     public RNAdManagerNativeViewManager(ReactApplicationContext context) {
         super();
@@ -123,7 +123,7 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
 
     @ReactProp(name = PROP_AD_SIZE)
     public void setPropAdSize(final NativeAdViewContainer view, final String sizeString) {
-        AdSize adSize = getAdSizeFromString(sizeString);
+        AdSize adSize = AdSizeUtil.getAdSizeFromString(sizeString);
         view.setAdSize(adSize);
     }
 
@@ -136,7 +136,7 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
 
         for (int i = 0; i < adSizeStringsArray.length; i++) {
             String adSizeString = adSizeStringsArray[i];
-            adSizes[i] = getAdSizeFromString(adSizeString);
+            adSizes[i] = AdSizeUtil.getAdSizeFromString(adSizeString);
         }
         view.setValidAdSizes(adSizes);
     }
@@ -254,33 +254,6 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
             case COMMAND_RELOAD_AD:
                 root.reloadAd();
                 break;
-        }
-    }
-
-    private AdSize getAdSizeFromString(String adSize) {
-        switch (adSize) {
-            case "banner":
-                return AdSize.BANNER;
-            case "largeBanner":
-                return AdSize.LARGE_BANNER;
-            case "mediumRectangle":
-                return AdSize.MEDIUM_RECTANGLE;
-            case "fullBanner":
-                return AdSize.FULL_BANNER;
-            case "leaderBoard":
-                return AdSize.LEADERBOARD;
-            case "smartBannerPortrait":
-                return AdSize.SMART_BANNER;
-            case "smartBannerLandscape":
-                return AdSize.SMART_BANNER;
-            case "smartBanner":
-                return AdSize.SMART_BANNER;
-            case "300x600":
-                return new AdSize(300, 600);
-            case "300x250":
-                return new AdSize(300, 250);
-            default:
-                return AdSize.BANNER;
         }
     }
 }

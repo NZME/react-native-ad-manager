@@ -2,15 +2,6 @@ package com.matejdr.admanager.enums;
 
 public class TargetingEnums {
 
-    public enum TargetingTypes {
-        CUSTOMTARGETING,
-        CATEGORYEXCLUSIONS,
-        KEYWORDS,
-        CONTENTURL,
-        PUBLISHERPROVIDEDID,
-        LOCATION
-    }
-
     public static String getEnumString(TargetingTypes targetingType) {
         switch (targetingType) {
             case CUSTOMTARGETING:
@@ -28,5 +19,14 @@ public class TargetingEnums {
             default:
                 return "";
         }
+    }
+
+    public enum TargetingTypes {
+        CUSTOMTARGETING,
+        CATEGORYEXCLUSIONS,
+        KEYWORDS,
+        CONTENTURL,
+        PUBLISHERPROVIDEDID,
+        LOCATION
     }
 }

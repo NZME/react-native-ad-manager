@@ -1,9 +1,9 @@
 package com.matejdr.admanager;
 
-import android.view.View;
 import android.location.Location;
-import android.util.Log;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 
@@ -11,16 +11,16 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.view.ReactViewGroup;
 import com.google.ads.mediation.admob.AdMobAdapter;
-import com.google.ads.mediation.facebook.FacebookExtras;
 import com.google.ads.mediation.facebook.FacebookAdapter;
+import com.google.ads.mediation.facebook.FacebookExtras;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdSize;
@@ -28,23 +28,22 @@ import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.VideoOptions;
-import com.google.android.gms.ads.admanager.AppEventListener;
 import com.google.android.gms.ads.admanager.AdManagerAdRequest;
 import com.google.android.gms.ads.admanager.AdManagerAdView;
-import com.google.android.gms.ads.nativead.NativeAd;
-import com.google.android.gms.ads.nativead.NativeAdOptions;
-import com.google.android.gms.ads.nativead.NativeCustomFormatAd;
-import com.google.android.gms.ads.nativead.NativeAdView;
-import com.google.android.gms.ads.nativead.NativeAd.OnNativeAdLoadedListener;
+import com.google.android.gms.ads.admanager.AppEventListener;
 import com.google.android.gms.ads.formats.OnAdManagerAdViewLoadedListener;
+import com.google.android.gms.ads.nativead.NativeAd;
+import com.google.android.gms.ads.nativead.NativeAd.OnNativeAdLoadedListener;
+import com.google.android.gms.ads.nativead.NativeAdOptions;
+import com.google.android.gms.ads.nativead.NativeAdView;
+import com.google.android.gms.ads.nativead.NativeCustomFormatAd;
 import com.google.android.gms.ads.nativead.NativeCustomFormatAd.OnCustomFormatAdLoadedListener;
-
-import java.util.List;
-import java.util.Arrays;
-import java.util.ArrayList;
-
 import com.matejdr.admanager.customClasses.CustomTargeting;
 import com.matejdr.admanager.utils.Targeting;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class NativeAdViewContainer extends ReactViewGroup implements AppEventListener,
         LifecycleEventListener, OnNativeAdLoadedListener,
@@ -82,7 +81,7 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
     /**
      * @{RCTEventEmitter} instance used for sending events back to JS
      **/
-    private RCTEventEmitter mEventEmitter;
+    private final RCTEventEmitter mEventEmitter;
 
     /**
      * Creates new NativeAdView instance and retrieves event emitter
@@ -128,7 +127,9 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         }
         if (validAdSizes != null) {
             for (int i = 0; i < validAdSizes.length; i++) {
-                adSizes.add(validAdSizes[i]);
+                if (!adSizes.contains(validAdSizes[i])) {
+                    adSizes.add(validAdSizes[i]);
+                }
             }
         }
 
@@ -139,15 +140,6 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         AdSize[] adSizesArray = adSizes.toArray(new AdSize[adSizes.size()]);
 
         List<String> validAdTypesList = Arrays.asList(validAdTypes);
-
-//                AdSize[] validAdSizes = new AdSize[]{AdSize.BANNER,
-//                        AdSize.FULL_BANNER,
-//                        AdSize.LARGE_BANNER,
-//                        AdSize.LEADERBOARD,
-//                        AdSize.MEDIUM_RECTANGLE,
-//                        AdSize.WIDE_SKYSCRAPER,
-//                        AdSize.SMART_BANNER,
-//                        AdSize.FLUID};
 
         Log.e("validAdTypes", validAdTypesList.toString());
         AdLoader.Builder builder = new AdLoader.Builder(reactContext, adUnitID);
@@ -185,7 +177,6 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
                     }
                 }
             }
-            // builder.forCustomTemplateAd(customTemplateIds, NativeAdView.this, null);
         }
         builder.withAdListener(new AdListener() {
             @Override
@@ -272,8 +263,8 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
                     adRequestBuilder.addNetworkExtrasBundle(AdMobAdapter.class, bundle);
 
                     Bundle fbExtras = new FacebookExtras()
-                        .setNativeBanner(true)
-                        .build();
+                            .setNativeBanner(true)
+                            .build();
 
                     adRequestBuilder.addNetworkExtrasBundle(FacebookAdapter.class, fbExtras);
 
@@ -365,15 +356,6 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
             tmpView.getLayoutParams().height = viewHeight;
 
             nativeAdView.setCallToActionView(tmpView);
-
-//            try {
-//                for (View view : clickableViews) {
-//
-//                    ((ViewGroup) view.getParent()).removeView(view);
-//                    nativeAdView.addView(view);
-//                    nativeAdView.setCallToActionView(view);
-//                }
-//            } catch (Exception e) {}
         }
     }
 
@@ -411,7 +393,6 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
 
         ad.putMap("gadSize", gadSize);
 
-        //ad.putString("gadSize", adView.getAdSize().toString());
         sendEvent(RNAdManagerNativeViewManager.EVENT_AD_LOADED, ad);
     }
 
@@ -527,8 +508,6 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
             for (NativeAd.Image image : nativeAd.getImages()) {
                 WritableMap imageMap = Arguments.createMap();
                 imageMap.putString("uri", image.getUri().toString());
-//                imageMap.putInt("width", image.getWidth());
-//                imageMap.putInt("height", image.getHeight());
                 imageMap.putDouble("scale", image.getScale());
                 images.pushMap(imageMap);
             }
@@ -551,13 +530,8 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         ReactContext reactContext = (ReactContext) getContext();
         WritableMap event = Arguments.createMap();
         AdSize adSize = adView.getAdSize();
-        if (adSize == AdSize.SMART_BANNER) {
-            width = (int) PixelUtil.toDIPFromPixel(adSize.getWidthInPixels(reactContext));
-            height = (int) PixelUtil.toDIPFromPixel(adSize.getHeightInPixels(reactContext));
-        } else {
-            width = adSize.getWidth();
-            height = adSize.getHeight();
-        }
+        width = adSize.getWidth();
+        height = adSize.getHeight();
         event.putString("type", "banner");
         event.putDouble("width", width);
         event.putDouble("height", height);
@@ -628,28 +602,16 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
 
     @Override
     public void onHostResume() {
-//        if (this.nativeAdView != null) {
-//            this.nativeAdView.resume();
-//        }
         if (this.publisherAdView != null) {
             this.publisherAdView.resume();
         }
-//        if (this.nativeCustomTemplateAd != null) {
-//            this.nativeCustomTemplateAd.resume();
-//        }
     }
 
     @Override
     public void onHostPause() {
-//        if (this.nativeAdView != null) {
-//            this.nativeAdView.pause();
-//        }
         if (this.publisherAdView != null) {
             this.publisherAdView.pause();
         }
-//        if (this.nativeCustomTemplateAd != null) {
-//            this.nativeCustomTemplateAd.pause();
-//        }
     }
 
     @Override

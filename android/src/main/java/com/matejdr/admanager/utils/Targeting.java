@@ -3,23 +3,22 @@ package com.matejdr.admanager.utils;
 import android.location.Location;
 
 import com.facebook.react.bridge.ReadableArray;
-import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
-import com.matejdr.admanager.RNAdManageNativeManager;
+import com.facebook.react.bridge.ReadableType;
 import com.matejdr.admanager.customClasses.CustomTargeting;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.Random;
 
 public class Targeting {
     /**
      * @{Map} with all registered correlators
      **/
-    private static Map<String, String> correlators = new HashMap<>();
+    private static final Map<String, String> correlators = new HashMap<>();
 
     public static CustomTargeting[] getCustomTargeting(ReadableMap customTargeting) {
         ArrayList<CustomTargeting> list = new ArrayList<CustomTargeting>();
