@@ -1,28 +1,28 @@
 package com.matejdr.admanager;
 
-import androidx.annotation.Nullable;
-
 import android.location.Location;
 import android.view.View;
 
+import androidx.annotation.Nullable;
+
+import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableArray;
-import com.facebook.react.bridge.ReadableNativeArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
+import com.facebook.react.bridge.ReadableNativeArray;
 import com.facebook.react.common.MapBuilder;
+import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
-import com.facebook.react.uimanager.ThemedReactContext;
-import com.facebook.react.bridge.ReactApplicationContext;
 import com.google.android.gms.ads.AdSize;
-
-import java.util.ArrayList;
-import java.util.Map;
-
 import com.matejdr.admanager.customClasses.CustomTargeting;
 import com.matejdr.admanager.enums.TargetingEnums;
 import com.matejdr.admanager.enums.TargetingEnums.TargetingTypes;
+import com.matejdr.admanager.utils.AdSizeUtil;
 import com.matejdr.admanager.utils.Targeting;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 public class RNAdManagerBannerViewManager extends ViewGroupManager<BannerAdView> {
 
@@ -43,17 +43,16 @@ public class RNAdManagerBannerViewManager extends ViewGroupManager<BannerAdView>
     public static final String EVENT_APP_EVENT = "onAppEvent";
 
     public static final int COMMAND_LOAD_BANNER = 1;
-
-    @Override
-    public String getName() {
-        return REACT_CLASS;
-    }
-
-    private ReactApplicationContext applicationContext;
+    private final ReactApplicationContext applicationContext;
 
     public RNAdManagerBannerViewManager(ReactApplicationContext context) {
         super();
         this.applicationContext = context;
+    }
+
+    @Override
+    public String getName() {
+        return REACT_CLASS;
     }
 
     @Override
@@ -97,7 +96,7 @@ public class RNAdManagerBannerViewManager extends ViewGroupManager<BannerAdView>
 
     @ReactProp(name = PROP_AD_SIZE)
     public void setPropAdSize(final BannerAdView view, final String sizeString) {
-        AdSize adSize = getAdSizeFromString(sizeString);
+        AdSize adSize = AdSizeUtil.getAdSizeFromString(sizeString);
         view.setAdSize(adSize);
     }
 
@@ -110,7 +109,7 @@ public class RNAdManagerBannerViewManager extends ViewGroupManager<BannerAdView>
 
         for (int i = 0; i < adSizeStringsArray.length; i++) {
             String adSizeString = adSizeStringsArray[i];
-            adSizes[i] = getAdSizeFromString(adSizeString);
+            adSizes[i] = AdSizeUtil.getAdSizeFromString(adSizeString);
         }
         view.setValidAdSizes(adSizes);
     }
@@ -187,34 +186,6 @@ public class RNAdManagerBannerViewManager extends ViewGroupManager<BannerAdView>
     @ReactProp(name = PROP_CORRELATOR)
     public void setCorrelator(final BannerAdView view, final String correlator) {
         view.setCorrelator(correlator);
-    }
-
-
-    private AdSize getAdSizeFromString(String adSize) {
-        switch (adSize) {
-            case "banner":
-                return AdSize.BANNER;
-            case "largeBanner":
-                return AdSize.LARGE_BANNER;
-            case "mediumRectangle":
-                return AdSize.MEDIUM_RECTANGLE;
-            case "fullBanner":
-                return AdSize.FULL_BANNER;
-            case "leaderBoard":
-                return AdSize.LEADERBOARD;
-            case "smartBannerPortrait":
-                return AdSize.SMART_BANNER;
-            case "smartBannerLandscape":
-                return AdSize.SMART_BANNER;
-            case "smartBanner":
-                return AdSize.SMART_BANNER;
-            case "300x600":
-                return new AdSize(300, 600);
-            case "300x250":
-                return new AdSize(300, 250);
-            default:
-                return AdSize.BANNER;
-        }
     }
 
     @Nullable

@@ -5,6 +5,13 @@
 + (GADAdSize)GADAdSize:(id)json
 {
     NSString *adSize = [self NSString:json];
+    if ([adSize containsString:@"x"]) {
+        NSArray *splitAdSizes = [adSize componentsSeparatedByString:@"x"];
+        if ([splitAdSizes count] == 2) {
+            return GADAdSizeFromCGSize(CGSizeMake([splitAdSizes[0] intValue], [splitAdSizes[1] intValue]));
+        }
+    }
+
     if ([adSize isEqualToString:@"banner"]) {
         return kGADAdSizeBanner;
     } else if ([adSize isEqualToString:@"fullBanner"]) {
@@ -19,16 +26,7 @@
         return kGADAdSizeLeaderboard;
     } else if ([adSize isEqualToString:@"mediumRectangle"]) {
         return kGADAdSizeMediumRectangle;
-//    } else if ([adSize isEqualToString:@"smartBannerPortrait"]) {
-//        return kGADAdSizeSmartBannerPortrait;
-//    } else if ([adSize isEqualToString:@"smartBannerLandscape"]) {
-//        return kGADAdSizeSmartBannerLandscape;
-    } else if ([adSize isEqualToString:@"300x600"]) {
-        return GADAdSizeFromCGSize(CGSizeMake(300, 600));
-    } else if ([adSize isEqualToString:@"300x250"]) {
-             return GADAdSizeFromCGSize(CGSizeMake(300, 250));
-         }
-    else {
+    } else {
         return kGADAdSizeInvalid;
     }
 }

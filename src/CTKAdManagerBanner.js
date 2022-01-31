@@ -101,12 +101,13 @@ Banner.propTypes = {
    * DFP iOS library banner size constants
    * (https://developers.google.com/admob/ios/banner)
    * banner (320x50, Standard Banner for Phones and Tablets)
+   * fullBanner (468x60, IAB Full-Size Banner for Tablets)
    * largeBanner (320x100, Large Banner for Phones and Tablets)
    * mediumRectangle (300x250, IAB Medium Rectangle for Phones and Tablets)
-   * fullBanner (468x60, IAB Full-Size Banner for Tablets)
    * leaderboard (728x90, IAB Leaderboard for Tablets)
-   * smartBannerPortrait (Screen width x 32|50|90, Smart Banner for Phones and Tablets)
-   * smartBannerLandscape (Screen width x 32|50|90, Smart Banner for Phones and Tablets)
+   * skyscraper (120x600, Skyscraper size for the iPad. Mediation only. AdMob/Google does not offer this size)
+   * fluid (An ad size that spans the full width of its container, with a height dynamically determined by the ad)
+   * {\d}x{\d} (Dynamic size determined byt the user, 300x250, 300x100 etc.)
    *
    * banner is default
    */

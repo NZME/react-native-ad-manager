@@ -1,6 +1,5 @@
 package com.matejdr.admanager;
 
-import android.util.Log;
 import android.view.View;
 
 import com.facebook.react.bridge.Promise;
@@ -27,28 +26,7 @@ public class RNAdManageNativeManager extends ReactContextBaseJavaModule {
     /**
      * @{Map} with all registered managers
      **/
-    private Map<String, AdsManagerProperties> propertiesMap = new HashMap<>();
-
-    public static class AdsManagerProperties {
-        String[] testDevices;
-        String adUnitID;
-
-        public String[] getTestDevices() {
-            return testDevices;
-        }
-
-        public String getAdUnitID() {
-            return adUnitID;
-        }
-
-        public void setTestDevices(String[] testDevices) {
-            this.testDevices = testDevices;
-        }
-
-        public void setAdUnitID(String adUnitID) {
-            this.adUnitID = adUnitID;
-        }
-    }
+    private final Map<String, AdsManagerProperties> propertiesMap = new HashMap<>();
 
     public RNAdManageNativeManager(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -87,7 +65,6 @@ public class RNAdManageNativeManager extends ReactContextBaseJavaModule {
         return propertiesMap.get(adUnitID);
     }
 
-
     @ReactMethod
     public void registerViewsForInteraction(final int adTag,
                                             final ReadableArray clickableViewsTags,
@@ -123,5 +100,26 @@ public class RNAdManageNativeManager extends ReactContextBaseJavaModule {
                 }
             }
         });
+    }
+
+    public static class AdsManagerProperties {
+        String[] testDevices;
+        String adUnitID;
+
+        public String[] getTestDevices() {
+            return testDevices;
+        }
+
+        public void setTestDevices(String[] testDevices) {
+            this.testDevices = testDevices;
+        }
+
+        public String getAdUnitID() {
+            return adUnitID;
+        }
+
+        public void setAdUnitID(String adUnitID) {
+            this.adUnitID = adUnitID;
+        }
     }
 }

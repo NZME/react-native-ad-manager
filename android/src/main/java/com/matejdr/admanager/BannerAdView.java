@@ -1,4 +1,5 @@
 package com.matejdr.admanager;
+
 import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
@@ -7,29 +8,27 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.LifecycleEventListener;
+import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.view.ReactViewGroup;
 import com.google.ads.mediation.admob.AdMobAdapter;
 import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.RequestConfiguration;
-import com.google.android.gms.ads.admanager.AppEventListener;
 import com.google.android.gms.ads.admanager.AdManagerAdRequest;
-
-import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.admanager.AdManagerAdView;
+import com.google.android.gms.ads.admanager.AppEventListener;
+import com.matejdr.admanager.customClasses.CustomTargeting;
+import com.matejdr.admanager.utils.Targeting;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.matejdr.admanager.customClasses.CustomTargeting;
-import com.matejdr.admanager.utils.Targeting;
 
 class BannerAdView extends ReactViewGroup implements AppEventListener, LifecycleEventListener {
 
@@ -81,7 +80,6 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
 
                 ad.putMap("gadSize", gadSize);
 
-                //ad.putString("gadSize", adView.getAdSize().toString());
                 sendEvent(RNAdManagerBannerViewManager.EVENT_AD_LOADED, ad);
             }
 
@@ -129,13 +127,8 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
         ReactContext reactContext = (ReactContext) getContext();
         WritableMap event = Arguments.createMap();
         AdSize adSize = this.adView.getAdSize();
-        if (adSize == AdSize.SMART_BANNER) {
-            width = (int) PixelUtil.toDIPFromPixel(adSize.getWidthInPixels(reactContext));
-            height = (int) PixelUtil.toDIPFromPixel(adSize.getHeightInPixels(reactContext));
-        } else {
-            width = adSize.getWidth();
-            height = adSize.getHeight();
-        }
+        width = adSize.getWidth();
+        height = adSize.getHeight();
         event.putString("type", "banner");
         event.putDouble("width", width);
         event.putDouble("height", height);
@@ -157,7 +150,9 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
         }
         if (this.validAdSizes != null) {
             for (int i = 0; i < this.validAdSizes.length; i++) {
-                adSizes.add(this.validAdSizes[i]);
+                if (!adSizes.contains(this.validAdSizes[i])) {
+                    adSizes.add(this.validAdSizes[i]);
+                }
             }
         }
 
