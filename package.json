@@ -11,8 +11,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NZME/react-native-ad-manager.git",
-    "baseUrl": "https://github.com/NZME/react-native-ad-manager"
+    "url": "git+https://github.com/Freddixx/react-native-ad-manager.git",
+    "baseUrl": "https://github.com/Freddixx/react-native-ad-manager"
   },
   "keywords": [
     "react-native"
