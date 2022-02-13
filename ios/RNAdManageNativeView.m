@@ -225,7 +225,7 @@ static NSString *const kAdTypeTemplate = @"template";
         GADAdSize adSize = [RCTConvert GADAdSize:jsonValue];
         if (GADAdSizeEqualToSize(adSize, kGADAdSizeInvalid)) {
             RCTLogWarn(@"Invalid adSize %@", jsonValue);
-        } else {
+        } else if (![validAdSizes containsObject:NSValueFromGADAdSize(adSize)]) {
             [validAdSizes addObject:NSValueFromGADAdSize(adSize)];
         }
     }];
@@ -391,7 +391,7 @@ static NSString *const kAdTypeTemplate = @"template";
         GADAdSize adSize = [RCTConvert GADAdSize:_adSize];
         if (GADAdSizeEqualToSize(adSize, kGADAdSizeInvalid)) {
             RCTLogWarn(@"Invalid adSize %@", _adSize);
-        } else {
+        } else if (![validAdSizes containsObject:NSValueFromGADAdSize(adSize)]) {
             [validAdSizes addObject:NSValueFromGADAdSize(adSize)];
         }
     }
