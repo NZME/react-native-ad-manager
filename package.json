@@ -39,6 +39,6 @@
     "eslint-plugin-react-native": "^3.7.0",
     "prettier": "^1.18.2",
     "react": "^16.8.3",
-    "react-native": "^0.61.5"
+    "react-native": "^0.62.3"
   }
 }
