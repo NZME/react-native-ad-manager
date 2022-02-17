@@ -62,13 +62,6 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
 
         this.adView = new AdManagerAdView(currentActivityContext);
 
-        if (isFluid()) {
-            AdManagerAdView.LayoutParams layoutParams = new AdManagerAdView.LayoutParams(
-                    ReactViewGroup.LayoutParams.MATCH_PARENT,
-                    ReactViewGroup.LayoutParams.MATCH_PARENT);
-            this.adView.setLayoutParams(layoutParams);
-        }
-
         this.adView.setAppEventListener(this);
         this.adView.setAdListener(new AdListener() {
             @Override
@@ -79,8 +72,22 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
                 if (!isFluid()) {
                     int left = adView.getLeft();
                     int top = adView.getTop();
+
+                    View parent = (View) adView.getParent();
+
+                    if (parent != null) {
+                        int parentWidth = parent.getWidth();
+
+                        left = (parentWidth - width) / 2;
+                    }
+
                     adView.measure(width, height);
                     adView.layout(left, top, left + width, top + height);
+                } else {
+                    AdManagerAdView.LayoutParams layoutParams = new AdManagerAdView.LayoutParams(
+                        ReactViewGroup.LayoutParams.MATCH_PARENT,
+                        ReactViewGroup.LayoutParams.MATCH_PARENT);
+                    adView.setLayoutParams(layoutParams);
                 }
 
                 updateLayout();
@@ -134,11 +141,7 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
 
         });
 
-        updateLayout();
-
         this.addView(this.adView);
-
-        updateLayout();
     }
 
     private class MeasureAndLayoutRunnable implements Runnable {
@@ -149,11 +152,19 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
     }
 
     private boolean isFluid() {
-        if (this.adSize == null) {
+        if (this.adView == null) {
             return false;
         }
 
-        return this.adSize.equals(AdSize.FLUID);
+        AdSize adSize = this.adView.getAdSize();
+
+        if (adSize == null) {
+            return false;
+        }
+
+        boolean isFluid = adSize.isFluid();
+
+        return isFluid;
     }
 
     @Override
