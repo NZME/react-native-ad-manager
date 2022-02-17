@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 
@@ -12,7 +14,6 @@ import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.view.ReactViewGroup;
 import com.google.ads.mediation.admob.AdMobAdapter;
@@ -60,16 +61,37 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
         if (this.adView != null) this.adView.destroy();
 
         this.adView = new AdManagerAdView(currentActivityContext);
+
         this.adView.setAppEventListener(this);
         this.adView.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
                 int width = adView.getAdSize().getWidthInPixels(getContext());
                 int height = adView.getAdSize().getHeightInPixels(getContext());
-                int left = adView.getLeft();
-                int top = adView.getTop();
-                adView.measure(width, height);
-                adView.layout(left, top, left + width, top + height);
+
+                if (!isFluid()) {
+                    int left = adView.getLeft();
+                    int top = adView.getTop();
+
+                    View parent = (View) adView.getParent();
+
+                    if (parent != null) {
+                        int parentWidth = parent.getWidth();
+
+                        left = (parentWidth - width) / 2;
+                    }
+
+                    adView.measure(width, height);
+                    adView.layout(left, top, left + width, top + height);
+                } else {
+                    AdManagerAdView.LayoutParams layoutParams = new AdManagerAdView.LayoutParams(
+                        ReactViewGroup.LayoutParams.MATCH_PARENT,
+                        ReactViewGroup.LayoutParams.MATCH_PARENT);
+                    adView.setLayoutParams(layoutParams);
+                }
+
+                updateLayout();
+
                 sendOnSizeChangeEvent();
                 WritableMap ad = Arguments.createMap();
                 ad.putString("type", "banner");
@@ -118,7 +140,120 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
             }
 
         });
+
         this.addView(this.adView);
+    }
+
+    private class MeasureAndLayoutRunnable implements Runnable {
+        @Override
+        public void run() {
+            updateLayout();
+        }
+    }
+
+    private boolean isFluid() {
+        if (this.adView == null) {
+            return false;
+        }
+
+        AdSize adSize = this.adView.getAdSize();
+
+        if (adSize == null) {
+            return false;
+        }
+
+        boolean isFluid = adSize.isFluid();
+
+        return isFluid;
+    }
+
+    @Override
+    public void requestLayout() {
+        super.requestLayout();
+
+        if (isFluid()) {
+            post(new MeasureAndLayoutRunnable());
+        }
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+
+        if (isFluid()) {
+            post(new MeasureAndLayoutRunnable());
+        }
+    }
+
+    private static void measureAndLayout(View view, int width, int height) {
+        int left = 0;
+        int top = 0;
+
+        view.measure(width, height);
+        view.layout(left, top, left + width, top + height);
+        view.requestLayout();
+        view.invalidate();
+        view.forceLayout();
+    }
+
+    int cachedWidth = 0;
+    int cachedHeight = 0;
+
+    private void updateLayout() {
+        try {
+            if (!isFluid()) {
+                return;
+            }
+
+            if (adView == null) {
+                return;
+            }
+
+            View parent = (View) adView.getParent();
+
+            if (parent == null) {
+                return;
+            }
+
+            int width = parent.getWidth();
+            int height = parent.getHeight();
+
+            if (cachedWidth == width && cachedHeight == height) {
+                return;
+            }
+
+            cachedWidth = width;
+            cachedHeight = height;
+
+            // In case of fluid ads, every GAD view and their subviews must be laid out by hand,
+            // otherwise the web view won't align to the container bounds.
+            measureAndLayout(adView, width, height);
+
+            ViewGroup child = (ViewGroup) adView.getChildAt(0);
+
+            if (child != null) {
+                measureAndLayout(child, width, height);
+
+                ViewGroup webView = (ViewGroup) child.getChildAt(0);
+
+                if (webView != null) {
+                    measureAndLayout(webView, width, height);
+
+                    ViewGroup internalChild = (ViewGroup) webView.getChildAt(0);
+
+                    if (internalChild != null) {
+                        measureAndLayout(internalChild, width, height);
+
+                        ViewGroup leafNode = (ViewGroup) internalChild.getChildAt(0);
+
+                        if (leafNode != null) {
+                            measureAndLayout(leafNode, width, height);
+                        }
+                    }
+                }
+            }
+        } catch (Exception exception) {
+        }
     }
 
     private void sendOnSizeChangeEvent() {
