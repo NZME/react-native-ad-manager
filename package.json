@@ -1,7 +1,7 @@
 {
   "name": "@freddixx/react-native-ad-manager",
   "title": "React Native Ad Manager",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "A react-native component for Google Ad Manager banners, interstitials and native ads.",
   "main": "index.js",
   "scripts": {

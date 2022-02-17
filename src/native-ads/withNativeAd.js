@@ -1,9 +1,8 @@
 import React from 'react';
 import { findNodeHandle, requireNativeComponent, UIManager } from 'react-native';
+import { createErrorFromErrorData } from '../utils';
 import { TriggerableContext } from './TriggerableViewManager';
 import AdsManager from './NativeAdsManager';
-import {string} from "prop-types";
-import {createErrorFromErrorData} from 'react-native-ad-manager/src/utils';
 
 const areSetsEqual = (a, b) => {
   if (a.size !== b.size)
