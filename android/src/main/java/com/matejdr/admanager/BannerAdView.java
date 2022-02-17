@@ -225,6 +225,8 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
             cachedWidth = width;
             cachedHeight = height;
 
+            // In case of fluid ads, every GAD view and their subviews must be laid out by hand,
+            // otherwise the web view won't align to the container bounds.
             measureAndLayout(adView, width, height);
 
             ViewGroup child = (ViewGroup) adView.getChildAt(0);
