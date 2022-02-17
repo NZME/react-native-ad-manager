@@ -14,19 +14,19 @@ You can use npm or Yarn to install the latest beta version:
 
 **npm:**
 
-    npm i --save react-native-ad-manager
+    npm i --save @freddixx/react-native-ad-manager
 
 **Yarn:**
 
-    yarn add react-native-ad-manager
+    yarn add @freddixx/react-native-ad-manager
 
 ### Mostly automatic installation
 
-`$ react-native link react-native-ad-manager`
+`$ react-native link @freddixx/react-native-ad-manager`
 
 Alternatively for iOS you can install the library with CocoaPods by adding a line to your `Podfile`;
 
-    pod 'react-native-ad-manager', path: '../node_modules/react-native-ad-manager'
+    pod 'react-native-ad-manager', path: '../node_modules/@freddixx/react-native-ad-manager'
 
 ### iOS
 
@@ -46,46 +46,43 @@ import {
   Interstitial,
   PublisherBanner,
   NativeAdsManager,
-} from 'react-native-ad-manager'
+} from "@freddixx/react-native-ad-manager";
 
 // Display a DFP Publisher banner
 <Banner
   adSize="fullBanner"
   adUnitID="your-ad-unit-id"
   testDevices={[PublisherBanner.simulatorId]}
-  onAdFailedToLoad={error => console.error(error)}
-  onAppEvent={event => console.log(event.name, event.info)}
-/>
+  onAdFailedToLoad={(error) => console.error(error)}
+  onAppEvent={(event) => console.log(event.name, event.info)}
+/>;
 
 // Display an interstitial
-Interstitial.setAdUnitID('your-ad-unit-id');
+Interstitial.setAdUnitID("your-ad-unit-id");
 Interstitial.setTestDevices([Interstitial.simulatorId]);
 Interstitial.requestAd().then(() => Interstitial.showAd());
 
 // Native ad
-import NativeAdView from './NativeAdView';
-const adsManager = new NativeAdsManager('your-ad-unit-id', [
-    Interstitial.simulatorId,
+import NativeAdView from "./NativeAdView";
+const adsManager = new NativeAdsManager("your-ad-unit-id", [
+  Interstitial.simulatorId,
 ]);
 <NativeAdView
-    targeting={{
-        customTargeting: {group: 'user_test'},
-        categoryExclusions: ['media'],
-        contentURL: 'test://',
-        publisherProvidedID: 'provider_id',
-    }}
-    style={{width: '100%'}}
-    adsManager={adsManager}
-    validAdTypes={['native', 'template']}
-    customTemplateIds={['your-template-id-1', 'your-template-id-2']}
-    onAdLoaded={ad => {
-        console.log(ad);
-    }}
-    onAdFailedToLoad={error => {
-        console.log(error);
-    }}
-/>
+  targeting={{
+    customTargeting: { group: "user_test" },
+    categoryExclusions: ["media"],
+    contentURL: "test://",
+    publisherProvidedID: "provider_id",
+  }}
+  style={{ width: "100%" }}
+  adsManager={adsManager}
+  validAdTypes={["native", "template"]}
+  customTemplateIds={["your-template-id-1", "your-template-id-2"]}
+  onAdLoaded={(ad) => {
+    console.log(ad);
+  }}
+  onAdFailedToLoad={(error) => {
+    console.log(error);
+  }}
+/>;
 ```
-
-See the NativeAdView component in the [example NativeAdView](example/NativeAdView.js).
-For a full example reference to the [example project](example).
