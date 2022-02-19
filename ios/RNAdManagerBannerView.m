@@ -123,13 +123,13 @@
         if (publisherProvidedID != nil) {
             request.publisherProvidedID = publisherProvidedID;
         }
-        NSDictionary *location = [_targeting objectForKey:@"location"];
-        if (location != nil) {
-            CGFloat latitude = [[location objectForKey:@"latitude"] doubleValue];
-            CGFloat longitude = [[location objectForKey:@"longitude"] doubleValue];
-            CGFloat accuracy = [[location objectForKey:@"accuracy"] doubleValue];
-            [request setLocationWithLatitude:latitude longitude:longitude accuracy:accuracy];
-        }
+//        NSDictionary *location = [_targeting objectForKey:@"location"];
+//        if (location != nil) {
+//            CGFloat latitude = [[location objectForKey:@"latitude"] doubleValue];
+//            CGFloat longitude = [[location objectForKey:@"longitude"] doubleValue];
+//            CGFloat accuracy = [[location objectForKey:@"accuracy"] doubleValue];
+//            [request setLocationWithLatitude:latitude longitude:longitude accuracy:accuracy];
+//        }
     }
 
     bannerView.adUnitID = _adUnitID;

@@ -38,6 +38,11 @@ export interface IAdManagerTargeting {
   /**
    * The user’s current location may be used to deliver more relevant ads.
    */
+  /**
+   * @deprecated Location has deleted from Ad Request since location data is not used
+   *  by Google to target ads. Use third-party APIs to provide the
+   *  information to third-party ad networks if required.
+   */
   location?: IAdManagerTargetingLocation;
 
   /**
