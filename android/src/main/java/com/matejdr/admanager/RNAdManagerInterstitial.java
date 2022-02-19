@@ -221,7 +221,9 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
                     AdManagerInterstitialAd.load(reactContext, adUnitId, adRequest, new AdManagerInterstitialAdLoadCallback() {
                         @Override
                         public void onAdLoaded(AdManagerInterstitialAd interstitialAd) {
-                            sendEvent(EVENT_AD_LOADED, null);
+                            WritableMap event = Arguments.createMap();
+                            event.putString("type", "interstitial");
+                            sendEvent(EVENT_AD_LOADED, event);
                             if (mRequestAdPromise != null) {
                                 mRequestAdPromise.resolve(null);
                                 mRequestAdPromise = null;

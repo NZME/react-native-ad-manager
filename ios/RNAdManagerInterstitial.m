@@ -72,7 +72,7 @@ RCT_EXPORT_METHOD(requestAd:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromise
 
         GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = _testDevices;
         GAMRequest *request = [GAMRequest request];
-        
+
         if (_targeting != nil) {
             NSDictionary *customTargeting = [_targeting objectForKey:@"customTargeting"];
             if (customTargeting != nil) {
@@ -113,15 +113,15 @@ RCT_EXPORT_METHOD(requestAd:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromise
                 _interstitial = nil;
                 return;
             }
-            
+
             if (hasListeners) {
-                [self sendEventWithName:kEventAdLoaded body:nil];
+                [self sendEventWithName:kEventAdLoaded body:@{ @"type": @"interstitial" }];
             }
             _requestAdResolve(nil);
-            
+
             _interstitial = interstitialAd;
             _interstitial.fullScreenContentDelegate = self;
-            
+
         }];
     } else {
         reject(@"E_AD_ALREADY_LOADED", @"Ad is already loaded.", nil);

@@ -216,12 +216,14 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
 
             @Override
             public void onAdOpened() {
-                sendEvent(RNAdManagerNativeViewManager.EVENT_AD_OPENED, null);
+                WritableMap event = Arguments.createMap();
+                sendEvent(RNAdManagerNativeViewManager.EVENT_AD_OPENED, event);
             }
 
             @Override
             public void onAdClosed() {
-                sendEvent(RNAdManagerNativeViewManager.EVENT_AD_CLOSED, null);
+                WritableMap event = Arguments.createMap();
+                sendEvent(RNAdManagerNativeViewManager.EVENT_AD_CLOSED, event);
             }
         }).withNativeAdOptions(adOptions);
 
@@ -374,7 +376,8 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         removeAllViews();
         this.addView(adView);
         if (adView == null) {
-            sendEvent(RNAdManagerNativeViewManager.EVENT_AD_LOADED, null);
+            WritableMap event = Arguments.createMap();
+            sendEvent(RNAdManagerNativeViewManager.EVENT_AD_LOADED, event);
             return;
         }
         int width = adView.getAdSize().getWidthInPixels(context);
@@ -412,7 +415,8 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
      */
     private void setNativeAd(NativeCustomFormatAd nativeCustomTemplateAd) {
         if (nativeCustomTemplateAd == null) {
-            sendEvent(RNAdManagerNativeViewManager.EVENT_AD_LOADED, null);
+            WritableMap event = Arguments.createMap();
+            sendEvent(RNAdManagerNativeViewManager.EVENT_AD_LOADED, event);
             return;
         }
 
@@ -442,7 +446,8 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
 
     private void setNativeAd(NativeAd nativeAd) {
         if (nativeAd == null) {
-            sendEvent(RNAdManagerNativeViewManager.EVENT_AD_LOADED, null);
+            WritableMap event = Arguments.createMap();
+            sendEvent(RNAdManagerNativeViewManager.EVENT_AD_LOADED, event);
             return;
         }
 

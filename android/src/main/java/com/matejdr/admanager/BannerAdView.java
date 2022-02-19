@@ -109,12 +109,14 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
 
             @Override
             public void onAdOpened() {
-                sendEvent(RNAdManagerBannerViewManager.EVENT_AD_OPENED, null);
+                WritableMap event = Arguments.createMap();
+                sendEvent(RNAdManagerBannerViewManager.EVENT_AD_OPENED, event);
             }
 
             @Override
             public void onAdClosed() {
-                sendEvent(RNAdManagerBannerViewManager.EVENT_AD_CLOSED, null);
+                WritableMap event = Arguments.createMap();
+                sendEvent(RNAdManagerBannerViewManager.EVENT_AD_CLOSED, event);
             }
 
         });
@@ -124,7 +126,6 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
     private void sendOnSizeChangeEvent() {
         int width;
         int height;
-        ReactContext reactContext = (ReactContext) getContext();
         WritableMap event = Arguments.createMap();
         AdSize adSize = this.adView.getAdSize();
         width = adSize.getWidth();
