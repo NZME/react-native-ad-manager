@@ -223,7 +223,7 @@ static NSString *const kAdTypeTemplate = @"template";
     __block NSMutableArray *validAdSizes = [[NSMutableArray alloc] initWithCapacity:adSizes.count];
     [adSizes enumerateObjectsUsingBlock:^(id jsonValue, NSUInteger idx, __unused BOOL *stop) {
         GADAdSize adSize = [RCTConvert GADAdSize:jsonValue];
-        if (GADAdSizeEqualToSize(adSize, kGADAdSizeInvalid)) {
+        if (GADAdSizeEqualToSize(adSize, GADAdSizeInvalid)) {
             RCTLogWarn(@"Invalid adSize %@", jsonValue);
         } else if (![validAdSizes containsObject:NSValueFromGADAdSize(adSize)]) {
             [validAdSizes addObject:NSValueFromGADAdSize(adSize)];
@@ -389,7 +389,7 @@ static NSString *const kAdTypeTemplate = @"template";
     NSMutableArray *validAdSizes = [NSMutableArray arrayWithArray:_validAdSizes];
     if (_adSize != nil) {
         GADAdSize adSize = [RCTConvert GADAdSize:_adSize];
-        if (GADAdSizeEqualToSize(adSize, kGADAdSizeInvalid)) {
+        if (GADAdSizeEqualToSize(adSize, GADAdSizeInvalid)) {
             RCTLogWarn(@"Invalid adSize %@", _adSize);
         } else if (![validAdSizes containsObject:NSValueFromGADAdSize(adSize)]) {
             [validAdSizes addObject:NSValueFromGADAdSize(adSize)];

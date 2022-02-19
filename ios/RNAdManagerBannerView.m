@@ -42,7 +42,7 @@
     __block NSMutableArray *validAdSizes = [[NSMutableArray alloc] initWithCapacity:adSizes.count];
     [adSizes enumerateObjectsUsingBlock:^(id jsonValue, NSUInteger idx, __unused BOOL *stop) {
         GADAdSize adSize = [RCTConvert GADAdSize:jsonValue];
-        if (GADAdSizeEqualToSize(adSize, kGADAdSizeInvalid)) {
+        if (GADAdSizeEqualToSize(adSize, GADAdSizeInvalid)) {
             RCTLogWarn(@"Invalid adSize %@", jsonValue);
         } else if (![validAdSizes containsObject:NSValueFromGADAdSize(adSize)]) {
             [validAdSizes addObject:NSValueFromGADAdSize(adSize)];
@@ -77,11 +77,11 @@
 
     GADAdSize adSize = [RCTConvert GADAdSize:_adSize];
     GAMBannerView *bannerView;
-    if (!GADAdSizeEqualToSize(adSize, kGADAdSizeInvalid)) {
+    if (!GADAdSizeEqualToSize(adSize, GADAdSizeInvalid)) {
 //        self.bannerView.adSize = adSize;
         bannerView = [[GAMBannerView alloc] initWithAdSize:adSize];
     } else {
-        bannerView = [[GAMBannerView alloc] initWithAdSize:kGADAdSizeBanner];
+        bannerView = [[GAMBannerView alloc] initWithAdSize:GADAdSizeBanner];
     }
 
     bannerView.delegate = self;

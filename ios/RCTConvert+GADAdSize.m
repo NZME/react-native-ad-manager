@@ -13,21 +13,21 @@
     }
 
     if ([adSize isEqualToString:@"banner"]) {
-        return kGADAdSizeBanner;
+        return GADAdSizeBanner;
     } else if ([adSize isEqualToString:@"fullBanner"]) {
-        return kGADAdSizeFullBanner;
+        return GADAdSizeFullBanner;
     } else if ([adSize isEqualToString:@"largeBanner"]) {
-        return kGADAdSizeLargeBanner;
+        return GADAdSizeLargeBanner;
     } else if ([adSize isEqualToString:@"fluid"]) {
-        return kGADAdSizeFluid;
+        return GADAdSizeFluid;
     } else if ([adSize isEqualToString:@"skyscraper"]) {
-        return kGADAdSizeSkyscraper;
+        return GADAdSizeSkyscraper;
     } else if ([adSize isEqualToString:@"leaderboard"]) {
-        return kGADAdSizeLeaderboard;
+        return GADAdSizeLeaderboard;
     } else if ([adSize isEqualToString:@"mediumRectangle"]) {
-        return kGADAdSizeMediumRectangle;
+        return GADAdSizeMediumRectangle;
     } else {
-        return kGADAdSizeInvalid;
+        return GADAdSizeInvalid;
     }
 }
 

@@ -20,7 +20,7 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
-  - Google-Mobile-Ads-SDK (8.11.0):
+  - Google-Mobile-Ads-SDK (8.13.0):
     - GoogleAppMeasurement (< 9.0, >= 7.0)
     - GoogleUserMessagingPlatform (>= 1.1)
   - GoogleAppMeasurement (8.12.0):
@@ -237,7 +237,7 @@ PODS:
     - React-jsi (= 0.63.4)
   - React-jsinspector (0.63.4)
   - react-native-ad-manager (2.0.0):
-    - Google-Mobile-Ads-SDK (~> 8.11.0)
+    - Google-Mobile-Ads-SDK (~> 8.13.0)
     - GoogleMobileAdsMediationFacebook
     - React-Core
   - React-RCTActionSheet (0.63.4):
@@ -409,7 +409,7 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: f2c97f2529dd79c083355182cc158c9f98f4bd6e
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
-  Google-Mobile-Ads-SDK: be2192b51b74d74a6ed70590c2e8275412f1b71e
+  Google-Mobile-Ads-SDK: 05e5d68bb42a61b2e5bef336a52789785605aa22
   GoogleAppMeasurement: ae033c3aad67e68294369373056b4d74cc8ae0d6
   GoogleMobileAdsMediationFacebook: 74a727b7e4b2113d1203e771ff750a298169bf7e
   GoogleUserMessagingPlatform: ab890ce5f6620f293a21b6bdd82e416a2c73aeca
@@ -426,7 +426,7 @@ SPEC CHECKSUMS:
   React-jsi: a0418934cf48f25b485631deb27c64dc40fb4c31
   React-jsiexecutor: 93bd528844ad21dc07aab1c67cb10abae6df6949
   React-jsinspector: 58aef7155bc9a9683f5b60b35eccea8722a4f53a
-  react-native-ad-manager: 897f0c83bfdc50c29e6ffef75c11a4724d1080e1
+  react-native-ad-manager: 52a7aeefd85ba98f30218670e07ac914c8e8b0ad
   React-RCTActionSheet: 89a0ca9f4a06c1f93c26067af074ccdce0f40336
   React-RCTAnimation: 1bde3ecc0c104c55df246eda516e0deb03c4e49b
   React-RCTBlob: a97d378b527740cc667e03ebfa183a75231ab0f0
