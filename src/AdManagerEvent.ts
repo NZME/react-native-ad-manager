@@ -25,8 +25,18 @@ export interface IAdManagerEventLoadedInterstitial extends IAdManagerEventBase {
 export interface IAdManagerEventLoadedBanner extends IAdManagerEventBase {
   type: 'banner';
   gadSize: {
+    adSize: string;
     width: number;
     height: number;
+  };
+  isFluid?: string;
+  measurements?: {
+    adWidth: number;
+    adHeight: number;
+    width: number;
+    height: number;
+    left: number;
+    top: number;
   };
 }
 

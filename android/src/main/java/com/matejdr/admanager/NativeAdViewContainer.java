@@ -95,6 +95,10 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         mEventEmitter = context.getJSModule(RCTEventEmitter.class);
     }
 
+    private boolean isFluid() {
+        return this.adSize != null && this.adSize.equals(AdSize.FLUID);
+    }
+
     public void loadAd(RNAdManageNativeManager.AdsManagerProperties adsManagerProperties) {
         this.testDevices = adsManagerProperties.getTestDevices();
         this.adUnitID = adsManagerProperties.getAdUnitID();
@@ -375,21 +379,59 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
             sendEvent(RNAdManagerNativeViewManager.EVENT_AD_LOADED, event);
             return;
         }
-        int width = adView.getAdSize().getWidthInPixels(context);
-        int height = adView.getAdSize().getHeightInPixels(context);
-        int left = adView.getLeft();
-        int top = adView.getTop();
-        adView.measure(width, height);
+
+        int width, height, left, top;
+
+        if (isFluid()) {
+            AdManagerAdView.LayoutParams layoutParams = new AdManagerAdView.LayoutParams(
+                ReactViewGroup.LayoutParams.MATCH_PARENT,
+                ReactViewGroup.LayoutParams.WRAP_CONTENT
+            );
+            adView.setLayoutParams(layoutParams);
+
+            top = 0;
+            left = 0;
+            width = getWidth();
+            height = getHeight();
+        } else {
+            top = adView.getTop();
+            left = adView.getLeft();
+            width = adView.getAdSize().getWidthInPixels(context);
+            height = adView.getAdSize().getHeightInPixels(context);
+        }
+
+        if (isFluid()) {
+            adView.measure(
+                MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY)
+            );
+        } else {
+            adView.measure(width, height);
+        }
         adView.layout(left, top, left + width, top + height);
-        sendOnSizeChangeEvent(adView);
+
+        if (!isFluid()) {
+            sendOnSizeChangeEvent(adView);
+        }
         WritableMap ad = Arguments.createMap();
         ad.putString("type", AD_TYPE_BANNER);
 
         WritableMap gadSize = Arguments.createMap();
+        gadSize.putString("adSize", adView.getAdSize().toString());
         gadSize.putDouble("width", adView.getAdSize().getWidth());
         gadSize.putDouble("height", adView.getAdSize().getHeight());
-
         ad.putMap("gadSize", gadSize);
+
+        ad.putString("isFluid", String.valueOf(isFluid()));
+
+        WritableMap measurements = Arguments.createMap();
+        measurements.putInt("adWidth", width);
+        measurements.putInt("adHeight", height);
+        measurements.putInt("width", getMeasuredWidth());
+        measurements.putInt("height", getMeasuredHeight());
+        measurements.putInt("left", left);
+        measurements.putInt("top", top);
+        ad.putMap("measurements", measurements);
 
         sendEvent(RNAdManagerNativeViewManager.EVENT_AD_LOADED, ad);
     }

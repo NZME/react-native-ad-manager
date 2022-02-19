@@ -159,10 +159,23 @@
                             @"height": @(bannerView.frame.size.height) });
     }
     if (self.onAdLoaded) {
+//        self.onAdLoaded(@{
+//            @"type": @"banner",
+//            @"gadSize": @{@"width": @(bannerView.frame.size.width),
+//                          @"height": @(bannerView.frame.size.height)},
+//        });
         self.onAdLoaded(@{
             @"type": @"banner",
-            @"gadSize": @{@"width": @(bannerView.frame.size.width),
+            @"gadSize": @{@"adSize": NSStringFromGADAdSize(bannerView.adSize),
+                          @"width": @(bannerView.frame.size.width),
                           @"height": @(bannerView.frame.size.height)},
+            @"isFluid": GADAdSizeIsFluid(bannerView.adSize) ? @"true" : @"false",
+            @"measurements": @{@"adWidth": @(bannerView.adSize.size.width),
+                               @"adHeight": @(bannerView.adSize.size.height),
+                               @"width": @(bannerView.frame.size.width),
+                               @"height": @(bannerView.frame.size.height),
+                               @"left": @(bannerView.frame.origin.x),
+                               @"top": @(bannerView.frame.origin.y)},
         });
     }
 }

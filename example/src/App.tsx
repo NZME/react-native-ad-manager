@@ -7,6 +7,7 @@ import {
   View,
   RefreshControl,
   ViewProps,
+  Dimensions,
 } from 'react-native';
 import {
   Interstitial,
@@ -22,12 +23,14 @@ import NativeAdView from './NativeAdView';
 const TEST_AD_NATIVE = '/6499/example/native';
 const TEST_AD_INTERSTITIAL = '/6499/example/interstitial';
 const TEST_AD_BANNER = '/6499/example/banner';
+const TEST_AD_BANNER_FLUID = '/6499/example/APIDemo/Fluid';
 const TEST_AD_TEMPLATE = '/6499/example/native';
 const TEST_AD_TEMPLATE_ID = '10104090';
 
 type TAdsListType =
   | 'banner'
   | 'banner-320x50'
+  | 'banner-fluid'
   | 'native'
   | 'native-template'
   | 'native-banner';
@@ -39,7 +42,6 @@ interface IAdsListElement {
 interface IExampleProps extends ViewProps {}
 
 interface IExampleState {
-  fluidSizeIndex: number;
   adsList: IAdsListElement[];
   refreshingScrollView: boolean;
 }
@@ -51,7 +53,6 @@ export default class Example extends React.Component<
   constructor(props: IExampleProps) {
     super(props);
     this.state = {
-      fluidSizeIndex: 0,
       adsList: [],
       refreshingScrollView: false,
     };
@@ -122,12 +123,27 @@ export default class Example extends React.Component<
               adSize="320x50"
               validAdSizes={['320x50']}
               adUnitID={TEST_AD_BANNER}
-              // targeting={{
-              //   customTargeting: { group: 'nzme_user_test' },
-              //   categoryExclusions: ['media'],
-              //   contentURL: 'nzmetest://',
-              //   publisherProvidedID: 'provider_id_nzme',
-              // }}
+              targeting={{
+                customTargeting: { group: 'nzme_user_test' },
+                categoryExclusions: ['media'],
+                contentURL: 'nzmetest://',
+                publisherProvidedID: 'provider_id_nzme',
+              }}
+            />
+          )}
+          {adType === 'banner-fluid' && (
+            <Banner
+              style={styles.fluid}
+              onAdLoaded={this.onAdLoaded}
+              adSize="fluid"
+              validAdSizes={['fluid']}
+              adUnitID={TEST_AD_BANNER_FLUID}
+              targeting={{
+                customTargeting: { group: 'nzme_user_test' },
+                categoryExclusions: ['media'],
+                contentURL: 'nzmetest://',
+                publisherProvidedID: 'provider_id_nzme',
+              }}
             />
           )}
         </View>
@@ -262,7 +278,11 @@ export default class Example extends React.Component<
             />
           </BannerExample>
           {adsList?.map((curItem, index) => {
-            if (['banner', 'banner-320x50'].indexOf(curItem.adType) >= 0) {
+            if (
+              ['banner', 'banner-320x50', 'banner-fluid'].indexOf(
+                curItem.adType
+              ) >= 0
+            ) {
               return (
                 <View key={index}>
                   {this.showBanner(index + 1, curItem.adType)}
@@ -302,6 +322,11 @@ export default class Example extends React.Component<
               onPress={() => this.addAd('banner-320x50')}
               color={'#CC5500'}
             />
+            <Button
+              title="Add Banner - Fluid"
+              onPress={() => this.addAd('banner-fluid')}
+              color={'#CC5500'}
+            />
           </BannerExample>
         </ScrollView>
       </View>
@@ -313,12 +338,25 @@ const styles = StyleSheet.create({
   container: {
     marginTop: Platform.OS === 'ios' ? 30 : 10,
   },
-  buttonHolder: { paddingBottom: 40 },
+  buttonHolder: {
+    paddingBottom: 40,
+  },
   banner: {
     backgroundColor: '#f3f',
     paddingVertical: 10,
   },
-  nativeHolder: { padding: 20 },
-  center: { alignItems: 'center', width: '100%' },
-  nativeAd: { width: '100%' },
+  nativeHolder: {
+    padding: 20,
+  },
+  center: {
+    alignItems: 'center',
+    width: '100%',
+  },
+  nativeAd: {
+    width: '100%',
+  },
+  fluid: {
+    width: Dimensions.get('screen').width,
+    height: 350,
+  },
 });
