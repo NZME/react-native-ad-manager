@@ -12,7 +12,6 @@ import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.view.ReactViewGroup;
 import com.google.ads.mediation.admob.AdMobAdapter;
@@ -139,9 +138,9 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
     private void sendEvent(String name, @Nullable WritableMap event) {
         ReactContext reactContext = (ReactContext) getContext();
         reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(
-                getId(),
-                name,
-                event);
+            getId(),
+            name,
+            event);
     }
 
     public void loadBanner() {
@@ -176,9 +175,9 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
                 testDevicesList.add(testDevice);
             }
             RequestConfiguration requestConfiguration
-                    = new RequestConfiguration.Builder()
-                    .setTestDeviceIds(testDevicesList)
-                    .build();
+                = new RequestConfiguration.Builder()
+                .setTestDeviceIds(testDevicesList)
+                .build();
             MobileAds.setRequestConfiguration(requestConfiguration);
         }
 

@@ -11,17 +11,17 @@ import java.util.List;
 public class RNAdManagerPackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-        return Arrays.<NativeModule>asList(
-                new RNAdManageNativeManager(reactContext),
-                new RNAdManagerInterstitial(reactContext)
+        return Arrays.asList(
+            new RNAdManageNativeManager(reactContext),
+            new RNAdManagerInterstitial(reactContext)
         );
     }
 
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
-        return Arrays.<ViewManager>asList(
-                new RNAdManagerNativeViewManager(reactContext),
-                new RNAdManagerBannerViewManager(reactContext)
+        return Arrays.asList(
+            new RNAdManagerNativeViewManager(reactContext),
+            new RNAdManagerBannerViewManager(reactContext)
         );
     }
 }
