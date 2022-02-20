@@ -21,6 +21,7 @@ public class RNAdManagerPackage implements ReactPackage {
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
         return Arrays.asList(
             new RNAdManagerNativeViewManager(reactContext),
+            new RNAdManagerAdaptiveBannerViewManager(reactContext),
             new RNAdManagerBannerViewManager(reactContext)
         );
     }

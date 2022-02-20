@@ -12,6 +12,7 @@ import {
 import {
   Interstitial,
   Banner,
+  AdaptiveBanner,
   NativeAdsManager,
   IAdManagerEventLoadedBanner,
   IAdManagerEventLoadedTemplate,
@@ -24,6 +25,7 @@ const TEST_AD_NATIVE = '/6499/example/native';
 const TEST_AD_INTERSTITIAL = '/6499/example/interstitial';
 const TEST_AD_BANNER = '/6499/example/banner';
 const TEST_AD_BANNER_FLUID = '/6499/example/APIDemo/Fluid';
+const TEST_AD_BANNER_ADAPTIVE = '/30497360/adaptive_banner_test_iu/backfill'; // '/30497360/adaptive_banner_test_iu/reservation'
 const TEST_AD_TEMPLATE = '/6499/example/native';
 const TEST_AD_TEMPLATE_ID = '10104090';
 
@@ -31,6 +33,7 @@ type TAdsListType =
   | 'banner'
   | 'banner-320x50'
   | 'banner-fluid'
+  | 'banner-adaptive'
   | 'native'
   | 'native-template'
   | 'native-banner';
@@ -138,6 +141,21 @@ export default class Example extends React.Component<
               adSize="fluid"
               validAdSizes={['fluid']}
               adUnitID={TEST_AD_BANNER_FLUID}
+              targeting={{
+                customTargeting: { group: 'nzme_user_test' },
+                categoryExclusions: ['media'],
+                contentURL: 'nzmetest://',
+                publisherProvidedID: 'provider_id_nzme',
+              }}
+            />
+          )}
+          {adType === 'banner-adaptive' && (
+            <AdaptiveBanner
+              style={styles.adaptive}
+              onAdLoaded={this.onAdLoaded}
+              adPosition="inline"
+              maxHeight={200}
+              adUnitID={TEST_AD_BANNER_ADAPTIVE}
               targeting={{
                 customTargeting: { group: 'nzme_user_test' },
                 categoryExclusions: ['media'],
@@ -279,9 +297,12 @@ export default class Example extends React.Component<
           </BannerExample>
           {adsList?.map((curItem, index) => {
             if (
-              ['banner', 'banner-320x50', 'banner-fluid'].indexOf(
-                curItem.adType
-              ) >= 0
+              [
+                'banner',
+                'banner-320x50',
+                'banner-fluid',
+                'banner-adaptive',
+              ].indexOf(curItem.adType) >= 0
             ) {
               return (
                 <View key={index}>
@@ -327,6 +348,11 @@ export default class Example extends React.Component<
               onPress={() => this.addAd('banner-fluid')}
               color={'#CC5500'}
             />
+            <Button
+              title="Add Banner - Adaptive"
+              onPress={() => this.addAd('banner-adaptive')}
+              color={'#CC5500'}
+            />
           </BannerExample>
         </ScrollView>
       </View>
@@ -358,5 +384,9 @@ const styles = StyleSheet.create({
   fluid: {
     width: Dimensions.get('screen').width,
     height: 350,
+  },
+  adaptive: {
+    width: Dimensions.get('screen').width,
+    height: 10,
   },
 });

@@ -14,22 +14,20 @@ import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
-import com.google.android.gms.ads.AdSize;
 import com.matejdr.admanager.customClasses.CustomTargeting;
 import com.matejdr.admanager.enums.TargetingEnums;
 import com.matejdr.admanager.enums.TargetingEnums.TargetingTypes;
-import com.matejdr.admanager.utils.AdSizeUtil;
 import com.matejdr.admanager.utils.Targeting;
 
 import java.util.ArrayList;
 import java.util.Map;
 
-public class RNAdManagerBannerViewManager extends ViewGroupManager<BannerAdView> {
+public class RNAdManagerAdaptiveBannerViewManager extends ViewGroupManager<AdaptiveBannerAdView> {
 
-    public static final String REACT_CLASS = "CTKBannerView";
+    public static final String REACT_CLASS = "CTKAdaptiveBannerView";
 
-    public static final String PROP_AD_SIZE = "adSize";
-    public static final String PROP_VALID_AD_SIZES = "validAdSizes";
+    public static final String PROP_AD_POSITION = "adPosition";
+    public static final String PROP_AD_MAX_HEIGHT = "maxHeight";
     public static final String PROP_AD_UNIT_ID = "adUnitID";
     public static final String PROP_TEST_DEVICES = "testDevices";
     public static final String PROP_TARGETING = "targeting";
@@ -45,7 +43,7 @@ public class RNAdManagerBannerViewManager extends ViewGroupManager<BannerAdView>
     public static final int COMMAND_LOAD_BANNER = 1;
     private final ReactApplicationContext applicationContext;
 
-    public RNAdManagerBannerViewManager(ReactApplicationContext context) {
+    public RNAdManagerAdaptiveBannerViewManager(ReactApplicationContext context) {
         super();
         this.applicationContext = context;
     }
@@ -56,7 +54,7 @@ public class RNAdManagerBannerViewManager extends ViewGroupManager<BannerAdView>
     }
 
     @Override
-    public void onDropViewInstance(BannerAdView view) {
+    public void onDropViewInstance(AdaptiveBannerAdView view) {
         if (view.adManagerAdView != null) {
             view.adManagerAdView.setAppEventListener(null);
             view.adManagerAdView.setAdListener(null);
@@ -66,14 +64,14 @@ public class RNAdManagerBannerViewManager extends ViewGroupManager<BannerAdView>
     }
 
     @Override
-    protected BannerAdView createViewInstance(ThemedReactContext themedReactContext) {
-        BannerAdView adView = new BannerAdView(themedReactContext, applicationContext);
+    protected AdaptiveBannerAdView createViewInstance(ThemedReactContext themedReactContext) {
+        AdaptiveBannerAdView adView = new AdaptiveBannerAdView(themedReactContext, applicationContext);
         return adView;
     }
 
     @Override
-    public void addView(BannerAdView parent, View child, int index) {
-        throw new RuntimeException("BannerAdView cannot have subviews");
+    public void addView(AdaptiveBannerAdView parent, View child, int index) {
+        throw new RuntimeException("AdaptiveBannerAdView cannot have subviews");
     }
 
     @Override
@@ -88,46 +86,36 @@ public class RNAdManagerBannerViewManager extends ViewGroupManager<BannerAdView>
             EVENT_AD_CLOSED,
             EVENT_APP_EVENT
         };
-        for (int i = 0; i < events.length; i++) {
-            builder.put(events[i], MapBuilder.of("registrationName", events[i]));
+        for (String event : events) {
+            builder.put(event, MapBuilder.of("registrationName", event));
         }
         return builder.build();
     }
 
-    @ReactProp(name = PROP_AD_SIZE)
-    public void setPropAdSize(final BannerAdView view, final String sizeString) {
-        AdSize adSize = AdSizeUtil.getAdSizeFromString(sizeString);
-        view.setAdSize(adSize);
+    @ReactProp(name = PROP_AD_POSITION)
+    public void setPropAdPosition(final AdaptiveBannerAdView view, final String positionString) {
+        view.setAdPosition(positionString);
     }
 
-    @ReactProp(name = PROP_VALID_AD_SIZES)
-    public void setPropValidAdSizes(final BannerAdView view, final ReadableArray adSizeStrings) {
-        ReadableNativeArray nativeArray = (ReadableNativeArray) adSizeStrings;
-        ArrayList<Object> list = nativeArray.toArrayList();
-        String[] adSizeStringsArray = list.toArray(new String[list.size()]);
-        AdSize[] adSizes = new AdSize[list.size()];
-
-        for (int i = 0; i < adSizeStringsArray.length; i++) {
-            String adSizeString = adSizeStringsArray[i];
-            adSizes[i] = AdSizeUtil.getAdSizeFromString(adSizeString);
-        }
-        view.setValidAdSizes(adSizes);
+    @ReactProp(name = PROP_AD_MAX_HEIGHT)
+    public void setPropMaxHeight(final AdaptiveBannerAdView view, final Integer maxHeightInteger) {
+        view.setMaxHeight(maxHeightInteger);
     }
 
     @ReactProp(name = PROP_AD_UNIT_ID)
-    public void setPropAdUnitID(final BannerAdView view, final String adUnitID) {
+    public void setPropAdUnitID(final AdaptiveBannerAdView view, final String adUnitID) {
         view.setAdUnitID(adUnitID);
     }
 
     @ReactProp(name = PROP_TEST_DEVICES)
-    public void setPropTestDevices(final BannerAdView view, final ReadableArray testDevices) {
+    public void setPropTestDevices(final AdaptiveBannerAdView view, final ReadableArray testDevices) {
         ReadableNativeArray nativeArray = (ReadableNativeArray) testDevices;
         ArrayList<Object> list = nativeArray.toArrayList();
         view.setTestDevices(list.toArray(new String[list.size()]));
     }
 
     @ReactProp(name = PROP_TARGETING)
-    public void setPropTargeting(final BannerAdView view, final ReadableMap targetingObjects) {
+    public void setPropTargeting(final AdaptiveBannerAdView view, final ReadableMap targetingObjects) {
 
         ReadableMapKeySetIterator targetings = targetingObjects.keySetIterator();
 
@@ -184,7 +172,7 @@ public class RNAdManagerBannerViewManager extends ViewGroupManager<BannerAdView>
     }
 
     @ReactProp(name = PROP_CORRELATOR)
-    public void setCorrelator(final BannerAdView view, final String correlator) {
+    public void setCorrelator(final AdaptiveBannerAdView view, final String correlator) {
         view.setCorrelator(correlator);
     }
 
@@ -195,7 +183,7 @@ public class RNAdManagerBannerViewManager extends ViewGroupManager<BannerAdView>
     }
 
     @Override
-    public void receiveCommand(BannerAdView root, int commandId, @javax.annotation.Nullable ReadableArray args) {
+    public void receiveCommand(AdaptiveBannerAdView root, int commandId, @javax.annotation.Nullable ReadableArray args) {
         switch (commandId) {
             case COMMAND_LOAD_BANNER:
                 root.loadBanner();
