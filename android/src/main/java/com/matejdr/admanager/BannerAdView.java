@@ -30,9 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 class BannerAdView extends ReactViewGroup implements AppEventListener, LifecycleEventListener {
-
-    protected AdManagerAdView adView;
-    Activity currentActivityContext = null;
+    protected AdManagerAdView adManagerAdView;
+    Activity currentActivityContext;
     String[] testDevices;
     AdSize[] validAdSizes;
     String adUnitID;
@@ -61,7 +60,7 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
     }
 
     private boolean isFluid() {
-        return this.adSize != null && this.adSize.equals(AdSize.FLUID);
+        return AdSize.FLUID.equals(this.adSize);
     }
 
     @Override
@@ -71,19 +70,21 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
     }
 
     private void createAdView() {
-        if (this.adView != null) this.adView.destroy();
+        if (this.adManagerAdView != null) this.adManagerAdView.destroy();
+        if (this.currentActivityContext == null) return;
 
-        this.adView = new AdManagerAdView(currentActivityContext);
+        this.adManagerAdView = new AdManagerAdView(currentActivityContext);
 
-        AdManagerAdView.LayoutParams layoutParams = new AdManagerAdView.LayoutParams(
-            ReactViewGroup.LayoutParams.MATCH_PARENT,
-            ReactViewGroup.LayoutParams.WRAP_CONTENT
-        );
+        if (isFluid()) {
+            AdManagerAdView.LayoutParams layoutParams = new AdManagerAdView.LayoutParams(
+                ReactViewGroup.LayoutParams.MATCH_PARENT,
+                ReactViewGroup.LayoutParams.WRAP_CONTENT
+            );
+            this.adManagerAdView.setLayoutParams(layoutParams);
+        }
 
-        this.adView.setLayoutParams(layoutParams);
-
-        this.adView.setAppEventListener(this);
-        this.adView.setAdListener(new AdListener() {
+        this.adManagerAdView.setAppEventListener(this);
+        this.adManagerAdView.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
                 if (isFluid()) {
@@ -92,10 +93,10 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
                     width = getWidth();
                     height = getHeight();
                 } else {
-                    top = adView.getTop();
-                    left = adView.getLeft();
-                    width = adView.getAdSize().getWidthInPixels(getContext());
-                    height = adView.getAdSize().getHeightInPixels(getContext());
+                    top = adManagerAdView.getTop();
+                    left = adManagerAdView.getLeft();
+                    width = adManagerAdView.getAdSize().getWidthInPixels(getContext());
+                    height = adManagerAdView.getAdSize().getHeightInPixels(getContext());
                 }
 
                 if (!isFluid()) {
@@ -106,9 +107,9 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
                 ad.putString("type", "banner");
 
                 WritableMap gadSize = Arguments.createMap();
-                gadSize.putString("adSize", adView.getAdSize().toString());
-                gadSize.putDouble("width", adView.getAdSize().getWidth());
-                gadSize.putDouble("height", adView.getAdSize().getHeight());
+                gadSize.putString("adSize", adManagerAdView.getAdSize().toString());
+                gadSize.putDouble("width", adManagerAdView.getAdSize().getWidth());
+                gadSize.putDouble("height", adManagerAdView.getAdSize().getHeight());
                 ad.putMap("gadSize", gadSize);
 
                 ad.putString("isFluid", String.valueOf(isFluid()));
@@ -162,14 +163,14 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
             }
 
         });
-        this.addView(this.adView);
+        this.addView(this.adManagerAdView);
     }
 
     private void sendOnSizeChangeEvent() {
         int width;
         int height;
         WritableMap event = Arguments.createMap();
-        AdSize adSize = this.adView.getAdSize();
+        AdSize adSize = this.adManagerAdView.getAdSize();
         width = adSize.getWidth();
         height = adSize.getHeight();
         event.putString("type", "banner");
@@ -204,7 +205,7 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
         }
 
         AdSize[] adSizesArray = adSizes.toArray(new AdSize[adSizes.size()]);
-        this.adView.setAdSizes(adSizesArray);
+        this.adManagerAdView.setAdSizes(adSizesArray);
 
         AdManagerAdRequest.Builder adRequestBuilder = new AdManagerAdRequest.Builder();
 
@@ -275,7 +276,7 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
         }
 
         AdManagerAdRequest adRequest = adRequestBuilder.build();
-        this.adView.loadAd(adRequest);
+        this.adManagerAdView.loadAd(adRequest);
     }
 
     public void setAdUnitID(String adUnitID) {
@@ -285,7 +286,7 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
             this.createAdView();
         }
         this.adUnitID = adUnitID;
-        this.adView.setAdUnitId(adUnitID);
+        this.adManagerAdView.setAdUnitId(adUnitID);
     }
 
     public void setTestDevices(String[] testDevices) {
@@ -339,23 +340,23 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
 
     @Override
     public void onHostResume() {
-        if (this.adView != null) {
-            this.adView.resume();
+        if (this.adManagerAdView != null) {
+            this.adManagerAdView.resume();
         }
     }
 
     @Override
     public void onHostPause() {
-        if (this.adView != null) {
-            this.adView.pause();
+        if (this.adManagerAdView != null) {
+            this.adManagerAdView.pause();
         }
     }
 
     @Override
     public void onHostDestroy() {
-        if (this.adView != null) {
+        if (this.adManagerAdView != null) {
             this.currentActivityContext = null;
-            this.adView.destroy();
+            this.adManagerAdView.destroy();
         }
     }
 
@@ -363,14 +364,14 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
         @Override
         public void run() {
             if (isFluid()) {
-                adView.measure(
+                adManagerAdView.measure(
                     MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
                     MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY)
                 );
             } else {
-                adView.measure(width, height);
+                adManagerAdView.measure(width, height);
             }
-            adView.layout(left, top, left + width, top + height);
+            adManagerAdView.layout(left, top, left + width, top + height);
         }
     }
 }

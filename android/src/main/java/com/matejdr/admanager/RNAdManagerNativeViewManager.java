@@ -65,8 +65,8 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
         if (view.nativeAdView != null) {
             view.nativeAdView.destroy();
         }
-        if (view.publisherAdView != null) {
-            view.publisherAdView.destroy();
+        if (view.adManagerAdView != null) {
+            view.adManagerAdView.destroy();
         }
         if (view.nativeCustomTemplateAd != null) {
             view.nativeCustomTemplateAd.destroy();

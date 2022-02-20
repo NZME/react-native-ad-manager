@@ -57,7 +57,7 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
     protected AdLoader adLoader;
     protected ReactApplicationContext applicationContext;
     protected NativeAdView nativeAdView;
-    protected AdManagerAdView publisherAdView;
+    protected AdManagerAdView adManagerAdView;
     protected NativeCustomFormatAd nativeCustomTemplateAd;
     protected String nativeCustomTemplateAdClickableAsset;
     protected ThemedReactContext context;
@@ -90,13 +90,13 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         this.applicationContext.addLifecycleEventListener(this);
 
         this.nativeAdView = new NativeAdView(context);
-        this.publisherAdView = new AdManagerAdView(context);
+        this.adManagerAdView = new AdManagerAdView(context);
 
         mEventEmitter = context.getJSModule(RCTEventEmitter.class);
     }
 
     private boolean isFluid() {
-        return this.adSize != null && this.adSize.equals(AdSize.FLUID);
+        return AdSize.FLUID.equals(this.adSize);
     }
 
     public void loadAd(RNAdManageNativeManager.AdsManagerProperties adsManagerProperties) {
@@ -371,7 +371,7 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
 
     @Override
     public void onAdManagerAdViewLoaded(AdManagerAdView adView) {
-        this.publisherAdView = adView;
+        this.adManagerAdView = adView;
         removeAllViews();
         this.addView(adView);
         if (adView == null) {
@@ -644,15 +644,15 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
 
     @Override
     public void onHostResume() {
-        if (this.publisherAdView != null) {
-            this.publisherAdView.resume();
+        if (this.adManagerAdView != null) {
+            this.adManagerAdView.resume();
         }
     }
 
     @Override
     public void onHostPause() {
-        if (this.publisherAdView != null) {
-            this.publisherAdView.pause();
+        if (this.adManagerAdView != null) {
+            this.adManagerAdView.pause();
         }
     }
 
@@ -661,8 +661,8 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         if (this.nativeAdView != null) {
             this.nativeAdView.destroy();
         }
-        if (this.publisherAdView != null) {
-            this.publisherAdView.destroy();
+        if (this.adManagerAdView != null) {
+            this.adManagerAdView.destroy();
         }
         if (this.nativeCustomTemplateAd != null) {
             this.nativeCustomTemplateAd.destroy();
