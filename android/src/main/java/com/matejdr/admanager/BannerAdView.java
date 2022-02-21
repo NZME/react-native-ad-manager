@@ -66,8 +66,10 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
         this.adView.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
-                int width = adView.getAdSize().getWidthInPixels(getContext());
-                int height = adView.getAdSize().getHeightInPixels(getContext());
+                AdSize adSize = adView.getAdSize();
+
+                int width = adSize.getWidthInPixels(getContext());
+                int height = adSize.getHeightInPixels(getContext());
 
                 if (!isFluid()) {
                     int left = adView.getLeft();
@@ -152,6 +154,10 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
     }
 
     private boolean isFluid() {
+        if (this.adSize != null && this.adSize.equals(AdSize.FLUID)) {
+            return true;
+        }
+
         if (this.adView == null) {
             return false;
         }
