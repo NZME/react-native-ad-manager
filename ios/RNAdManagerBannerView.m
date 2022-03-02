@@ -16,6 +16,15 @@
 
 @implementation RNAdManagerBannerView
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+
+    CGRect frameRect = _bannerView.frame;
+    frameRect.size.width = CGRectGetWidth(self.bounds);
+    _bannerView.frame = frameRect;
+}
+
 - (void)dealloc
 {
 
