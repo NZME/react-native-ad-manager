@@ -34,11 +34,12 @@ import java.util.List;
 class BannerAdView extends ReactViewGroup implements AppEventListener, LifecycleEventListener {
 
     protected AdManagerAdView adView;
-    Activity currentActivityContext = null;
+    Activity currentActivityContext;
     String[] testDevices;
     AdSize[] validAdSizes;
     String adUnitID;
     AdSize adSize;
+    boolean isFluid = false;
 
     // Targeting
     Boolean hasTargeting = false;
@@ -67,40 +68,36 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
             @Override
             public void onAdLoaded() {
                 AdSize adSize = adView.getAdSize();
+                Context context = getContext();
 
-                int width = adSize.getWidthInPixels(getContext());
-                int height = adSize.getHeightInPixels(getContext());
+                int width = adSize.getWidthInPixels(context);
+                int height = adSize.getHeightInPixels(context);
 
-                if (!isFluid()) {
-                    int left = adView.getLeft();
-                    int top = adView.getTop();
+                int left = adView.getLeft();
+                int top = adView.getTop();
 
-                    View parent = (View) adView.getParent();
+                View parent = (View) adView.getParent();
 
-                    if (parent != null) {
-                        int parentWidth = parent.getWidth();
+                if (parent != null) {
+                    int parentWidth = parent.getWidth();
 
-                        left = (parentWidth - width) / 2;
-                    }
-
-                    adView.measure(width, height);
-                    adView.layout(left, top, left + width, top + height);
-                } else {
-                    AdManagerAdView.LayoutParams layoutParams = new AdManagerAdView.LayoutParams(
-                        ReactViewGroup.LayoutParams.MATCH_PARENT,
-                        ReactViewGroup.LayoutParams.MATCH_PARENT);
-                    adView.setLayoutParams(layoutParams);
+                    left = (parentWidth - width) / 2;
                 }
 
-                updateLayout();
+                adView.measure(width, height);
+                adView.layout(left, top, left + width, top + height);
 
                 sendOnSizeChangeEvent();
                 WritableMap ad = Arguments.createMap();
                 ad.putString("type", "banner");
 
                 WritableMap gadSize = Arguments.createMap();
-                gadSize.putDouble("width", adView.getAdSize().getWidth());
-                gadSize.putDouble("height", adView.getAdSize().getHeight());
+
+                int adWidth = adSize.getWidth();
+                int adHeight = adSize.getHeight();
+
+                gadSize.putDouble("width", adWidth);
+                gadSize.putDouble("height", adHeight);
 
                 ad.putMap("gadSize", gadSize);
 
@@ -154,23 +151,7 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
     }
 
     private boolean isFluid() {
-        if (this.adSize != null && this.adSize.equals(AdSize.FLUID)) {
-            return true;
-        }
-
-        if (this.adView == null) {
-            return false;
-        }
-
-        AdSize adSize = this.adView.getAdSize();
-
-        if (adSize == null) {
-            return false;
-        }
-
-        boolean isFluid = adSize.isFluid();
-
-        return isFluid;
+        return this.isFluid;
     }
 
     @Override
@@ -265,7 +246,6 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
     private void sendOnSizeChangeEvent() {
         int width;
         int height;
-        ReactContext reactContext = (ReactContext) getContext();
         WritableMap event = Arguments.createMap();
         AdSize adSize = this.adView.getAdSize();
         width = adSize.getWidth();
@@ -429,6 +409,10 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
 
     @Override
     public void onAppEvent(String name, String info) {
+        this.isFluid = true;
+
+        this.updateLayout();
+
         WritableMap event = Arguments.createMap();
         event.putString("name", name);
         event.putString("info", info);
