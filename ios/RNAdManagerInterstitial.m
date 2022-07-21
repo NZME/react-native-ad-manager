@@ -52,7 +52,7 @@ RCT_EXPORT_METHOD(setAdUnitID:(NSString *)adUnitID)
 
 RCT_EXPORT_METHOD(setTestDevices:(NSArray *)testDevices)
 {
-    _testDevices = RNAdManagerProcessTestDevices(testDevices, kGADSimulatorID);
+    _testDevices = RNAdManagerProcessTestDevices(testDevices, GADSimulatorID);
 }
 
 RCT_EXPORT_METHOD(setTargeting:(NSDictionary *)targeting)
@@ -72,7 +72,7 @@ RCT_EXPORT_METHOD(requestAd:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromise
 
         GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = _testDevices;
         GAMRequest *request = [GAMRequest request];
-        
+
         if (_targeting != nil) {
             NSDictionary *customTargeting = [_targeting objectForKey:@"customTargeting"];
             if (customTargeting != nil) {
@@ -94,13 +94,13 @@ RCT_EXPORT_METHOD(requestAd:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromise
             if (publisherProvidedID != nil) {
                 request.publisherProvidedID = publisherProvidedID;
             }
-            NSDictionary *location = [_targeting objectForKey:@"location"];
-            if (location != nil) {
-                CGFloat latitude = [[location objectForKey:@"latitude"] doubleValue];
-                CGFloat longitude = [[location objectForKey:@"longitude"] doubleValue];
-                CGFloat accuracy = [[location objectForKey:@"accuracy"] doubleValue];
-                [request setLocationWithLatitude:latitude longitude:longitude accuracy:accuracy];
-            }
+//            NSDictionary *location = [_targeting objectForKey:@"location"];
+//            if (location != nil) {
+//                CGFloat latitude = [[location objectForKey:@"latitude"] doubleValue];
+//                CGFloat longitude = [[location objectForKey:@"longitude"] doubleValue];
+//                CGFloat accuracy = [[location objectForKey:@"accuracy"] doubleValue];
+//                [request setLocationWithLatitude:latitude longitude:longitude accuracy:accuracy];
+//            }
         }
 
         [GADInterstitialAd loadWithAdUnitID:_adUnitID request:request completionHandler:^(GADInterstitialAd * _Nullable interstitialAd, NSError * _Nullable error) {
@@ -113,15 +113,15 @@ RCT_EXPORT_METHOD(requestAd:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromise
                 _interstitial = nil;
                 return;
             }
-            
+
             if (hasListeners) {
-                [self sendEventWithName:kEventAdLoaded body:nil];
+                [self sendEventWithName:kEventAdLoaded body:@{ @"type": @"interstitial" }];
             }
             _requestAdResolve(nil);
-            
+
             _interstitial = interstitialAd;
             _interstitial.fullScreenContentDelegate = self;
-            
+
         }];
     } else {
         reject(@"E_AD_ALREADY_LOADED", @"Ad is already loaded.", nil);
@@ -159,7 +159,7 @@ RCT_EXPORT_METHOD(isReady:(RCTResponseSenderBlock)callback)
 
 #pragma mark GADFullScreenContentDelegate
 
-- (void)adDidPresentFullScreenContent:(id)ad {
+- (void)adWillPresentFullScreenContent:(id)ad {
       NSLog(@"Ad did present full screen content.");
     if (hasListeners){
         [self sendEventWithName:kEventAdOpened body:nil];

@@ -42,7 +42,7 @@
     __block NSMutableArray *validAdSizes = [[NSMutableArray alloc] initWithCapacity:adSizes.count];
     [adSizes enumerateObjectsUsingBlock:^(id jsonValue, NSUInteger idx, __unused BOOL *stop) {
         GADAdSize adSize = [RCTConvert GADAdSize:jsonValue];
-        if (GADAdSizeEqualToSize(adSize, kGADAdSizeInvalid)) {
+        if (GADAdSizeEqualToSize(adSize, GADAdSizeInvalid)) {
             RCTLogWarn(@"Invalid adSize %@", jsonValue);
         } else if (![validAdSizes containsObject:NSValueFromGADAdSize(adSize)]) {
             [validAdSizes addObject:NSValueFromGADAdSize(adSize)];
@@ -77,11 +77,11 @@
 
     GADAdSize adSize = [RCTConvert GADAdSize:_adSize];
     GAMBannerView *bannerView;
-    if (!GADAdSizeEqualToSize(adSize, kGADAdSizeInvalid)) {
+    if (!GADAdSizeEqualToSize(adSize, GADAdSizeInvalid)) {
 //        self.bannerView.adSize = adSize;
         bannerView = [[GAMBannerView alloc] initWithAdSize:adSize];
     } else {
-        bannerView = [[GAMBannerView alloc] initWithAdSize:kGADAdSizeBanner];
+        bannerView = [[GAMBannerView alloc] initWithAdSize:GADAdSizeBanner];
     }
 
     bannerView.delegate = self;
@@ -123,13 +123,13 @@
         if (publisherProvidedID != nil) {
             request.publisherProvidedID = publisherProvidedID;
         }
-        NSDictionary *location = [_targeting objectForKey:@"location"];
-        if (location != nil) {
-            CGFloat latitude = [[location objectForKey:@"latitude"] doubleValue];
-            CGFloat longitude = [[location objectForKey:@"longitude"] doubleValue];
-            CGFloat accuracy = [[location objectForKey:@"accuracy"] doubleValue];
-            [request setLocationWithLatitude:latitude longitude:longitude accuracy:accuracy];
-        }
+//        NSDictionary *location = [_targeting objectForKey:@"location"];
+//        if (location != nil) {
+//            CGFloat latitude = [[location objectForKey:@"latitude"] doubleValue];
+//            CGFloat longitude = [[location objectForKey:@"longitude"] doubleValue];
+//            CGFloat accuracy = [[location objectForKey:@"accuracy"] doubleValue];
+//            [request setLocationWithLatitude:latitude longitude:longitude accuracy:accuracy];
+//        }
     }
 
     bannerView.adUnitID = _adUnitID;
@@ -159,10 +159,23 @@
                             @"height": @(bannerView.frame.size.height) });
     }
     if (self.onAdLoaded) {
+//        self.onAdLoaded(@{
+//            @"type": @"banner",
+//            @"gadSize": @{@"width": @(bannerView.frame.size.width),
+//                          @"height": @(bannerView.frame.size.height)},
+//        });
         self.onAdLoaded(@{
             @"type": @"banner",
-            @"gadSize": @{@"width": @(bannerView.frame.size.width),
+            @"gadSize": @{@"adSize": NSStringFromGADAdSize(bannerView.adSize),
+                          @"width": @(bannerView.frame.size.width),
                           @"height": @(bannerView.frame.size.height)},
+            @"isFluid": GADAdSizeIsFluid(bannerView.adSize) ? @"true" : @"false",
+            @"measurements": @{@"adWidth": @(bannerView.adSize.size.width),
+                               @"adHeight": @(bannerView.adSize.size.height),
+                               @"width": @(bannerView.frame.size.width),
+                               @"height": @(bannerView.frame.size.height),
+                               @"left": @(bannerView.frame.origin.x),
+                               @"top": @(bannerView.frame.origin.y)},
         });
     }
 }

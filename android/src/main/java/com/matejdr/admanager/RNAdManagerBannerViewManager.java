@@ -57,10 +57,10 @@ public class RNAdManagerBannerViewManager extends ViewGroupManager<BannerAdView>
 
     @Override
     public void onDropViewInstance(BannerAdView view) {
-        if (view.adView != null) {
-            view.adView.setAppEventListener(null);
-            view.adView.setAdListener(null);
-            view.adView.destroy();
+        if (view.adManagerAdView != null) {
+            view.adManagerAdView.setAppEventListener(null);
+            view.adManagerAdView.setAdListener(null);
+            view.adManagerAdView.destroy();
         }
         super.onDropViewInstance(view);
     }
@@ -73,7 +73,7 @@ public class RNAdManagerBannerViewManager extends ViewGroupManager<BannerAdView>
 
     @Override
     public void addView(BannerAdView parent, View child, int index) {
-        throw new RuntimeException("RNPublisherBannerView cannot have subviews");
+        throw new RuntimeException("BannerAdView cannot have subviews");
     }
 
     @Override
@@ -81,12 +81,12 @@ public class RNAdManagerBannerViewManager extends ViewGroupManager<BannerAdView>
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         MapBuilder.Builder<String, Object> builder = MapBuilder.builder();
         String[] events = {
-                EVENT_SIZE_CHANGE,
-                EVENT_AD_LOADED,
-                EVENT_AD_FAILED_TO_LOAD,
-                EVENT_AD_OPENED,
-                EVENT_AD_CLOSED,
-                EVENT_APP_EVENT
+            EVENT_SIZE_CHANGE,
+            EVENT_AD_LOADED,
+            EVENT_AD_FAILED_TO_LOAD,
+            EVENT_AD_OPENED,
+            EVENT_AD_CLOSED,
+            EVENT_APP_EVENT
         };
         for (int i = 0; i < events.length; i++) {
             builder.put(events[i], MapBuilder.of("registrationName", events[i]));
@@ -133,8 +133,8 @@ public class RNAdManagerBannerViewManager extends ViewGroupManager<BannerAdView>
 
         if (targetings.hasNextKey()) {
             for (
-                    ReadableMapKeySetIterator it = targetingObjects.keySetIterator();
-                    it.hasNextKey();
+                ReadableMapKeySetIterator it = targetingObjects.keySetIterator();
+                it.hasNextKey();
             ) {
                 String targetingType = it.nextKey();
 

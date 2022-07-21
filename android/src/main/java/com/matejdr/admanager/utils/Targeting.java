@@ -24,8 +24,8 @@ public class Targeting {
         ArrayList<CustomTargeting> list = new ArrayList<CustomTargeting>();
 
         for (
-                ReadableMapKeySetIterator it = customTargeting.keySetIterator();
-                it.hasNextKey();
+            ReadableMapKeySetIterator it = customTargeting.keySetIterator();
+            it.hasNextKey();
         ) {
             String key = it.nextKey();
             String value = null;
@@ -62,9 +62,9 @@ public class Targeting {
 
     public static Location getLocation(ReadableMap locationObject) {
         if (
-                locationObject.hasKey("latitude")
-                        && locationObject.hasKey("longitude")
-                        && locationObject.hasKey("accuracy")
+            locationObject.hasKey("latitude")
+                && locationObject.hasKey("longitude")
+                && locationObject.hasKey("accuracy")
         ) {
             Location locationClass = new Location("");
             locationClass.setLatitude(locationObject.getDouble("latitude"));

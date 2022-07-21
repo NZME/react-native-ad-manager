@@ -8,21 +8,24 @@ Native ads are implemented as wrapper for a native view.
 
 ## Installation
 
-You can use npm or Yarn to install the latest beta version:
-
-## Getting started
+You can use npm or Yarn to install the latest version.
 
 **npm:**
 
-    npm i --save react-native-ad-manager
-
+```sh
+npm i --save react-native-ad-manager
+```
 **Yarn:**
 
-    yarn add react-native-ad-manager
+```sh
+yarn add react-native-ad-manager
+```
 
 ### Mostly automatic installation
 
-`$ react-native link react-native-ad-manager`
+If your react native project does not use auto linking, you can link manually by running:
+
+    `$ react-native link react-native-ad-manager`
 
 Alternatively for iOS you can install the library with CocoaPods by adding a line to your `Podfile`;
 
@@ -37,6 +40,41 @@ For iOS you will have to add the [Google Mobile Ads SDK](https://developers.goog
 On Android the Ad Manager library code is part of Play Services, which is automatically added when this library is linked.
 
 But you still have to manually update your `AndroidManifest.xml`, as described in the [Google Mobile Ads SDK documentation](https://developers.google.com/ad-manager/mobile-ads-sdk/android/quick-start#import_the_mobile_ads_sdk).
+
+###GAM
+
+**iOS**
+
+Activate as Ad Manager app by editing your Info.plist
+```
++ <key>GADIsAdManagerApp</key>
++ <true/>
+```
+Add transport security rules in Info.plist
+```
+<key>NSAppTransportSecurity</key>
+<dict>
+<key>NSAllowsArbitraryLoads</key>
+<true/>
+<key>NSAllowsArbitraryLoadsForMedia</key>
+<true/>
+<key>NSAllowsArbitraryLoadsInWebContent</key>
+<true/>
+</dict>
+```
+
+**Android(())
+
+Activate as Ad Manager app
+```
+<manifest>
+  <application>
+
++   <meta-data android:name="com.google.android.gms.ads.AD_MANAGER_APP" android:value="true"/>
+
+  </application>
+</manifest>
+```
 
 ## Usage
 
@@ -89,3 +127,11 @@ const adsManager = new NativeAdsManager('your-ad-unit-id', [
 
 See the NativeAdView component in the [example NativeAdView](example/NativeAdView.js).
 For a full example reference to the [example project](example).
+
+## Contributing
+
+See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
+
+## License
+
+MIT

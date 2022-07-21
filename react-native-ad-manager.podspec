@@ -9,18 +9,17 @@ Pod::Spec.new do |s|
   s.description  = <<-DESC
                   react-native-ad-manager
                    DESC
-  s.homepage     = "https://github.com/NZME/react-native-ad-manager"
-  s.license      = "MIT"
-  s.license      = package['license']
-  s.authors      = { "Matej Drobnic" => "matej.dr@gmail.com" }
-  s.platforms    = { :ios => "9.0" }
-  s.source       = { :git => "https://github.com/NZME/react-native-ad-manager.git", :tag => "#{s.version}" }
+  s.homepage     = package["homepage"]
+  s.license      = package["license"]
+  s.authors      = package["author"]
 
-  s.source_files = "ios/**/*.{h,m,swift}"
+  s.platforms    = { :ios => "11.0" }
+  s.source       = { :git => "https://github.com/NZME/react-native-ad-manager.git", :tag => "v#{s.version}" }
+
+  s.source_files = "ios/**/*.{h,m,mm}"
   s.requires_arc = true
 
-  s.dependency "React"
-  s.dependency 'Google-Mobile-Ads-SDK', '8.11.0'
-  s.dependency 'GoogleMobileAdsMediationFacebook'
+  s.dependency "React-Core"
+  s.dependency 'Google-Mobile-Ads-SDK', '~> 9.0.0'
+  s.dependency "GoogleMobileAdsMediationFacebook"
 end
-

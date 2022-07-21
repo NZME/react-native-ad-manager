@@ -65,8 +65,8 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
         if (view.nativeAdView != null) {
             view.nativeAdView.destroy();
         }
-        if (view.publisherAdView != null) {
-            view.publisherAdView.destroy();
+        if (view.adManagerAdView != null) {
+            view.adManagerAdView.destroy();
         }
         if (view.nativeCustomTemplateAd != null) {
             view.nativeCustomTemplateAd.destroy();
@@ -98,14 +98,14 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         MapBuilder.Builder<String, Object> builder = MapBuilder.builder();
         String[] events = {
-                EVENT_AD_LOADED,
-                EVENT_SIZE_CHANGE,
-                EVENT_AD_FAILED_TO_LOAD,
-                EVENT_AD_OPENED,
-                EVENT_AD_CLOSED,
-                EVENT_AD_CLICKED,
-                EVENT_AD_CUSTOM_CLICK,
-                EVENT_APP_EVENT
+            EVENT_AD_LOADED,
+            EVENT_SIZE_CHANGE,
+            EVENT_AD_FAILED_TO_LOAD,
+            EVENT_AD_OPENED,
+            EVENT_AD_CLOSED,
+            EVENT_AD_CLICKED,
+            EVENT_AD_CUSTOM_CLICK,
+            EVENT_APP_EVENT
         };
         for (int i = 0; i < events.length; i++) {
             builder.put(events[i], MapBuilder.of("registrationName", events[i]));
@@ -157,8 +157,8 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
 
         if (targetings.hasNextKey()) {
             for (
-                    ReadableMapKeySetIterator it = targetingObjects.keySetIterator();
-                    it.hasNextKey();
+                ReadableMapKeySetIterator it = targetingObjects.keySetIterator();
+                it.hasNextKey();
             ) {
                 String targetingType = it.nextKey();
 
@@ -244,7 +244,7 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
     @Override
     public Map<String, Integer> getCommandsMap() {
         return MapBuilder.of(
-                "reloadAd", COMMAND_RELOAD_AD
+            "reloadAd", COMMAND_RELOAD_AD
         );
     }
 
