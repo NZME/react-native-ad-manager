@@ -7,7 +7,7 @@
 #import <React/RCTBridgeModule.h>
 #import <React/UIView+React.h>
 #import <React/RCTLog.h>
-#import <FacebookAdapter/FacebookAdapter.h>
+#import <MetaAdapter/GADFBNetworkExtras.h>
 
 #include "RCTConvert+GADAdSize.h"
 #import "RNAdManagerUtils.h"
@@ -134,7 +134,7 @@ static NSString *const kAdTypeTemplate = @"template";
 
     GAMRequest *request = [GAMRequest request];
 
-    // Facebook Audience network
+    // Meta Audience network
     GADFBNetworkExtras * fbExtras = [[GADFBNetworkExtras alloc] init];
     fbExtras.nativeAdFormat = GADFBAdFormatNativeBanner;
     [request registerAdNetworkExtras:fbExtras];
