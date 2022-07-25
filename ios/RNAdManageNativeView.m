@@ -7,7 +7,7 @@
 #import <React/RCTBridgeModule.h>
 #import <React/UIView+React.h>
 #import <React/RCTLog.h>
-#import <MetaAdapter/GADFBNetworkExtras.h>
+#import <MetaAdapter/MetaAdapter.h>
 
 #include "RCTConvert+GADAdSize.h"
 #import "RNAdManagerUtils.h"
