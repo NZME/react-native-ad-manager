@@ -284,9 +284,11 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
             // We can only set adUnitID once, so when it was previously set we have
             // to recreate the view
             this.createAdView();
-        }
-        this.adUnitID = adUnitID;
-        this.adManagerAdView.setAdUnitId(adUnitID);
+            this.adUnitID = adUnitID;
+            if(this.adManagerAdView != null) {
+               this.adManagerAdView.setAdUnitId(adUnitID);
+            }
+        }    
     }
 
     public void setTestDevices(String[] testDevices) {
