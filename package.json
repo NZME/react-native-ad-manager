@@ -1,7 +1,7 @@
 {
   "name": "react-native-ad-manager",
   "title": "React Native Ad Manager",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "A react-native component for Google Ad Manager banners, interstitials and native ads.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
