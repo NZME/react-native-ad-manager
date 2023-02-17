@@ -42,7 +42,7 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
     CustomTargeting[] customTargeting;
     String[] categoryExclusions;
     String[] keywords;
-    String contentURL;
+    String content_url;
     String publisherProvidedID;
     Location location;
     String correlator;
@@ -264,8 +264,8 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
                     }
                 }
             }
-            if (contentURL != null) {
-                adRequestBuilder.setContentUrl(contentURL);
+            if (content_url != null) {
+                adRequestBuilder.setContentUrl(content_url);
             }
             if (publisherProvidedID != null) {
                 adRequestBuilder.setPublisherProvidedId(publisherProvidedID);
@@ -306,8 +306,8 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
         this.keywords = keywords;
     }
 
-    public void setContentURL(String contentURL) {
-        this.contentURL = contentURL;
+    public void setContentURL(String content_url) {
+        this.content_url = content_url;
     }
 
     public void setPublisherProvidedID(String publisherProvidedID) {
