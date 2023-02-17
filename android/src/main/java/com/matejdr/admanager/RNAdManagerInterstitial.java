@@ -51,7 +51,7 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
     CustomTargeting[] customTargeting;
     String[] categoryExclusions;
     String[] keywords;
-    String contentURL;
+    String content_url;
     String publisherProvidedID;
     Location location;
 
@@ -124,8 +124,8 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
                 }
 
                 if (targetingType.equals(TargetingEnums.getEnumString(TargetingTypes.CONTENTURL))) {
-                    String contentURL = targetingObjects.getString(targetingType);
-                    this.contentURL = contentURL;
+                    String content_url = targetingObjects.getString(targetingType);
+                    this.contentURL = content_url;
                 }
 
                 if (targetingType.equals(TargetingEnums.getEnumString(TargetingTypes.PUBLISHERPROVIDEDID))) {
@@ -190,8 +190,8 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
                 }
             }
         }
-        if (contentURL != null) {
-            adRequestBuilder.setContentUrl(contentURL);
+        if (content_url != null) {
+            adRequestBuilder.setContentUrl(content_url);
         }
         if (publisherProvidedID != null) {
             adRequestBuilder.setPublisherProvidedId(publisherProvidedID);
