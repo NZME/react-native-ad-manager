@@ -125,7 +125,7 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
 
                 if (targetingType.equals(TargetingEnums.getEnumString(TargetingTypes.CONTENTURL))) {
                     String content_url = targetingObjects.getString(targetingType);
-                    this.contentURL = content_url;
+                    this.content_url = content_url;
                 }
 
                 if (targetingType.equals(TargetingEnums.getEnumString(TargetingTypes.PUBLISHERPROVIDEDID))) {
