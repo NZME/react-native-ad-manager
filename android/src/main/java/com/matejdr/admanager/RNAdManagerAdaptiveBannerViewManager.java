@@ -151,8 +151,8 @@ public class RNAdManagerAdaptiveBannerViewManager extends ViewGroupManager<Adapt
 
                 if (targetingType.equals(TargetingEnums.getEnumString(TargetingTypes.CONTENTURL))) {
                     view.hasTargeting = true;
-                    String contentURL = targetingObjects.getString(targetingType);
-                    view.setContentURL(contentURL);
+                    String content_url = targetingObjects.getString(targetingType);
+                    view.setContentURL(content_url);
                 }
 
                 if (targetingType.equals(TargetingEnums.getEnumString(TargetingTypes.PUBLISHERPROVIDEDID))) {
