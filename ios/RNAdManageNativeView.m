@@ -7,7 +7,7 @@
 #import <React/RCTBridgeModule.h>
 #import <React/UIView+React.h>
 #import <React/RCTLog.h>
-#import <FacebookAdapter/FacebookAdapter.h>
+#import <MetaAdapter/MetaAdapter.h>
 
 #include "RCTConvert+GADAdSize.h"
 #import "RNAdManagerUtils.h"
@@ -134,7 +134,7 @@ static NSString *const kAdTypeTemplate = @"template";
 
     GAMRequest *request = [GAMRequest request];
 
-    // Facebook Audience network
+    // Meta Audience network
     GADFBNetworkExtras * fbExtras = [[GADFBNetworkExtras alloc] init];
     fbExtras.nativeAdFormat = GADFBAdFormatNativeBanner;
     [request registerAdNetworkExtras:fbExtras];
@@ -162,9 +162,9 @@ static NSString *const kAdTypeTemplate = @"template";
         if (keywords != nil) {
             request.keywords = keywords;
         }
-        NSString *contentURL = [_targeting objectForKey:@"contentURL"];
-        if (contentURL != nil) {
-            request.contentURL = contentURL;
+        NSString *content_url = [_targeting objectForKey:@"content_url"];
+        if (content_url != nil) {
+            request.contentURL = content_url;
         }
         NSString *publisherProvidedID = [_targeting objectForKey:@"publisherProvidedID"];
         if (publisherProvidedID != nil) {
