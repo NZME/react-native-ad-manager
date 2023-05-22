@@ -48,9 +48,11 @@ public class RNAdManageNativeManager extends ReactContextBaseJavaModule {
         final AdsManagerProperties adsManagerProperties = new AdsManagerProperties();
         adsManagerProperties.setAdUnitID(adUnitID);
 
-        ReadableNativeArray nativeArray = (ReadableNativeArray) testDevices;
-        ArrayList<Object> list = nativeArray.toArrayList();
-        adsManagerProperties.setTestDevices(list.toArray(new String[list.size()]));
+        if (testDevices != null && testDevices.size() > 0) {
+            ReadableNativeArray nativeArray = (ReadableNativeArray) testDevices;
+            ArrayList<Object> list = nativeArray.toArrayList();
+            adsManagerProperties.setTestDevices(list.toArray(new String[list.size()]));
+        }
 
         propertiesMap.put(adUnitID, adsManagerProperties);
     }
