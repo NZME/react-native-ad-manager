@@ -265,6 +265,8 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
                         correlator = (String) Targeting.getCorelator(adUnitID);
                     }
                     Bundle bundle = new Bundle();
+                    //Restrict data processing by default for all users
+                    bundle.putInt("rdp", 1);
                     bundle.putString("correlator", correlator);
 
                     adRequestBuilder.addNetworkExtrasBundle(AdMobAdapter.class, bundle);

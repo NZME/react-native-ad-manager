@@ -91,7 +91,7 @@ RCT_EXPORT_METHOD(init:(NSString *)adUnitID testDevices:(NSArray *)testDevices)
 
     adsManager.adUnitID = adUnitID;
     adsManager.testDevices = RNAdManagerProcessTestDevices(testDevices, GADSimulatorID);
-    
+
     _myAdChoiceViewAdUnitID = adUnitID;
 
     [adsManagers setValue:adsManager forKey:adUnitID];
@@ -107,7 +107,7 @@ RCT_EXPORT_METHOD(init:(NSString *)adUnitID testDevices:(NSArray *)testDevices)
     if (adLoaders == nil) {
         adLoaders = [NSMutableDictionary new];
     }
-    
+
     NSString *adLoaderKey = adUnitID;
     if ([validAdTypes containsObject:@"native"]) {
         adLoaderKey = [NSString stringWithFormat:@"%@%@", adLoaderKey, @"native"];
@@ -136,6 +136,9 @@ RCT_EXPORT_METHOD(init:(NSString *)adUnitID testDevices:(NSArray *)testDevices)
 
         GADVideoOptions *videoOptions = [[GADVideoOptions alloc] init];
         videoOptions.startMuted = YES;
+
+        //Restrict data processing by default for all users
+        [NSUserDefaults.standardUserDefaults setBool:YES forKey:@"gad_rdp"];
 
         adLoader = [[GADAdLoader alloc] initWithAdUnitID:adUnitID
                                            rootViewController:[UIApplication sharedApplication].delegate.window.rootViewController
