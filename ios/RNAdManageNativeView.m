@@ -536,9 +536,12 @@ static NSString *const kAdTypeTemplate = @"template";
 //    NSLog(@"%s", __PRETTY_FUNCTION__);
 //}
 
-//- (void)nativeAdDidRecordImpression:(nonnull GADNativeAd *)nativeAd {
-//    NSLog(@"%s", __PRETTY_FUNCTION__);
-//}
+- (void)nativeAdDidRecordImpression:(nonnull GADNativeAd *)nativeAd {
+    if (self.onAdRecordImpression) {
+      self.onAdRecordImpression(@{});
+    }
+}
+
 - (void)nativeAdWillPresentScreen:(nonnull GADNativeAd *)nativeAd {
     if (self.onAdOpened) {
         self.onAdOpened(@{});

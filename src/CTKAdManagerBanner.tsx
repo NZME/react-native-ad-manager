@@ -85,6 +85,8 @@ interface IAdManagerBannerNativeProps extends IAdManagerBannerPropsBase {
   onAppEvent?: (event: NativeSyntheticEvent<IAdManagerEventAppEvent>) => void;
   onAdOpened?: (event: NativeSyntheticEvent<IAdManagerEventBase>) => void;
   onAdClosed?: (event: NativeSyntheticEvent<IAdManagerEventBase>) => void;
+  onAdRecordImpression?: (event: NativeSyntheticEvent<IAdManagerEventBase>) => void;
+
 }
 
 const ComponentName = 'CTKBannerView';
@@ -164,6 +166,9 @@ export class Banner extends React.Component<
         }
         onAdClosed={(event) =>
           this.props.onAdClosed && this.props.onAdClosed(event.nativeEvent)
+        }
+        onAdRecordImpression={(event) =>
+          this.props.onAdRecordImpression && this.props.onAdRecordImpression(event.nativeEvent)
         }
       />
     );

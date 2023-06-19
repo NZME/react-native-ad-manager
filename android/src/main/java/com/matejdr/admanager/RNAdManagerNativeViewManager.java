@@ -45,6 +45,7 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
     public static final String EVENT_AD_CLICKED = "onAdClicked";
     public static final String EVENT_AD_CUSTOM_CLICK = "onAdCustomClick";
     public static final String EVENT_APP_EVENT = "onAppEvent";
+    public static final String EVENT_AD_RECORD_IMPRESSION = "onAdRecordImpression";
     public static final int COMMAND_RELOAD_AD = 1;
 
     private static final String REACT_CLASS = "CTKAdManageNative";
@@ -105,7 +106,8 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
             EVENT_AD_CLOSED,
             EVENT_AD_CLICKED,
             EVENT_AD_CUSTOM_CLICK,
-            EVENT_APP_EVENT
+            EVENT_APP_EVENT,
+            EVENT_AD_RECORD_IMPRESSION
         };
         for (int i = 0; i < events.length; i++) {
             builder.put(events[i], MapBuilder.of("registrationName", events[i]));

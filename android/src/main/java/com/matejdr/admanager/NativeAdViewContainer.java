@@ -224,6 +224,12 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
                 WritableMap event = Arguments.createMap();
                 sendEvent(RNAdManagerNativeViewManager.EVENT_AD_CLOSED, event);
             }
+
+            @Override
+            public void onAdImpression() {
+                WritableMap event = Arguments.createMap();
+                sendEvent(RNAdManagerNativeViewManager.EVENT_AD_RECORD_IMPRESSION, event);
+            }
         }).withNativeAdOptions(adOptions);
 
         adLoader = builder.build();
