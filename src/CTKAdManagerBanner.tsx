@@ -5,6 +5,7 @@ import {
   ViewProps,
   findNodeHandle,
   NativeSyntheticEvent,
+  DeviceEventEmitter,  
 } from 'react-native';
 import { createErrorFromErrorData } from './utils';
 import type {
@@ -53,6 +54,9 @@ interface IAdManagerBannerPropsBase extends ViewProps {
 }
 
 interface IAdManagerBannerProps extends IAdManagerBannerPropsBase {
+  // onError is a callback function sent from parent RN component of your RN app, aka: the error handler. 
+  // so if your RN App wants to handle the error, please pass in the "onError" function.
+  onError?: () => void;  
   /**
    * DFP library events
    */
@@ -102,6 +106,7 @@ export class Banner extends React.Component<
 > {
   constructor(props: IAdManagerBannerProps) {
     super(props);
+    this.hasOnErrorFromParent = Object.prototype.hasOwnProperty.call(props, 'onError');
     this.handleSizeChange = this.handleSizeChange.bind(this);
     this.state = {
       style: {},
@@ -124,9 +129,19 @@ export class Banner extends React.Component<
   }
 
   componentDidMount() {
+    this.customListener= DeviceEventEmitter.addListener('onError',eventData=>{
+      this.setState({ error: eventData });
+      if (this.hasOnErrorFromParent) {      
+        this.props?.onError(eventData);
+      }
+    });    
     this.loadBanner();
   }
-
+  
+  componentWillUnmount() {   
+    this.customListener.remove();
+  }
+  
   loadBanner() {
     UIManager.dispatchViewManagerCommand(
       findNodeHandle(this),
