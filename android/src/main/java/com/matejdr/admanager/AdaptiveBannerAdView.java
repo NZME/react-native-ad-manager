@@ -149,6 +149,12 @@ class AdaptiveBannerAdView extends ReactViewGroup implements AppEventListener, L
                 sendEvent(RNAdManagerAdaptiveBannerViewManager.EVENT_AD_CLOSED, event);
             }
 
+            @Override
+            public void onAdImpression() {
+                WritableMap event = Arguments.createMap();
+                sendEvent(RNAdManagerAdaptiveBannerViewManager.EVENT_AD_RECORD_IMPRESSION, event);
+            }
+
         });
         this.addView(this.adManagerAdView);
     }

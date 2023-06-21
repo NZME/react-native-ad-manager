@@ -196,6 +196,12 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
                     sendEvent(RNAdManagerBannerViewManager.EVENT_AD_CLOSED, event);
                 }
 
+                @Override
+                public void onAdImpression() {
+                    WritableMap event = Arguments.createMap();
+                    sendEvent(RNAdManagerBannerViewManager.EVENT_AD_RECORD_IMPRESSION, event);
+                }
+
             });
             this.addView(this.adManagerAdView);
         } catch (Exception e) {
