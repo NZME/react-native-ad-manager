@@ -66,6 +66,7 @@ interface IAdManagerBannerProps extends IAdManagerBannerPropsBase {
   onAppEvent?: (event: IAdManagerEventAppEvent) => void;
   onAdOpened?: (event: IAdManagerEventBase) => void;
   onAdClosed?: (event: IAdManagerEventBase) => void;
+  onAdRecordImpression?: (event: IAdManagerEventBase) => void;
 }
 
 interface IAdManagerBannerState {
@@ -90,7 +91,6 @@ interface IAdManagerBannerNativeProps extends IAdManagerBannerPropsBase {
   onAdOpened?: (event: NativeSyntheticEvent<IAdManagerEventBase>) => void;
   onAdClosed?: (event: NativeSyntheticEvent<IAdManagerEventBase>) => void;
   onAdRecordImpression?: (event: NativeSyntheticEvent<IAdManagerEventBase>) => void;
-
 }
 
 const ComponentName = 'CTKBannerView';
