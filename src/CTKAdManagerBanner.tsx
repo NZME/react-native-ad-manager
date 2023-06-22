@@ -6,6 +6,7 @@ import {
   findNodeHandle,
   NativeSyntheticEvent,
   DeviceEventEmitter,  
+  EventSubscription
 } from 'react-native';
 import { createErrorFromErrorData } from './utils';
 import type {
@@ -56,7 +57,7 @@ interface IAdManagerBannerPropsBase extends ViewProps {
 interface IAdManagerBannerProps extends IAdManagerBannerPropsBase {
   // onError is a callback function sent from parent RN component of your RN app, aka: the error handler. 
   // so if your RN App wants to handle the error, please pass in the "onError" function.
-  onError?: () => void;  
+  onError?: (eventData: Error) => void;
   /**
    * DFP library events
    */
@@ -74,6 +75,7 @@ interface IAdManagerBannerState {
     width?: number;
     height?: number;
   };
+  error: Error | null;
 }
 
 interface IAdManagerBannerNativeProps extends IAdManagerBannerPropsBase {
@@ -106,12 +108,16 @@ export class Banner extends React.Component<
   IAdManagerBannerProps,
   IAdManagerBannerState
 > {
+  hasOnErrorFromParent: boolean;
+  customListener: EventSubscription | undefined;
+
   constructor(props: IAdManagerBannerProps) {
     super(props);
     this.hasOnErrorFromParent = Object.prototype.hasOwnProperty.call(props, 'onError');
     this.handleSizeChange = this.handleSizeChange.bind(this);
     this.state = {
       style: {},
+      error: null,
     };
   }
 
@@ -133,15 +139,17 @@ export class Banner extends React.Component<
   componentDidMount() {
     this.customListener= DeviceEventEmitter.addListener('onError',eventData=>{
       this.setState({ error: eventData });
-      if (this.hasOnErrorFromParent) {      
-        this.props?.onError(eventData);
+      if (this.hasOnErrorFromParent && this.props.onError) {      
+        this.props.onError(eventData);
       }
     });    
     this.loadBanner();
   }
   
-  componentWillUnmount() {   
-    this.customListener.remove();
+  componentWillUnmount() {
+    if (this.customListener) {
+      this.customListener.remove();
+    }
   }
   
   loadBanner() {
