@@ -197,7 +197,7 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
             adRequestBuilder.setPublisherProvidedId(publisherProvidedID);
         }
         if (location != null) {
-            adRequestBuilder.setLocation(location);
+            // adRequestBuilder.setLocation(location);
         }
 
         adRequest = adRequestBuilder.build();
@@ -319,11 +319,11 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
      // Required for rn built in EventEmitter Calls.
      @ReactMethod
      public void addListener(String eventName) {
- 
+
      }
- 
+
      @ReactMethod
      public void removeListeners(Integer count) {
- 
+
      }
 }

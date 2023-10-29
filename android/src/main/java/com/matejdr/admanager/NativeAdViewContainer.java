@@ -317,7 +317,7 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
                             adRequestBuilder.setPublisherProvidedId(publisherProvidedID);
                         }
                         if (location != null) {
-                            adRequestBuilder.setLocation(location);
+                            // adRequestBuilder.setLocation(location);
                         }
                     }
 

@@ -271,7 +271,7 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
                 adRequestBuilder.setPublisherProvidedId(publisherProvidedID);
             }
             if (location != null) {
-                adRequestBuilder.setLocation(location);
+                // adRequestBuilder.setLocation(location);
             }
         }
 
