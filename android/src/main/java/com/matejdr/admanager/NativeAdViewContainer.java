@@ -394,7 +394,7 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         TextView titleView = new TextView(context);
         titleView.setText(_nativeAd.getHeadline());
         titleView.setTextColor(0xff000000);
-        titleView.setTypeface(Typeface.create(null, 700, false));
+        titleView.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         titleView.setGravity(Gravity.LEFT);
         titleView.setPadding(0, 0, 0, 0);
         titleView.layout(midWidth, 65, viewWidth, 190);
