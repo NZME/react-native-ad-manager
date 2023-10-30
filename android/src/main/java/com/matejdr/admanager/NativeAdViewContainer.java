@@ -454,7 +454,7 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         textView.setTextSize(11);
         textView.setTextColor(0xFF868E96);
         textView.setGravity(Gravity.CENTER);
-        textView.layout(0, 0, 50, 36);
+        textView.layout(0, viewHeight - 36, 50, viewHeight);
         nativeAdView.addView(textView);
         textView.setBackgroundColor(0xFFFFFFFF);
     }
