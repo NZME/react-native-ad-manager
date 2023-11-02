@@ -28,7 +28,7 @@
     "prop-types": "^15.7.2"
   },
   "peerDependencies": {
-    "react-native": ">=0.59.10"
+    "react-native": ">=0.72.5"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
@@ -38,7 +38,7 @@
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-react-native": "^3.7.0",
     "prettier": "^1.18.2",
-    "react": "^16.8.3",
-    "react-native": "^0.61.5"
+    "react": "18.2.0",
+    "react-native": "0.72.5"
   }
 }
