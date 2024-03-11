@@ -196,9 +196,12 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
         if (publisherProvidedID != null) {
             adRequestBuilder.setPublisherProvidedId(publisherProvidedID);
         }
-        if (location != null) {
-            adRequestBuilder.setLocation(location);
-        }
+
+        // setLocation() became obsolete since GMA SDK version 21.0.0, link reference below:
+        //          https://developers.google.com/admob/android/rel-notes
+        //if (location != null) {
+        //    adRequestBuilder.setLocation(location);
+        //}
 
         adRequest = adRequestBuilder.build();
 
