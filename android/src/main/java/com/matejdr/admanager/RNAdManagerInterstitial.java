@@ -314,7 +314,7 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
-                callback.invoke(mInterstitialAd);
+                callback.invoke(mInterstitialAd != null);
             }
         });
     }
@@ -322,11 +322,11 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
      // Required for rn built in EventEmitter Calls.
      @ReactMethod
      public void addListener(String eventName) {
- 
+
      }
- 
+
      @ReactMethod
      public void removeListeners(Integer count) {
- 
+
      }
 }
