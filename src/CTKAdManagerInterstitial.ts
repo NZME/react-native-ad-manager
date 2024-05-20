@@ -109,7 +109,7 @@ const showAd = (): Promise<null> => {
   return CTKInterstitial.showAd();
 }
 
-const isReady = (callback: (isReady: number) => void): Promise<null> => {
+const isReady = (callback: (isReady: boolean) => void): Promise<null> => {
   return CTKInterstitial.isReady(callback);
 }
 

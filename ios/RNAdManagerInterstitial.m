@@ -65,8 +65,8 @@ RCT_EXPORT_METHOD(requestAd:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromise
     _requestAdResolve = nil;
     _requestAdReject = nil;
 
-    BOOL hasBeenUsed =  [_interstitial canPresentFromRootViewController:[UIApplication sharedApplication].delegate.window.rootViewController error:nil];
-    if (hasBeenUsed || _interstitial == nil) {
+    BOOL isReady =  [_interstitial canPresentFromRootViewController:[UIApplication sharedApplication].delegate.window.rootViewController error:nil];
+    if (!isReady) {
         _requestAdResolve = resolve;
         _requestAdReject = reject;
 
