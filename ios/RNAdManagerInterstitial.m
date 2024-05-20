@@ -180,6 +180,7 @@ RCT_EXPORT_METHOD(isReady:(RCTResponseSenderBlock)callback)
     if (hasListeners) {
         [self sendEventWithName:kEventAdClosed body:nil];
     }
+    _interstitial = nil;
 }
 
 @end
