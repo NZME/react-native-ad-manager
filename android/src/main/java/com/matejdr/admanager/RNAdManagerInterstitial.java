@@ -2,6 +2,7 @@ package com.matejdr.admanager;
 
 import android.app.Activity;
 import android.location.Location;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 
@@ -19,6 +20,7 @@ import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.facebook.react.bridge.ReadableNativeArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.google.ads.mediation.admob.AdMobAdapter;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
