@@ -37,6 +37,7 @@ interface INativeAdPropsBase extends ViewProps {
   validAdTypes?: ('banner' | 'native' | 'template')[];
   customClickTemplateIds?: string[];
   targeting?: IAdManagerTargeting;
+  servePersonalizedAds?: boolean;
 }
 
 interface INativeAdNativeProps extends INativeAdPropsBase {
@@ -60,7 +61,9 @@ interface INativeAdNativeProps extends INativeAdPropsBase {
   onAdCustomClick?: (
     event: NativeSyntheticEvent<IAdManagerEventCustomClick>
   ) => void;
-  onAdRecordImpression?: (event: NativeSyntheticEvent<IAdManagerEventBase>) => void;
+  onAdRecordImpression?: (
+    event: NativeSyntheticEvent<IAdManagerEventBase>
+  ) => void;
 }
 
 interface INativeAdProps extends INativeAdPropsBase {
@@ -276,11 +279,13 @@ export default (Component: JSXElementConstructor<any>) =>
             this.props.onAdCustomClick(event.nativeEvent)
           }
           onAdRecordImpression={(event) =>
-            this.props.onAdRecordImpression && this.props.onAdRecordImpression(event.nativeEvent)
+            this.props.onAdRecordImpression &&
+            this.props.onAdRecordImpression(event.nativeEvent)
           }
           targeting={this.props.targeting}
           customClickTemplateIds={this.props.customClickTemplateIds}
           adsManager={adsManager.toJSON()}
+          servePersonalizedAds={this.props.servePersonalizedAds}
         >
           {this.renderAdComponent(rest)}
         </NativeAdView>

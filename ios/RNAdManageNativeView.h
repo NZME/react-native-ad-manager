@@ -33,6 +33,7 @@
 @property (nonatomic, copy) NSArray *validAdSizes;
 @property (nonatomic, copy) NSDictionary *targeting;
 @property (nonatomic, copy) NSString *correlator;
+@property (nonatomic) BOOL servePersonalizedAds;
 
 @property (nonatomic, copy) RCTBubblingEventBlock onSizeChange;
 @property (nonatomic, copy) RCTBubblingEventBlock onAppEvent;
