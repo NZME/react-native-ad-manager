@@ -36,6 +36,8 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
     public static final String PROP_VALID_AD_TYPES = "validAdTypes";
     public static final String PROP_TARGETING = "targeting";
     public static final String PROP_CORRELATOR = "correlator";
+    public static final String PROP_SERVE_PERSONALIZED_ADS = "servePersonalizedAds";
+
 
     public static final String EVENT_AD_LOADED = "onAdLoaded";
     public static final String EVENT_SIZE_CHANGE = "onSizeChange";
@@ -220,6 +222,11 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
         ArrayList<Object> list = nativeArray.toArrayList();
         String[] customTemplateClickIdsStringArray = list.toArray(new String[list.size()]);
         view.setCustomClickTemplateIds(customTemplateClickIdsStringArray);
+    }
+
+    @ReactProp(name = PROP_SERVE_PERSONALIZED_ADS)
+    public void setServePersonalizedAds(final NativeAdViewContainer view, final Boolean servePersonalizedAds) {
+        view.setServePersonalizedAds(servePersonalizedAds);
     }
 
     @Override
