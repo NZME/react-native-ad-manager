@@ -44,6 +44,8 @@ interface IAdManagerAdaptiveBannerPropsBase extends ViewProps {
   testDevices?: string[];
 
   targeting?: IAdManagerTargeting;
+
+  servePersonalizedAds?: boolean;
 }
 
 interface IAdManagerAdaptiveBannerProps
