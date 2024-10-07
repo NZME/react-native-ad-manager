@@ -76,6 +76,7 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
     String publisherProvidedID;
     Location location;
     String correlator;
+    Boolean servePersonalizedAds = true;
     List<String> customClickTemplateIds;
 
     /**
@@ -224,6 +225,12 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
                 WritableMap event = Arguments.createMap();
                 sendEvent(RNAdManagerNativeViewManager.EVENT_AD_CLOSED, event);
             }
+
+            @Override
+            public void onAdImpression() {
+                WritableMap event = Arguments.createMap();
+                sendEvent(RNAdManagerNativeViewManager.EVENT_AD_RECORD_IMPRESSION, event);
+            }
         }).withNativeAdOptions(adOptions);
 
         adLoader = builder.build();
@@ -262,6 +269,10 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
                     //Restrict data processing by default for all users
                     bundle.putInt("rdp", 1);
                     bundle.putString("correlator", correlator);
+
+                    if (!servePersonalizedAds) {
+                        bundle.putInt("npa", 1);
+                    }
 
                     adRequestBuilder.addNetworkExtrasBundle(AdMobAdapter.class, bundle);
 
@@ -307,9 +318,12 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
                         if (publisherProvidedID != null) {
                             adRequestBuilder.setPublisherProvidedId(publisherProvidedID);
                         }
-                        if (location != null) {
-                            adRequestBuilder.setLocation(location);
-                        }
+
+                        // setLocation() became obsolete since GMA SDK version 21.0.0, link reference below:
+                        //          https://developers.google.com/admob/android/rel-notes
+                        //if (location != null) {
+                        //    adRequestBuilder.setLocation(location);
+                        //}
                     }
 
                     AdManagerAdRequest adRequest = adRequestBuilder.build();
@@ -630,6 +644,10 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
 
     public void setCorrelator(String correlator) {
         this.correlator = correlator;
+    }
+
+    public void setServePersonalizedAds(Boolean servePersonalizedAds) {
+        this.servePersonalizedAds = servePersonalizedAds;
     }
 
     public void setCustomClickTemplateIds(String[] customClickTemplateIds) {

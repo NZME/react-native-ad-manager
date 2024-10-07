@@ -33,6 +33,7 @@
 @property (nonatomic, copy) NSArray *validAdSizes;
 @property (nonatomic, copy) NSDictionary *targeting;
 @property (nonatomic, copy) NSString *correlator;
+@property (nonatomic) BOOL servePersonalizedAds;
 
 @property (nonatomic, copy) RCTBubblingEventBlock onSizeChange;
 @property (nonatomic, copy) RCTBubblingEventBlock onAppEvent;
@@ -41,6 +42,7 @@
 @property (nonatomic, copy) RCTBubblingEventBlock onAdOpened;
 @property (nonatomic, copy) RCTBubblingEventBlock onAdClosed;
 @property (nonatomic, copy) RCTBubblingEventBlock onAdCustomClick;
+@property (nonatomic, copy) RCTBubblingEventBlock onAdRecordImpression;
 
 - (instancetype)initWithBridge:(RCTBridge *)bridge;
 - (void)registerViewsForInteraction:(NSArray<UIView *> *)clickableViews;

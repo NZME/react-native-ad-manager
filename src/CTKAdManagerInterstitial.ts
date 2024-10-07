@@ -101,17 +101,21 @@ const setTargeting = (targeting: IAdManagerTargeting) => {
   CTKInterstitial.setTargeting(targeting);
 };
 
+const setServePersonalizedAds = (servePersonalizedAds: boolean) => {
+  CTKInterstitial.setServePersonalizedAds(servePersonalizedAds);
+};
+
 const requestAd = (): Promise<null> => {
   return CTKInterstitial.requestAd();
-}
+};
 
 const showAd = (): Promise<null> => {
   return CTKInterstitial.showAd();
-}
+};
 
-const isReady = (callback: (isReady: number) => void): Promise<null> => {
+const isReady = (callback: (isReady: boolean) => void): Promise<null> => {
   return CTKInterstitial.isReady(callback);
-}
+};
 
 export default {
   addEventListener,
@@ -123,5 +127,6 @@ export default {
   setTargeting,
   requestAd,
   showAd,
-  isReady
-}
+  setServePersonalizedAds,
+  isReady,
+};

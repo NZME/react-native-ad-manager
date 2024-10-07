@@ -32,6 +32,7 @@ public class RNAdManagerAdaptiveBannerViewManager extends ViewGroupManager<Adapt
     public static final String PROP_TEST_DEVICES = "testDevices";
     public static final String PROP_TARGETING = "targeting";
     public static final String PROP_CORRELATOR = "correlator";
+    public static final String PROP_SERVE_PERSONALIZED_ADS = "servePersonalizedAds";
 
     public static final String EVENT_SIZE_CHANGE = "onSizeChange";
     public static final String EVENT_AD_LOADED = "onAdLoaded";
@@ -39,6 +40,7 @@ public class RNAdManagerAdaptiveBannerViewManager extends ViewGroupManager<Adapt
     public static final String EVENT_AD_OPENED = "onAdOpened";
     public static final String EVENT_AD_CLOSED = "onAdClosed";
     public static final String EVENT_APP_EVENT = "onAppEvent";
+    public static final String EVENT_AD_RECORD_IMPRESSION = "onAdRecordImpression";
 
     public static final int COMMAND_LOAD_BANNER = 1;
     private final ReactApplicationContext applicationContext;
@@ -84,7 +86,8 @@ public class RNAdManagerAdaptiveBannerViewManager extends ViewGroupManager<Adapt
             EVENT_AD_FAILED_TO_LOAD,
             EVENT_AD_OPENED,
             EVENT_AD_CLOSED,
-            EVENT_APP_EVENT
+            EVENT_APP_EVENT,
+            EVENT_AD_RECORD_IMPRESSION
         };
         for (String event : events) {
             builder.put(event, MapBuilder.of("registrationName", event));
@@ -174,6 +177,11 @@ public class RNAdManagerAdaptiveBannerViewManager extends ViewGroupManager<Adapt
     @ReactProp(name = PROP_CORRELATOR)
     public void setCorrelator(final AdaptiveBannerAdView view, final String correlator) {
         view.setCorrelator(correlator);
+    }
+
+    @ReactProp(name = PROP_SERVE_PERSONALIZED_ADS)
+    public void setServePersonalizedAds(final AdaptiveBannerAdView view, final Boolean servePersonalizedAds) {
+        view.setServePersonalizedAds(servePersonalizedAds);
     }
 
     @Nullable

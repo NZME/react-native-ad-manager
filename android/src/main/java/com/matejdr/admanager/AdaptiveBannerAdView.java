@@ -48,6 +48,7 @@ class AdaptiveBannerAdView extends ReactViewGroup implements AppEventListener, L
     String publisherProvidedID;
     Location location;
     String correlator;
+    Boolean servePersonalizedAds = true;
 
     int top;
     int left;
@@ -149,6 +150,12 @@ class AdaptiveBannerAdView extends ReactViewGroup implements AppEventListener, L
                 sendEvent(RNAdManagerAdaptiveBannerViewManager.EVENT_AD_CLOSED, event);
             }
 
+            @Override
+            public void onAdImpression() {
+                WritableMap event = Arguments.createMap();
+                sendEvent(RNAdManagerAdaptiveBannerViewManager.EVENT_AD_RECORD_IMPRESSION, event);
+            }
+
         });
         this.addView(this.adManagerAdView);
     }
@@ -201,6 +208,10 @@ class AdaptiveBannerAdView extends ReactViewGroup implements AppEventListener, L
         Bundle bundle = new Bundle();
         bundle.putString("correlator", correlator);
 
+        if (!servePersonalizedAds) {
+            bundle.putInt("npa", 1);
+        }
+
         adRequestBuilder.addNetworkExtrasBundle(AdMobAdapter.class, bundle);
 
         // Targeting
@@ -239,9 +250,12 @@ class AdaptiveBannerAdView extends ReactViewGroup implements AppEventListener, L
             if (publisherProvidedID != null) {
                 adRequestBuilder.setPublisherProvidedId(publisherProvidedID);
             }
-            if (location != null) {
-                adRequestBuilder.setLocation(location);
-            }
+
+            // setLocation() became obsolete since GMA SDK version 21.0.0, link reference below:
+            //          https://developers.google.com/admob/android/rel-notes
+            //if (location != null) {
+            //    adRequestBuilder.setLocation(location);
+            //}
         }
 
         AdManagerAdRequest adRequest = adRequestBuilder.build();
@@ -297,6 +311,10 @@ class AdaptiveBannerAdView extends ReactViewGroup implements AppEventListener, L
 
     public void setCorrelator(String correlator) {
         this.correlator = correlator;
+    }
+
+    public void setServePersonalizedAds(Boolean servePersonalizedAds) {
+        this.servePersonalizedAds = servePersonalizedAds;
     }
 
     @Override

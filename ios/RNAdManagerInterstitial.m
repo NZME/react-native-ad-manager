@@ -15,6 +15,7 @@ static NSString *const kEventAdClosed = @"interstitialAdClosed";
     NSString *_adUnitID;
     NSArray *_testDevices;
     NSDictionary *_targeting;
+    BOOL _servePersonalizedAds;
 
     RCTPromiseResolveBlock _requestAdResolve;
     RCTPromiseRejectBlock _requestAdReject;
@@ -60,18 +61,31 @@ RCT_EXPORT_METHOD(setTargeting:(NSDictionary *)targeting)
     _targeting = targeting;
 }
 
+RCT_EXPORT_METHOD(setServePersonalizedAds:(BOOL) servePersonalizedAds)
+{
+    _servePersonalizedAds = servePersonalizedAds;
+}
+
 RCT_EXPORT_METHOD(requestAd:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     _requestAdResolve = nil;
     _requestAdReject = nil;
 
-    BOOL hasBeenUsed =  [_interstitial canPresentFromRootViewController:[UIApplication sharedApplication].delegate.window.rootViewController error:nil];
-    if (hasBeenUsed || _interstitial == nil) {
+    BOOL isReady =  [_interstitial canPresentFromRootViewController:[UIApplication sharedApplication].delegate.window.rootViewController error:nil];
+    if (!isReady) {
         _requestAdResolve = resolve;
         _requestAdReject = reject;
 
         GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = _testDevices;
         GAMRequest *request = [GAMRequest request];
+        
+        if (_servePersonalizedAds == NO) {
+            GADExtras *extras = [[GADExtras alloc] init];
+            extras.additionalParameters = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                           [NSNumber numberWithInt:1], @"npa",
+                                           nil];
+            [request registerAdNetworkExtras:extras];
+        }
 
         if (_targeting != nil) {
             NSDictionary *customTargeting = [_targeting objectForKey:@"customTargeting"];
@@ -180,6 +194,7 @@ RCT_EXPORT_METHOD(isReady:(RCTResponseSenderBlock)callback)
     if (hasListeners) {
         [self sendEventWithName:kEventAdClosed body:nil];
     }
+    _interstitial = nil;
 }
 
 @end

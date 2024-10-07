@@ -13,13 +13,13 @@ Pod::Spec.new do |s|
   s.license      = package["license"]
   s.authors      = package["author"]
 
-  s.platforms    = { :ios => "11.0" }
+  s.platforms    = { :ios => "12.4" }
   s.source       = { :git => "https://github.com/NZME/react-native-ad-manager.git", :tag => "v#{s.version}" }
 
   s.source_files = "ios/**/*.{h,m,mm}"
   s.requires_arc = true
 
   s.dependency "React-Core"
-  s.dependency 'Google-Mobile-Ads-SDK', '~> 9.14.0'
+  s.dependency 'Google-Mobile-Ads-SDK', '~> 10.10.0'
   s.dependency "GoogleMobileAdsMediationFacebook"
 end

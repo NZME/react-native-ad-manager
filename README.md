@@ -41,7 +41,7 @@ On Android the Ad Manager library code is part of Play Services, which is automa
 
 But you still have to manually update your `AndroidManifest.xml`, as described in the [Google Mobile Ads SDK documentation](https://developers.google.com/ad-manager/mobile-ads-sdk/android/quick-start#import_the_mobile_ads_sdk).
 
-###GAM
+### GAM
 
 **iOS**
 
@@ -63,7 +63,7 @@ Add transport security rules in Info.plist
 </dict>
 ```
 
-**Android(())
+**Android**
 
 Activate as Ad Manager app
 ```
@@ -127,6 +127,20 @@ const adsManager = new NativeAdsManager('your-ad-unit-id', [
 
 See the NativeAdView component in the [example NativeAdView](example/NativeAdView.js).
 For a full example reference to the [example project](example).
+
+## Events
+
+| Event                   | Description                                                                         | Output                 |
+| ---------------------- |-------------------------------------------------------------------------------------| ---------------------------- |
+| onSizeChange           | Called when the size of Ad changes.                                                 | ```{ height: number, type: string, target: number, width: number }``` |
+| onAdLoaded             | Called when Ad has finished loading.                                                | ```{ gadSize: { adSize: string, height: number, width: number }, isFluid: string, measurements: { adHeight: number, adWidth: number, height: number, left: number, top: number, width: number }``` |
+| onAdFailedToLoad       | Called when Ad request fails.                                                       | Error |
+| onAppEvent             | Called when the Ad receives an app event.                                           |                              |
+| onAdOpened             | Called when the Ad is opened.                                                       |                              |
+| onAdClosed             | Called when the Ad is closed.                                                       |     |
+| onAdCustomClick        | Called when the Ad is clicked from a custom template                                | ```{ Attribution: string, Calltoaction: string, DeeplinkUrl: string, assetName: string, label: string, target: number, text: string, title: string }``` |
+| onAdRecordImpression   | Called when the Ad records an impression.                                           | ```{ target: number }``` |
+
 
 ## Contributing
 
