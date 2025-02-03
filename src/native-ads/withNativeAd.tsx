@@ -38,6 +38,7 @@ interface INativeAdPropsBase extends ViewProps {
   customClickTemplateIds?: string[];
   targeting?: IAdManagerTargeting;
   servePersonalizedAds?: boolean;
+  allowDataProcessing?: boolean;
 }
 
 interface INativeAdNativeProps extends INativeAdPropsBase {
@@ -286,6 +287,7 @@ export default (Component: JSXElementConstructor<any>) =>
           customClickTemplateIds={this.props.customClickTemplateIds}
           adsManager={adsManager.toJSON()}
           servePersonalizedAds={this.props.servePersonalizedAds}
+          allowDataProcessing={this.props.allowDataProcessing}
         >
           {this.renderAdComponent(rest)}
         </NativeAdView>

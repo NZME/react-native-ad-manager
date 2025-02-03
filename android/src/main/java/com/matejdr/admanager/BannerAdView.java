@@ -51,6 +51,7 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
     String correlator;
 
     Boolean servePersonalizedAds = true;
+    Boolean allowDataProcessing = false;
 
     int top;
     int left;
@@ -289,6 +290,10 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
                 bundle.putInt("npa", 1);
             }
 
+            if (!allowDataProcessing) {
+                bundle.putInt("rdp", 1);
+            }
+
             adRequestBuilder.addNetworkExtrasBundle(AdMobAdapter.class, bundle);
 
             // Targeting
@@ -458,6 +463,14 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
             this.servePersonalizedAds = servePersonalizedAds;
         } catch (Exception e) {
             sendErrorEvent("Error found at ad manager when setServePersonalizedAds(): " + e.getMessage() + "!");
+        }
+    }
+
+    public void setAllowDataProcessing(Boolean allowDataProcessing) {
+        try {
+            this.allowDataProcessing = allowDataProcessing;
+        } catch (Exception e) {
+            sendErrorEvent("Error found at ad manager when setAllowDataProcessing(): " + e.getMessage() + "!");
         }
     }
 

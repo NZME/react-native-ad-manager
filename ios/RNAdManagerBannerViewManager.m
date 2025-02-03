@@ -46,6 +46,7 @@ RCT_EXPORT_VIEW_PROPERTY(validAdSizes, NSArray)
 RCT_EXPORT_VIEW_PROPERTY(testDevices, NSArray)
 RCT_EXPORT_VIEW_PROPERTY(targeting, NSDictionary)
 RCT_EXPORT_VIEW_PROPERTY(servePersonalizedAds, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(allowDataProcessing, BOOL)
 
 RCT_EXPORT_VIEW_PROPERTY(onSizeChange, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onAppEvent, RCTBubblingEventBlock)

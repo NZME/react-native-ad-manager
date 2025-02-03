@@ -49,6 +49,7 @@ class AdaptiveBannerAdView extends ReactViewGroup implements AppEventListener, L
     Location location;
     String correlator;
     Boolean servePersonalizedAds = true;
+    Boolean allowDataProcessing = true;
 
     int top;
     int left;
@@ -212,6 +213,10 @@ class AdaptiveBannerAdView extends ReactViewGroup implements AppEventListener, L
             bundle.putInt("npa", 1);
         }
 
+        if (!allowDataProcessing) {
+            bundle.putInt("rdp", 1);
+        }
+
         adRequestBuilder.addNetworkExtrasBundle(AdMobAdapter.class, bundle);
 
         // Targeting
@@ -315,6 +320,10 @@ class AdaptiveBannerAdView extends ReactViewGroup implements AppEventListener, L
 
     public void setServePersonalizedAds(Boolean servePersonalizedAds) {
         this.servePersonalizedAds = servePersonalizedAds;
+    }
+
+    public void setAllowDataProcessing(Boolean allowDataProcessing) {
+        this.allowDataProcessing = allowDataProcessing;
     }
 
     @Override

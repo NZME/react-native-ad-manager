@@ -33,6 +33,7 @@ public class RNAdManagerAdaptiveBannerViewManager extends ViewGroupManager<Adapt
     public static final String PROP_TARGETING = "targeting";
     public static final String PROP_CORRELATOR = "correlator";
     public static final String PROP_SERVE_PERSONALIZED_ADS = "servePersonalizedAds";
+    public static final String PROP_ALLOW_DATA_PROCESSING = "allowDataProcessing";
 
     public static final String EVENT_SIZE_CHANGE = "onSizeChange";
     public static final String EVENT_AD_LOADED = "onAdLoaded";
@@ -182,6 +183,11 @@ public class RNAdManagerAdaptiveBannerViewManager extends ViewGroupManager<Adapt
     @ReactProp(name = PROP_SERVE_PERSONALIZED_ADS)
     public void setServePersonalizedAds(final AdaptiveBannerAdView view, final Boolean servePersonalizedAds) {
         view.setServePersonalizedAds(servePersonalizedAds);
+    }
+
+    @ReactProp(name = PROP_ALLOW_DATA_PROCESSING)
+    public void setAllowDataProcessing(final AdaptiveBannerAdView view, final Boolean allowDataProcessing) {
+        view.setAllowDataProcessing(allowDataProcessing);
     }
 
     @Nullable
