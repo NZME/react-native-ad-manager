@@ -37,6 +37,7 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
     public static final String PROP_TARGETING = "targeting";
     public static final String PROP_CORRELATOR = "correlator";
     public static final String PROP_SERVE_PERSONALIZED_ADS = "servePersonalizedAds";
+    public static final String PROP_ALLOW_DATA_PROCESSING = "allowDataProcessing";
 
 
     public static final String EVENT_AD_LOADED = "onAdLoaded";
@@ -227,6 +228,11 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
     @ReactProp(name = PROP_SERVE_PERSONALIZED_ADS)
     public void setServePersonalizedAds(final NativeAdViewContainer view, final Boolean servePersonalizedAds) {
         view.setServePersonalizedAds(servePersonalizedAds);
+    }
+
+    @ReactProp(name = PROP_ALLOW_DATA_PROCESSING)
+    public void setAllowDataProcessing(final NativeAdViewContainer view, final Boolean allowDataProcessing) {
+        view.setAllowDataProcessing(allowDataProcessing);
     }
 
     @Override

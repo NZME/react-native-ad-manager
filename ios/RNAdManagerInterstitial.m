@@ -16,6 +16,7 @@ static NSString *const kEventAdClosed = @"interstitialAdClosed";
     NSArray *_testDevices;
     NSDictionary *_targeting;
     BOOL _servePersonalizedAds;
+    BOOL _allowDataProcessing;
 
     RCTPromiseResolveBlock _requestAdResolve;
     RCTPromiseRejectBlock _requestAdReject;
@@ -66,6 +67,11 @@ RCT_EXPORT_METHOD(setServePersonalizedAds:(BOOL) servePersonalizedAds)
     _servePersonalizedAds = servePersonalizedAds;
 }
 
+RCT_EXPORT_METHOD(setAllowDataProcessing:(BOOL) allowDataProcessing)
+{
+    _allowDataProcessing = allowDataProcessing;
+}
+
 RCT_EXPORT_METHOD(requestAd:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     _requestAdResolve = nil;
@@ -79,11 +85,20 @@ RCT_EXPORT_METHOD(requestAd:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromise
         GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = _testDevices;
         GAMRequest *request = [GAMRequest request];
         
-        if (_servePersonalizedAds == NO) {
+        if (_servePersonalizedAds == NO || _allowDataProcessing == NO) {
             GADExtras *extras = [[GADExtras alloc] init];
-            extras.additionalParameters = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                           [NSNumber numberWithInt:1], @"npa",
-                                           nil];
+    
+            NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+
+            if (_servePersonalizedAds == NO) {
+                [parameters setObject:[NSNumber numberWithInt:1] forKey:@"npa"];
+            }
+    
+            if (_allowDataProcessing == NO) {
+                [parameters setObject:[NSNumber numberWithInt:1] forKey:@"rdp"];
+            }
+    
+            extras.additionalParameters = parameters;
             [request registerAdNetworkExtras:extras];
         }
 

@@ -63,6 +63,7 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
 
     private Promise mRequestAdPromise;
     private Boolean servePersonalizedAds = true;
+    private Boolean allowDataProcessing = false;
 
     public RNAdManagerInterstitial(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -150,6 +151,11 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
         this.servePersonalizedAds = servePersonalizedAds;
     }
 
+    @ReactMethod
+    public void setAllowDataProcessing(Boolean allowDataProcessing) {
+        this.allowDataProcessing = allowDataProcessing;
+    }
+
     private AdManagerAdRequest buildAdRequest() {
         AdManagerAdRequest.Builder adRequestBuilder = new AdManagerAdRequest.Builder();
 
@@ -214,6 +220,10 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
         Bundle bundle = new Bundle();
         if (!servePersonalizedAds) {
             bundle.putInt("npa", 1);
+        }
+
+        if (!allowDataProcessing) {
+            bundle.putInt("rdp", 1);
         }
 
         adRequestBuilder.addNetworkExtrasBundle(AdMobAdapter.class, bundle);

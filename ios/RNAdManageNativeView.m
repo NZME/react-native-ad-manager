@@ -150,6 +150,10 @@ static NSString *const kAdTypeTemplate = @"template";
     if (_servePersonalizedAds == NO) {
         [additionalParams setObject:[NSNumber numberWithInt:1] forKey:@"npa"];
     }
+
+    if (_allowDataProcessing == NO) {
+        [additionalParams setObject:[NSNumber numberWithInt:1] forKey:@"rdp"];
+    }
     
     // Set the dictionary to extras.additionalParameters
     extras.additionalParameters = [NSDictionary dictionaryWithDictionary:additionalParams];
@@ -247,6 +251,11 @@ static NSString *const kAdTypeTemplate = @"template";
 - (void)setServePersonalizedAds:(BOOL)servePersonalizedAds
 {
   _servePersonalizedAds = servePersonalizedAds;
+}
+
+- (void)setAllowDataProcessing:(BOOL)allowDataProcessing
+{
+  _allowDataProcessing = allowDataProcessing;
 }
 
 

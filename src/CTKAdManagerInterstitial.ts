@@ -105,6 +105,10 @@ const setServePersonalizedAds = (servePersonalizedAds: boolean) => {
   CTKInterstitial.setServePersonalizedAds(servePersonalizedAds);
 };
 
+const setAllowDataProcessing = (allowDataProcessing: boolean) => {
+  CTKInterstitial.setAllowDataProcessing(allowDataProcessing);
+};
+
 const requestAd = (): Promise<null> => {
   return CTKInterstitial.requestAd();
 };
@@ -128,5 +132,6 @@ export default {
   requestAd,
   showAd,
   setServePersonalizedAds,
+  setAllowDataProcessing,
   isReady,
 };

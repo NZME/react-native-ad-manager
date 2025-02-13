@@ -10,6 +10,7 @@
 @property (nonatomic, strong) NSString *adUnitID;
 @property (nonatomic, copy) NSString *correlator;
 @property (nonatomic) BOOL servePersonalizedAds;
+@property (nonatomic) BOOL allowDataProcessing;
 
 @property (nonatomic, copy) RCTBubblingEventBlock onSizeChange;
 @property (nonatomic, copy) RCTBubblingEventBlock onAppEvent;

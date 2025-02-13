@@ -77,6 +77,7 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
     Location location;
     String correlator;
     Boolean servePersonalizedAds = true;
+    Boolean allowDataProcessing = false;
     List<String> customClickTemplateIds;
 
     /**
@@ -266,8 +267,11 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
                         correlator = (String) Targeting.getCorelator(adUnitID);
                     }
                     Bundle bundle = new Bundle();
-                    //Restrict data processing by default for all users
-                    bundle.putInt("rdp", 1);
+
+                    // Restrict data processing by default for all users
+                    if(!allowDataProcessing) { 
+                        bundle.putInt("rdp", 1);
+                    }
                     bundle.putString("correlator", correlator);
 
                     if (!servePersonalizedAds) {
@@ -648,6 +652,10 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
 
     public void setServePersonalizedAds(Boolean servePersonalizedAds) {
         this.servePersonalizedAds = servePersonalizedAds;
+    }
+
+    public void setAllowDataProcessing(Boolean allowDataProcessing) {
+        this.allowDataProcessing = allowDataProcessing;
     }
 
     public void setCustomClickTemplateIds(String[] customClickTemplateIds) {

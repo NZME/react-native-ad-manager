@@ -137,9 +137,6 @@ RCT_EXPORT_METHOD(init:(NSString *)adUnitID testDevices:(NSArray *)testDevices)
         GADVideoOptions *videoOptions = [[GADVideoOptions alloc] init];
         videoOptions.startMuted = YES;
 
-        //Restrict data processing by default for all users
-        [NSUserDefaults.standardUserDefaults setBool:YES forKey:@"gad_rdp"];
-
         adLoader = [[GADAdLoader alloc] initWithAdUnitID:adUnitID
                                            rootViewController:[UIApplication sharedApplication].delegate.window.rootViewController
                                                       adTypes:adTypes
@@ -184,6 +181,7 @@ RCT_EXPORT_VIEW_PROPERTY(validAdSizes, NSArray)
 RCT_EXPORT_VIEW_PROPERTY(targeting, NSDictionary)
 RCT_EXPORT_VIEW_PROPERTY(correlator, NSString)
 RCT_EXPORT_VIEW_PROPERTY(servePersonalizedAds, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(allowDataProcessing, BOOL)
 
 RCT_EXPORT_VIEW_PROPERTY(onSizeChange, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onAppEvent, RCTBubblingEventBlock)
