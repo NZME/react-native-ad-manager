@@ -137,9 +137,6 @@ RCT_EXPORT_METHOD(init:(NSString *)adUnitID testDevices:(NSArray *)testDevices)
         GADVideoOptions *videoOptions = [[GADVideoOptions alloc] init];
         videoOptions.startMuted = YES;
 
-        //Restrict data processing by default for all users
-        [NSUserDefaults.standardUserDefaults setBool:YES forKey:@"gad_rdp"];
-
         adLoader = [[GADAdLoader alloc] initWithAdUnitID:adUnitID
                                            rootViewController:[UIApplication sharedApplication].delegate.window.rootViewController
                                                       adTypes:adTypes
