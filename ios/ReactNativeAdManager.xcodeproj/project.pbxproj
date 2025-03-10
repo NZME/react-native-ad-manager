@@ -7,7 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B3E7B58A1CC2AC0600A0062D /* ReactNativeAdManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* ReactNativeAdManager.m */; };
+		141AE7222D75231C0038A911 /* RNAdManagerAdaptiveBannerViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 141AE70F2D75231B0038A911 /* RNAdManagerAdaptiveBannerViewManager.m */; };
+		141AE7232D75231C0038A911 /* RNAdManagerUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 141AE7102D75231C0038A911 /* RNAdManagerUtils.m */; };
+		141AE7242D75231C0038A911 /* RNAdManageNativeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 141AE7132D75231C0038A911 /* RNAdManageNativeManager.m */; };
+		141AE7252D75231C0038A911 /* RNAdManagerAdaptiveBannerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 141AE7152D75231C0038A911 /* RNAdManagerAdaptiveBannerView.m */; };
+		141AE7262D75231C0038A911 /* RNAdManagerInterstitial.m in Sources */ = {isa = PBXBuildFile; fileRef = 141AE7172D75231C0038A911 /* RNAdManagerInterstitial.m */; };
+		141AE7272D75231C0038A911 /* RNAdManageNativeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 141AE71B2D75231C0038A911 /* RNAdManageNativeView.m */; };
+		141AE7282D75231C0038A911 /* RNAdManagerBannerViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 141AE71D2D75231C0038A911 /* RNAdManagerBannerViewManager.m */; };
+		141AE7292D75231C0038A911 /* RNAdManagerBannerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 141AE71F2D75231C0038A911 /* RNAdManagerBannerView.m */; };
+		141AE72A2D75231C0038A911 /* RCTConvert+GADAdSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 141AE7202D75231C0038A911 /* RCTConvert+GADAdSize.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,8 +32,25 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libReactNativeAdManager.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libReactNativeAdManager.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		B3E7B5881CC2AC0600A0062D /* ReactNativeAdManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactNativeAdManager.h; sourceTree = "<group>"; };
-		B3E7B5891CC2AC0600A0062D /* ReactNativeAdManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactNativeAdManager.m; sourceTree = "<group>"; };
+		141AE70F2D75231B0038A911 /* RNAdManagerAdaptiveBannerViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNAdManagerAdaptiveBannerViewManager.m; sourceTree = "<group>"; };
+		141AE7102D75231C0038A911 /* RNAdManagerUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNAdManagerUtils.m; sourceTree = "<group>"; };
+		141AE7112D75231C0038A911 /* RCTConvert+GADAdSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+GADAdSize.h"; sourceTree = "<group>"; };
+		141AE7122D75231C0038A911 /* ReactNativeAdManager.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = ReactNativeAdManager.xcworkspace; sourceTree = "<group>"; };
+		141AE7132D75231C0038A911 /* RNAdManageNativeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNAdManageNativeManager.m; sourceTree = "<group>"; };
+		141AE7142D75231C0038A911 /* RNAdManagerInterstitial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNAdManagerInterstitial.h; sourceTree = "<group>"; };
+		141AE7152D75231C0038A911 /* RNAdManagerAdaptiveBannerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNAdManagerAdaptiveBannerView.m; sourceTree = "<group>"; };
+		141AE7162D75231C0038A911 /* RNAdManagerAdaptiveBannerViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNAdManagerAdaptiveBannerViewManager.h; sourceTree = "<group>"; };
+		141AE7172D75231C0038A911 /* RNAdManagerInterstitial.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNAdManagerInterstitial.m; sourceTree = "<group>"; };
+		141AE7182D75231C0038A911 /* RNAdManagerUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNAdManagerUtils.h; sourceTree = "<group>"; };
+		141AE7192D75231C0038A911 /* RNAdManagerBannerViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNAdManagerBannerViewManager.h; sourceTree = "<group>"; };
+		141AE71A2D75231C0038A911 /* RNAdManagerAdaptiveBannerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNAdManagerAdaptiveBannerView.h; sourceTree = "<group>"; };
+		141AE71B2D75231C0038A911 /* RNAdManageNativeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNAdManageNativeView.m; sourceTree = "<group>"; };
+		141AE71C2D75231C0038A911 /* RNAdManageNativeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNAdManageNativeView.h; sourceTree = "<group>"; };
+		141AE71D2D75231C0038A911 /* RNAdManagerBannerViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNAdManagerBannerViewManager.m; sourceTree = "<group>"; };
+		141AE71E2D75231C0038A911 /* RNAdManageNativeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNAdManageNativeManager.h; sourceTree = "<group>"; };
+		141AE71F2D75231C0038A911 /* RNAdManagerBannerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNAdManagerBannerView.m; sourceTree = "<group>"; };
+		141AE7202D75231C0038A911 /* RCTConvert+GADAdSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+GADAdSize.m"; sourceTree = "<group>"; };
+		141AE7212D75231C0038A911 /* RNAdManagerBannerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNAdManagerBannerView.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,8 +75,25 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
-				B3E7B5881CC2AC0600A0062D /* ReactNativeAdManager.h */,
-				B3E7B5891CC2AC0600A0062D /* ReactNativeAdManager.m */,
+				141AE7112D75231C0038A911 /* RCTConvert+GADAdSize.h */,
+				141AE7202D75231C0038A911 /* RCTConvert+GADAdSize.m */,
+				141AE7122D75231C0038A911 /* ReactNativeAdManager.xcworkspace */,
+				141AE71E2D75231C0038A911 /* RNAdManageNativeManager.h */,
+				141AE7132D75231C0038A911 /* RNAdManageNativeManager.m */,
+				141AE71C2D75231C0038A911 /* RNAdManageNativeView.h */,
+				141AE71B2D75231C0038A911 /* RNAdManageNativeView.m */,
+				141AE71A2D75231C0038A911 /* RNAdManagerAdaptiveBannerView.h */,
+				141AE7152D75231C0038A911 /* RNAdManagerAdaptiveBannerView.m */,
+				141AE7162D75231C0038A911 /* RNAdManagerAdaptiveBannerViewManager.h */,
+				141AE70F2D75231B0038A911 /* RNAdManagerAdaptiveBannerViewManager.m */,
+				141AE7212D75231C0038A911 /* RNAdManagerBannerView.h */,
+				141AE71F2D75231C0038A911 /* RNAdManagerBannerView.m */,
+				141AE7192D75231C0038A911 /* RNAdManagerBannerViewManager.h */,
+				141AE71D2D75231C0038A911 /* RNAdManagerBannerViewManager.m */,
+				141AE7142D75231C0038A911 /* RNAdManagerInterstitial.h */,
+				141AE7172D75231C0038A911 /* RNAdManagerInterstitial.m */,
+				141AE7182D75231C0038A911 /* RNAdManagerUtils.h */,
+				141AE7102D75231C0038A911 /* RNAdManagerUtils.m */,
 				134814211AA4EA7D00B7C361 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -95,6 +137,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 58B511D21A9E6C8500147676;
@@ -112,7 +155,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B3E7B58A1CC2AC0600A0062D /* ReactNativeAdManager.m in Sources */,
+				141AE72A2D75231C0038A911 /* RCTConvert+GADAdSize.m in Sources */,
+				141AE7272D75231C0038A911 /* RNAdManageNativeView.m in Sources */,
+				141AE7262D75231C0038A911 /* RNAdManagerInterstitial.m in Sources */,
+				141AE7242D75231C0038A911 /* RNAdManageNativeManager.m in Sources */,
+				141AE7222D75231C0038A911 /* RNAdManagerAdaptiveBannerViewManager.m in Sources */,
+				141AE7292D75231C0038A911 /* RNAdManagerBannerView.m in Sources */,
+				141AE7282D75231C0038A911 /* RNAdManagerBannerViewManager.m in Sources */,
+				141AE7252D75231C0038A911 /* RNAdManagerAdaptiveBannerView.m in Sources */,
+				141AE7232D75231C0038A911 /* RNAdManagerUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -162,7 +213,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -205,7 +256,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -216,11 +267,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
-				"$(inherited)",
+					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../../../React/**",
 					"$(SRCROOT)/../../react-native/React/**",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = ReactNativeAdManager;
@@ -234,9 +286,10 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SRCROOT)/../../../React/**",
+					"$(SRCROOT)/../../../React",
 					"$(SRCROOT)/../../react-native/React/**",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = ReactNativeAdManager;
