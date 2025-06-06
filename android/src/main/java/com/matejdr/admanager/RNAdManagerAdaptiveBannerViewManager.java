@@ -32,6 +32,7 @@ public class RNAdManagerAdaptiveBannerViewManager extends ViewGroupManager<Adapt
     public static final String PROP_TEST_DEVICES = "testDevices";
     public static final String PROP_TARGETING = "targeting";
     public static final String PROP_CORRELATOR = "correlator";
+    public static final String PROP_SERVE_PERSONALIZED_ADS = "servePersonalizedAds";
 
     public static final String EVENT_SIZE_CHANGE = "onSizeChange";
     public static final String EVENT_AD_LOADED = "onAdLoaded";
@@ -176,6 +177,11 @@ public class RNAdManagerAdaptiveBannerViewManager extends ViewGroupManager<Adapt
     @ReactProp(name = PROP_CORRELATOR)
     public void setCorrelator(final AdaptiveBannerAdView view, final String correlator) {
         view.setCorrelator(correlator);
+    }
+
+    @ReactProp(name = PROP_SERVE_PERSONALIZED_ADS)
+    public void setServePersonalizedAds(final AdaptiveBannerAdView view, final Boolean servePersonalizedAds) {
+        view.setServePersonalizedAds(servePersonalizedAds);
     }
 
     @Nullable

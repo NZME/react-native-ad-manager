@@ -2,6 +2,7 @@ package com.matejdr.admanager;
 
 import android.app.Activity;
 import android.location.Location;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 
@@ -19,6 +20,7 @@ import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.facebook.react.bridge.ReadableNativeArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.google.ads.mediation.admob.AdMobAdapter;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
@@ -60,6 +62,7 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
     ReactApplicationContext reactContext;
 
     private Promise mRequestAdPromise;
+    private Boolean servePersonalizedAds = true;
 
     public RNAdManagerInterstitial(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -142,6 +145,11 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
         }
     }
 
+    @ReactMethod
+    public void setServePersonalizedAds(Boolean servePersonalizedAds) {
+        this.servePersonalizedAds = servePersonalizedAds;
+    }
+
     private AdManagerAdRequest buildAdRequest() {
         AdManagerAdRequest.Builder adRequestBuilder = new AdManagerAdRequest.Builder();
 
@@ -202,6 +210,13 @@ public class RNAdManagerInterstitial extends ReactContextBaseJavaModule {
         //if (location != null) {
         //    adRequestBuilder.setLocation(location);
         //}
+
+        Bundle bundle = new Bundle();
+        if (!servePersonalizedAds) {
+            bundle.putInt("npa", 1);
+        }
+
+        adRequestBuilder.addNetworkExtrasBundle(AdMobAdapter.class, bundle);
 
         adRequest = adRequestBuilder.build();
 
