@@ -31,12 +31,12 @@ import { LINKING_ERROR } from '../Constants';
  */
 interface INativeAdPropsBase extends ViewProps {
   adSize?: string;
-  correlator?: string;
   customTemplateIds?: string[];
   validAdSizes?: string[];
   validAdTypes?: ('banner' | 'native' | 'template')[];
   customClickTemplateIds?: string[];
   targeting?: IAdManagerTargeting;
+  correlator?: string;
 }
 
 interface INativeAdNativeProps extends INativeAdPropsBase {
