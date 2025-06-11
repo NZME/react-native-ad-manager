@@ -48,8 +48,8 @@ class AdaptiveBannerAdView extends ReactViewGroup implements AppEventListener, L
     String publisherProvidedID;
     Location location;
     String correlator;
-    Boolean servePersonalizedAds = true;
-    Boolean allowDataProcessing = true;
+    Boolean servePersonalizedAds = false;
+    Boolean allowDataProcessing = false;
 
     int top;
     int left;
