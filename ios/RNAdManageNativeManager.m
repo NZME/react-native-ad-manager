@@ -90,7 +90,7 @@ RCT_EXPORT_METHOD(init:(NSString *)adUnitID testDevices:(NSArray *)testDevices)
     RNAdManageNativeManager *adsManager = [RNAdManageNativeManager alloc];
 
     adsManager.adUnitID = adUnitID;
-    adsManager.testDevices = RNAdManagerProcessTestDevices(testDevices, GADSimulatorID);
+    adsManager.testDevices = RNAdManagerProcessTestDevices(testDevices, @"SIMULATOR");
     
     _myAdChoiceViewAdUnitID = adUnitID;
 

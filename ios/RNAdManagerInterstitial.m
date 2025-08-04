@@ -52,7 +52,7 @@ RCT_EXPORT_METHOD(setAdUnitID:(NSString *)adUnitID)
 
 RCT_EXPORT_METHOD(setTestDevices:(NSArray *)testDevices)
 {
-    _testDevices = RNAdManagerProcessTestDevices(testDevices, GADSimulatorID);
+    _testDevices = RNAdManagerProcessTestDevices(testDevices, @"SIMULATOR");
 }
 
 RCT_EXPORT_METHOD(setTargeting:(NSDictionary *)targeting)
