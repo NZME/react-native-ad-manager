@@ -53,6 +53,12 @@
   _correlator = correlator;
 }
 
+- (void)setServePersonalizedAds:(BOOL)servePersonalizedAds
+{
+  _servePersonalizedAds = servePersonalizedAds;
+}
+
+
 // Initialise BannerAdView as soon as all the props are set
 - (void)createViewIfCan
 {
@@ -110,9 +116,17 @@
     if (_correlator == nil) {
         _correlator = getCorrelator(_adUnitID);
     }
-    extras.additionalParameters = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                   _correlator, @"correlator",
-                                   nil];
+    
+    NSMutableDictionary *additionalParams = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                             _correlator, @"correlator",
+                                             nil];
+    if (_servePersonalizedAds == NO) {
+        [additionalParams setObject:[NSNumber numberWithInt:1] forKey:@"npa"];
+    }
+    
+    // Set the dictionary to extras.additionalParameters
+    extras.additionalParameters = [NSDictionary dictionaryWithDictionary:additionalParams];
+    
     [request registerAdNetworkExtras:extras];
 
     if (_targeting != nil) {

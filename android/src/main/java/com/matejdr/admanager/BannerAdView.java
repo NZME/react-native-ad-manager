@@ -50,6 +50,8 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
     Location location;
     String correlator;
 
+    Boolean servePersonalizedAds = true;
+
     int top;
     int left;
     int width;
@@ -283,6 +285,10 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
             Bundle bundle = new Bundle();
             bundle.putString("correlator", correlator);
 
+            if (!servePersonalizedAds) {
+                bundle.putInt("npa", 1);
+            }
+
             adRequestBuilder.addNetworkExtrasBundle(AdMobAdapter.class, bundle);
 
             // Targeting
@@ -444,6 +450,14 @@ class BannerAdView extends ReactViewGroup implements AppEventListener, Lifecycle
             this.correlator = correlator;
         } catch (Exception e) {
             sendErrorEvent("Error found at ad manager when setCorrelator(): " + e.getMessage() + "!");
+        }
+    }
+
+    public void setServePersonalizedAds(Boolean servePersonalizedAds) {
+        try {
+            this.servePersonalizedAds = servePersonalizedAds;
+        } catch (Exception e) {
+            sendErrorEvent("Error found at ad manager when setServePersonalizedAds(): " + e.getMessage() + "!");
         }
     }
 
