@@ -44,11 +44,6 @@ export interface IAdManagerTargeting {
    *  information to third-party ad networks if required.
    */
   location?: IAdManagerTargetingLocation;
-
-  /**
-   * Correlator string to pass to ad loader.
-   */
-  correlator?: string;
 }
 
 export interface IAdManagerTemplateImage {

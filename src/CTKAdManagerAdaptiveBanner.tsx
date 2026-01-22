@@ -44,6 +44,11 @@ interface IAdManagerAdaptiveBannerPropsBase extends ViewProps {
   testDevices?: string[];
 
   targeting?: IAdManagerTargeting;
+
+  /**
+   * Correlator string to pass to ad loader.
+   */
+  correlator?: string;
 }
 
 interface IAdManagerAdaptiveBannerProps
